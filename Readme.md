@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Натали Эрбет](https://up.htmlacademy.ru/ecmascript/20/user/998653).
-* Наставник: `Неизвестно`.
+* Наставник: [Нияз Гарипов] (https://htmlacademy.ru/profile/niyaz).
 
 ---
 
