@@ -5,7 +5,7 @@ import TripEventListView from '../view/trip-events-list.js';
 import TripEventInfoView from '../view/trip-info.js';
 import TripEventFiltersView from '../view/trip-filters.js';
 import TripEventSortView from '../view/trip-sort.js';
-import {render} from '../render.js';
+import {render, RenderPosition} from '../render.js';
 
 export default class BoardPresentor {
   tripEventListComponent = new TripEventListView();
@@ -16,10 +16,12 @@ export default class BoardPresentor {
   }
 
   init() {
-    render(new TripEventInfoView(), this.tripMainContainer);
+    render(new TripEventInfoView(), this.tripMainContainer, RenderPosition.AFTERBEGIN);
     render(new TripEventFiltersView(), this.tripMainContainer);
+
     render (new TripEventSortView(), this.tripEventsContainer);
-    render (new TripEventEditView, this.tripEventsContainer);
+    render(new TripEventEditView(), this.tripEventsContainer, RenderPosition.BEFOREEND);
+    render (this.tripEventListComponent, this.tripEventsContainer);
 
     for (let i = 0; i < 3; i++) {
       render(new TripEventView(), this.tripEventListComponent.getElement());
