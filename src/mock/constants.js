@@ -1,4 +1,5 @@
 const POINT_COUNT = 3;
+const OFFER_DESCRIPTION_COUNT = 2;
 
 const PointType = {
   TAXI: 'taxi',
@@ -66,4 +67,4 @@ const OFFER_TITLE = [
   'Wake up at a certain time'
 ];
 
-export{PointType,PointTypeDescription, CITY_NAME, CITY_DESCRIPTION, PICTURE_DESCRIPTION, OFFER_TITLE, POINT_COUNT };
+export{PointType,PointTypeDescription, CITY_NAME, CITY_DESCRIPTION, PICTURE_DESCRIPTION, OFFER_TITLE, POINT_COUNT, OFFER_DESCRIPTION_COUNT};
