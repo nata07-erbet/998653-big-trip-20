@@ -29,7 +29,7 @@ const getPoint = () =>
     dateTo: dayjs().hour(17),
     destination: nanoid(),
     isFavorite: false,
-    offers: [1],
+    offers: getOfferDescriptionArr(),
     type: getRandomType()
   });
 const getDestination = () => ({

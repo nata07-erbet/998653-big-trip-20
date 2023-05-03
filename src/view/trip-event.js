@@ -4,6 +4,16 @@ import { DATE_GAP } from '../constants//constants.js';
 import { createElement } from '../render.js';
 import {getRandomArrayElement, humanizePointDueDate, humanizePointDueTime } from '../utils.js';
 
+function createOfferDescription (offers) {
+  return (
+    offers.map((offer) => (`<li class="event__offer">
+                              <span class="event__offer-title">${offer.title}</span>
+                              +€&nbsp;
+                              <span class="event__offer-price">${offer.price}</span>
+                            </li>`)).join(' ')
+  );
+}
+
 function createEventTemplate(point) {
   const {basePrice, dateFrom, offers, type} = point;
 
@@ -28,12 +38,7 @@ function createEventTemplate(point) {
 
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">
-
-      <li class="event__offer">
-        <span class="event__offer-title">${offers.title}</span>
-        +€&nbsp;
-        <span class="event__offer-price">${offers.price}</span>
-      </li>
+      ${createOfferDescription(offers)}
     </ul>
     <button class="event__favorite-btn event__favorite-btn--active" type="button">
       <span class="visually-hidden">Add to favorite</span>
