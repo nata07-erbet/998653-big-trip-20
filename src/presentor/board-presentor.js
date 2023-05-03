@@ -10,12 +10,16 @@ import {render, RenderPosition} from '../render.js';
 export default class BoardPresentor {
   tripEventListComponent = new TripEventListView();
 
-  constructor ({tripMainContainer, tripEventsContainer}) {
+  constructor ({tripMainContainer, tripEventsContainer, pointModel}) {
     this.tripMainContainer = tripMainContainer;
     this.tripEventsContainer = tripEventsContainer;
+    this.pointModel = pointModel;
   }
 
   init() {
+    this.boardPoints = [...this.pointModel.getPoints()];
+
+
     render(new TripEventInfoView(), this.tripMainContainer, RenderPosition.AFTERBEGIN);
     render(new TripEventFiltersView(), this.tripMainContainer);
 
@@ -23,8 +27,8 @@ export default class BoardPresentor {
     render(new TripEventEditView(), this.tripEventsContainer, RenderPosition.BEFOREEND);
     render (this.tripEventListComponent, this.tripEventsContainer);
 
-    for (let i = 0; i < 3; i++) {
-      render(new TripEventView(), this.tripEventListComponent.getElement());
+    for (let i = 0; i < this.boardPoints.length; i++) {
+      render(new TripEventView({point: this.boardPoints[i]}), this.tripEventListComponent.getElement());
     }
 
   }

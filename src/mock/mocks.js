@@ -1,5 +1,5 @@
-import {getRandomArrayElement} from '../utils.js';
-import {PointType, CITY_NAME, CITY_DESCRIPTION, PICTURE_DESCRIPTION, OFFER_TITLE , POINT_COUNT, OFFER_DESCRIPTION_COUNT} from '../mock/constants.js';
+import {getRandomArrayElement, getRandomInt } from '../utils.js';
+import {PointType, CITY_NAME, CITY_DESCRIPTION, PICTURE_DESCRIPTION, OFFER_TITLE , OFFER_DESCRIPTION_COUNT, PRICE } from '../constants/constants.js';
 import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
 //объект переведем в массив
@@ -19,29 +19,19 @@ const getOffer = () => ({
   offers: getOfferDescriptionArr()
 });
 
-const getOffers = () => Array.from({length: POINT_COUNT},(_, index) => getOffer(index));
-const offersByType = getOffers();
-
-
-const getPoint = () => {
-  const type = getRandomType();
-  const pointTypeOffers = offersByType.find((offer) => offer.type === type).offers;
-
-  return ({
+const getPoint = () =>
+  // const avalibleOffers = offersByType.find((offer) => offer.type === point.type) //все доступные офферы
+  // const selectedOffers = 7;
+  ({
     id: nanoid(),
-    basePrice: 1100,
+    basePrice: getRandomInt(PRICE.MIN, PRICE.MAX),
     dateFrom: dayjs(),
     dateTo: dayjs().hour(17),
     destination: nanoid(),
     isFavorite: false,
-    offers: pointTypeOffers,
+    offers: [1],
     type: getRandomType()
   });
-};
-
-const getPoints = () =>Array.from({length: POINT_COUNT}, (_, index) => getPoint(index));
-
-
 const getDestination = () => ({
   id: nanoid(),
   description: getRandomArrayElement(CITY_DESCRIPTION),
@@ -54,5 +44,4 @@ const getDestination = () => ({
   ]
 });
 
-// eslint-disable-next-line no-console
-console.log(offersByType);
+export { getOffer, getPoint, getDestination, getOfferDescriptionArr };

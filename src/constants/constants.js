@@ -1,6 +1,12 @@
 const POINT_COUNT = 3;
 const OFFER_DESCRIPTION_COUNT = 2;
 
+const PRICE = {
+  MIN: 100,
+  MAX: 2000
+};
+
+
 const PointType = {
   TAXI: 'taxi',
   BUS: 'bus',
@@ -67,4 +73,12 @@ const OFFER_TITLE = [
   'Wake up at a certain time'
 ];
 
-export{PointType,PointTypeDescription, CITY_NAME, CITY_DESCRIPTION, PICTURE_DESCRIPTION, OFFER_TITLE, POINT_COUNT, OFFER_DESCRIPTION_COUNT};
+const DATE_GAP = 3;
+
+const DATA_TIME = 'DD/MM/YY h:m';
+
+const DATA_NUMBER_MONTH = 'D MMM';
+const DATA_HOUR_MINUTE = 'h:m';
+
+
+export{PointType,PointTypeDescription, CITY_NAME, CITY_DESCRIPTION, PICTURE_DESCRIPTION, OFFER_TITLE, POINT_COUNT, OFFER_DESCRIPTION_COUNT, DATA_TIME, DATA_NUMBER_MONTH, DATA_HOUR_MINUTE, DATE_GAP, PRICE};
