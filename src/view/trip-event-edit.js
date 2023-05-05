@@ -9,6 +9,14 @@ function createEventType(offers) {
   );
 }
 
+function createDestinationsCites(destinations) {
+  return(
+    destinations
+      .map((destination) => `<option value=${destination.name}></option>`)
+      .join()
+  );
+}
+
 function createEventEditTemplate(point, offers, destinations) {
   const { basePrice, dateFrom, dateTo, type } = point;
 
@@ -31,17 +39,13 @@ function createEventEditTemplate(point, offers, destinations) {
   </div>
 
   <div class="event__field-group  event__field-group--destination">
-    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Chamonix" list="destination-list-1">
+    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${type} list="destination-list-1">
     <label class="event__label  event__type-output" for="event-destination-1">
-      ${destinations.name}
     </label>
     <datalist id="destination-list-1">
-      <option value="Amsterdam"></option>
-      <option value="Geneva"></option>
-      <option value="Chamonix"></option>
+    ${createDestinationsCites(destinations)}
     </datalist>
-
-  </div>
+    </div>
 
   <div class="event__field-group  event__field-group--time">
     <label class="visually-hidden" for="event-start-time-1">From</label>
