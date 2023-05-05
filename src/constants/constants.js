@@ -1,5 +1,5 @@
-const POINT_COUNT = 3;
-const OFFER_DESCRIPTION_COUNT = 2;
+const POINT_COUNT = 9;
+const OFFER_DESCRIPTION_COUNT = 9;
 
 const PRICE = {
   MIN: 100,
