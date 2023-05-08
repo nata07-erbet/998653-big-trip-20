@@ -1,8 +1,12 @@
 import dayjs from 'dayjs';
-import { DATA_NUMBER_MONTH, DATA_HOUR_MINUTE } from './constants/constants.js';
+import { DATA_TIME, DATA_NUMBER_MONTH, DATA_HOUR_MINUTE } from './constants/constants.js';
 
 function getRandomArrayElement(items) {
   return items[Math.floor(Math.random() * items.length)];
+}
+
+function humanizePointDueDateTime (dueDate) {
+  return dueDate ? dayjs(dueDate).format(DATA_TIME) : '';
 }
 
 function humanizePointDueDate (dueDate) {
@@ -18,4 +22,4 @@ const getRandomInt = (min, max) => {
   return Math.round(rand);
 };
 
-export {getRandomArrayElement ,humanizePointDueDate, humanizePointDueTime, getRandomInt };
+export {getRandomArrayElement, humanizePointDueDateTime, humanizePointDueDate, humanizePointDueTime, getRandomInt };

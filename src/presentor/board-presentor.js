@@ -26,7 +26,7 @@ export default class BoardPresentor {
     render(new TripEventFiltersView(), this.tripMainContainer);
 
     render (new TripEventSortView(), this.tripEventsContainer);
-    render(new TripEventEditView({point:this.boardPoints[0], offers:this.boardOffers, destinations:this.boardDestinations}), this.tripEventsContainer, RenderPosition.BEFOREEND);
+    render(new TripEventEditView({point:this.boardPoints[0], allOffers:this.boardOffers, destinations:this.boardDestinations}), this.tripEventsContainer, RenderPosition.BEFOREEND);
     render (this.tripEventListComponent, this.tripEventsContainer);
 
     for (let i = 0; i < this.boardPoints.length; i++) {

@@ -1,5 +1,5 @@
 import {getRandomArrayElement, getRandomInt } from '../utils.js';
-import {PointType, CITY_NAME, CITY_DESCRIPTION, PICTURE_DESCRIPTION, OFFER_TITLE , OFFER_DESCRIPTION_COUNT, PRICE } from '../constants/constants.js';
+import {PointType, CITY_NAME, CITY_DESCRIPTION, PICTURE_DESCRIPTION, OFFER_TITLE, OFFER_COUNT, OFFER_DESCRIPTION_COUNT, PRICE, PICTURE_COUNT } from '../constants/constants.js';
 import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
 //объект переведем в массив
@@ -19,6 +19,26 @@ const getOffer = () => ({
   offers: getOfferDescriptionArr()
 });
 
+const getOffersArr = () => Array.from({length: OFFER_COUNT},(_,index) => getOffer(index));
+
+const getPictureDestination = () => (
+  {
+    src: `https://loremflickr.com/248/152?r=${Math.random()}`,
+    description: getRandomArrayElement(PICTURE_DESCRIPTION)
+  }
+);
+
+const getPictursDestinationArr = () => Array.from({length: PICTURE_COUNT}, (_,index) => getPictureDestination(index));
+
+
+const getDestination = () => ({
+  id: nanoid(),
+  description: getRandomArrayElement(CITY_DESCRIPTION),
+  name: getRandomArrayElement(CITY_NAME),
+  pictures: getPictursDestinationArr()
+});
+
+
 const getPoint = () =>
   // const avalibleOffers = offersByType.find((offer) => offer.type === point.type) //все доступные офферы
   // const selectedOffers = 7;
@@ -27,21 +47,11 @@ const getPoint = () =>
     basePrice: getRandomInt(PRICE.MIN, PRICE.MAX),
     dateFrom: dayjs(),
     dateTo: dayjs().hour(17),
-    destination: nanoid(),
+    destination: getDestination(),
     isFavorite: false,
-    offers: getOfferDescriptionArr(),
+    offers: getOffersArr(),
     type: getRandomType()
   });
-const getDestination = () => ({
-  id: nanoid(),
-  description: getRandomArrayElement(CITY_DESCRIPTION),
-  name: getRandomArrayElement(CITY_NAME),
-  pictures: [
-    {
-      src: `https://loremflickr.com/248/152?r=${Math.random()}`,
-      description: getRandomArrayElement(PICTURE_DESCRIPTION)
-    }
-  ]
-});
 
-export { getOffer, getPoint, getDestination, getOfferDescriptionArr };
+
+export { getOffer, getPoint, getDestination, getOfferDescriptionArr, getOffersArr };
