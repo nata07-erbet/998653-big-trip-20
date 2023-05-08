@@ -30,7 +30,7 @@ export default class BoardPresentor {
     render (this.tripEventListComponent, this.tripEventsContainer);
 
     for (let i = 0; i < this.boardPoints.length; i++) {
-      render(new TripEventView({point: this.boardPoints[i]}), this.tripEventListComponent.getElement());
+      render(new TripEventView({point: this.boardPoints[i], allOffers:this.boardOffers}), this.tripEventListComponent.getElement());
     }
 
   }

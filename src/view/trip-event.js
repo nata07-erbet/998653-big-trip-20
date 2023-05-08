@@ -4,20 +4,22 @@ import { DATE_GAP } from '../constants//constants.js';
 import { createElement } from '../render.js';
 import {getRandomArrayElement, humanizePointDueDate, humanizePointDueTime } from '../utils.js';
 
-function createOfferDescription (avalibleOffers) {
-  return (
-    avalibleOffers.map((offer) => (`<li class="event__offer">
-                              <span class="event__offer-title">${offer.title}</span>
-                              +€&nbsp;
-                              <span class="event__offer-price">${offer.price}</span>
-                            </li>`)).join(' ')
+
+function createCurrentOffer(offers) {
+  return(
+    offers
+      .map((offer) => `<span class="event__offer-title">${offer.title}</span>
+        +€&nbsp;
+        <span class="event__offer-price">${offer.price}</span>`)
+      .join('')
   );
 }
 
-function createEventTemplate(point, allOffers) {
-  const { basePrice, dateFrom, type } = point;
-  const avalibleOffers = allOffers.find((x) => (x.type === type)).offers;
 
+function createEventTemplate(point, allOffers) {
+  const { basePrice, dateFrom, offers,type } = point;
+  const availableOffers = allOffers.find((x) => x.type === type).offers;
+  const currentOffers = availableOffers.filter((x) => offers.some((y) => y === x.id));
 
   return /*html*/ (`<li class="trip-events__item">
   <div class="event">
@@ -40,7 +42,9 @@ function createEventTemplate(point, allOffers) {
 
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">
-      ${createOfferDescription(avalibleOffers)}
+    <li class="event__offer">
+    ${createCurrentOffer(currentOffers)}
+    </li>
     </ul>
     <button class="event__favorite-btn event__favorite-btn--active" type="button">
       <span class="visually-hidden">Add to favorite</span>
@@ -56,12 +60,13 @@ function createEventTemplate(point, allOffers) {
 }
 
 export default class TripEventView {
-  constructor ({point}) {
+  constructor ({point, allOffers}) {
     this.point = point;
+    this.allOffers = allOffers;
   }
 
   getTemplate() {
-    return createEventTemplate(this.point);
+    return createEventTemplate(this.point, this.allOffers);
   }
 
   getElement() {
