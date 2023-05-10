@@ -20,10 +20,16 @@ function humanizePointDueTime (dueDate) {
   return dueDate ? dayjs(dueDate).format(DATA_HOUR_MINUTE) : '';
 }
 
-const getRandomInt = (min, max) => {
-  const rand = min - 0.5 + Math.random() * (max - min + 1);
-  return Math.round(rand);
-};
+function getRandomInteger (a, b) {
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
+
+  return Math.floor(lower + Math.random() * (upper - lower + 1));
+}
+
+function getRandomValue(items) {
+  return items[getRandomInteger(0, items.length - 1)];
+}
 
 function getDiffFromDates (dateFrom, dateTo) {
   const timeDiff = dayjs(dateTo).diff(dayjs(dateFrom));
@@ -45,4 +51,4 @@ function getDiffFromDates (dateFrom, dateTo) {
   return pointDuration;
 }
 
-export {getRandomArrayElement, humanizePointDueDateTime, humanizePointDueDate, humanizePointDueTime, getRandomInt, getDiffFromDates};
+export {getRandomArrayElement, humanizePointDueDateTime, humanizePointDueDate, humanizePointDueTime, getDiffFromDates, getRandomValue};

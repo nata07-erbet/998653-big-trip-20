@@ -1,6 +1,4 @@
-import dayjs from 'dayjs';
 import { CITY_NAME } from '../constants/constants.js';
-import { DATE_GAP } from '../constants//constants.js';
 import { createElement } from '../render.js';
 import {getRandomArrayElement, humanizePointDueDate, humanizePointDueTime, getDiffFromDates } from '../utils.js';
 
