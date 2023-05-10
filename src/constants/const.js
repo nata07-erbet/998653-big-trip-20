@@ -27,4 +27,5 @@ const Duration = {
   MIN: 59
 };
 
+
 export { CITIES, DESCRIPTION, Price, Duration };

@@ -10,5 +10,4 @@ const generateOffer = (type) => (
     price: getRandomInteger(Price.MIN, (Price.MAX / 10))
   });
 
-
-console.log(generateOffer());
+export { generateOffer };

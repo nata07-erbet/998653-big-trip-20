@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
-// import duration from 'dayjs/plugin/duration';
 import { DATA_TIME, DATA_NUMBER_MONTH, DATA_HOUR_MINUTE, MSEC_IN_DAY, MSEC_IN_HOUR, DAY_HOUR_MIN, HOUR_MIN, MIN } from './constants/constants.js';
+import { Duration } from './constants/const.js';
 
+// import duration from 'dayjs/plugin/duration';
 // dayjs.extend(duration);
 
 function getRandomArrayElement(items) {
@@ -51,4 +52,21 @@ function getDiffFromDates (dateFrom, dateTo) {
   return pointDuration;
 }
 
-export {getRandomArrayElement, humanizePointDueDateTime, humanizePointDueDate, humanizePointDueTime, getDiffFromDates, getRandomInteger, getRandomValue};
+let date = dayjs().subtract(getRandomInteger(0, Duration.DAY), 'day').toDate();
+
+function getDate ({next}) {
+  const dayGap = getRandomInteger(0, Duration.DAY);
+  const hourGap = getRandomInteger(1, Duration.HOUR);
+  const minGap = getRandomInteger (0, Duration.MIN);
+
+  if (next) {
+    date = dayjs(date)
+      .add(minGap, 'minute')
+      .add(hourGap, 'hour')
+      .add(dayGap , 'day')
+      .toDate();
+  }
+
+  return date;
+}
+export {getRandomArrayElement, humanizePointDueDateTime, humanizePointDueDate, humanizePointDueTime, getDiffFromDates, getRandomInteger, getRandomValue, getDate};
