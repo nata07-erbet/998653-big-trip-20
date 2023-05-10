@@ -11,9 +11,10 @@ function createEventType() {
   );
 }
 
-function createOffersByPointType (avalibleOffers) {
+function createOffersByPointType (point, pointOffers) {
   return (
-    avalibleOffers
+    pointOffers.find((x) => x.type === point.type)
+      .offers
       .map((offer) => /*html*/`<div class="event__offer-selector">
             <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked="">
             <label class="event__offer-label" for="event-offer-luggage-1">
@@ -34,17 +35,14 @@ function createDestinationsCites(destinations) {
   );
 }
 
-function createPicturiesOfDestination (pictures) {
-  return (
-    pictures.map((picture) => /*html*/ `<img class="event__photo" src=${picture.src} alt="Event photo">`));
-}
+// function createPicturiesOfDestination (pictures) {
+//   return (
+//     pictures.map((picture) => /*html*/ `<img class="event__photo" src=${picture.src} alt="Event photo">`));
+// }
 
-function createEventEditTemplate(point, allOffers, allDestination) {
+function createEventEditTemplate(point, pointDestination, pointOffers) {
   const { basePrice, dateFrom, dateTo, destination, type } = point;
-  const {description, pictures } = destination;
-  // const currentOffers = allOffers.find((x) => x.type === point.type);
-  // const avalibleOffers = currentOffers.offers;
-
+  const { description, pictures } = pointDestination;  //нет диструктуризации
 
   return (/*html*/`<form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -67,7 +65,7 @@ function createEventEditTemplate(point, allOffers, allDestination) {
         <label class="event__label  event__type-output" for="event-destination-1">${type}</label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${destination.name} list="destination-list-1">
         <datalist id="destination-list-1">
-        ${createDestinationsCites(allDestination)}
+        ${createDestinationsCites(pointDestination)}
         </datalist>
       </div>
 
@@ -98,8 +96,11 @@ function createEventEditTemplate(point, allOffers, allDestination) {
     <section class="event__details">
     <section class="event__section  event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-      ${createOffersByPointType(allOffers)}
+
       <div class="event__available-offers">
+
+      ${createOffersByPointType(point, pointOffers)}
+
       </div>
     </section>
 
@@ -108,7 +109,6 @@ function createEventEditTemplate(point, allOffers, allDestination) {
     <p class="event__destination-description">${description}</p>
     <div class="event__photos-container">
     <div class="event__photos-tape">
-      ${createPicturiesOfDestination (pictures)}
 
     </div>
   </div>
@@ -119,14 +119,14 @@ function createEventEditTemplate(point, allOffers, allDestination) {
 }
 
 export default class TripEventEditView {
-  constructor ({ point, allOffers, destinations}) {
+  constructor ({ point, pointDestination, pointOffers}) {
     this.point = point;
-    this.allOffers = allOffers;
-    this.destinations = destinations;
+    this.pointDestination = pointDestination;
+    this.pointOffers = pointOffers;
   }
 
   getTemplate() {
-    return createEventEditTemplate (this.point, this.allOffers, this.destinations);
+    return createEventEditTemplate (this.point, this.pointDestination, this.pointOffers);
   }
 
   getElement() {
