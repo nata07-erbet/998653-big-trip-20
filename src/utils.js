@@ -51,4 +51,4 @@ function getDiffFromDates (dateFrom, dateTo) {
   return pointDuration;
 }
 
-export {getRandomArrayElement, humanizePointDueDateTime, humanizePointDueDate, humanizePointDueTime, getDiffFromDates, getRandomValue};
+export {getRandomArrayElement, humanizePointDueDateTime, humanizePointDueDate, humanizePointDueTime, getDiffFromDates, getRandomInteger, getRandomValue};

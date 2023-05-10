@@ -19,3 +19,4 @@ const generateDestination = () => {
   };
 };
 
+export { generateDestination };
