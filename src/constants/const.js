@@ -1,3 +1,15 @@
+const TYPES = [
+  'taxi',
+  'bus',
+  'train',
+  'ship',
+  'drive',
+  'flight',
+  'check-in',
+  'sightseeing',
+  'restaurant'
+];
+
 const CITIES = [
   'Chamonix',
   'Geneva',
@@ -15,6 +27,9 @@ const DESCRIPTION = [
   'With a beautiful old town, middle-eastern paradise',
   'Its a beautiful old town'
 ];
+const DESTINATION_COUNT = 4;
+const OFFER_COUNT = 3;
+const POINT_COUNT = 15;
 
 const Price = {
   MIN: 1,
@@ -28,4 +43,4 @@ const Duration = {
 };
 
 
-export { CITIES, DESCRIPTION, Price, Duration };
+export {TYPES, CITIES, DESCRIPTION, Price, Duration, DESTINATION_COUNT, OFFER_COUNT, POINT_COUNT };
