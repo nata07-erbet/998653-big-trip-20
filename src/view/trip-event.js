@@ -1,11 +1,10 @@
-import { CITY_NAME } from '../constants/constants.js';
 import { createElement } from '../render.js';
-import {getRandomArrayElement, humanizePointDueDate, humanizePointDueTime, getDiffFromDates } from '../utils.js';
+import { humanizePointDueDate, humanizePointDueTime, } from '../utils.js';
+import {POINT_EMPTY} from '../constants/constants.js';
 
-
-function createCurrentOffer(offers) {
+function createCurrentOffer(pointOffers) {
   return(
-    offers
+    pointOffers
       .map((offer) => `<span class="event__offer-title">${offer.title}</span>
         +€&nbsp;
         <span class="event__offer-price">${offer.price}</span>`)
@@ -14,10 +13,9 @@ function createCurrentOffer(offers) {
 }
 
 
-function createEventTemplate(point, allOffers) {
-  const { basePrice, dateFrom, dateTo, offers,type } = point;
-  const availableOffers = allOffers.find((x) => x.type === type).offers;
-  const currentOffers = availableOffers.filter((x) => offers.some((y) => y === x.id));
+function createEventTemplate(point = POINT_EMPTY, pointDestination, pointOffers) {
+  const { basePrice, dateFrom, dateTo, type } = point;
+  const {name} = pointDestination;
 
   return /*html*/ (`<li class="trip-events__item">
   <div class="event">
@@ -25,7 +23,7 @@ function createEventTemplate(point, allOffers) {
     <div class="event__type">
       <img class="event__${type}-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event ${type} icon">
     </div>
-    <h3 class="event__title">${type} ${getRandomArrayElement(CITY_NAME)}</h3>
+    <h3 class="event__title">${type} ${name}</h3>
     <div class="event__schedule">
       <p class="event__time">
         <time class="event__start-time" datetime="2019-03-18T10:30">${humanizePointDueTime(dateFrom)}</time>
@@ -33,7 +31,7 @@ function createEventTemplate(point, allOffers) {
         <time class="event__end-time" datetime="2019-03-18T11:00">${humanizePointDueTime(dateTo)}</time>
       </p>
       <p class="event__duration">
-      ${getDiffFromDates(dateFrom, dateTo)}
+
       </p>
     </div>
     <p class="event__price">
@@ -43,7 +41,7 @@ function createEventTemplate(point, allOffers) {
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">
     <li class="event__offer">
-    ${createCurrentOffer(currentOffers)}
+    ${createCurrentOffer(pointOffers)}
     </li>
     </ul>
     <button class="event__favorite-btn event__favorite-btn--active" type="button">
@@ -60,13 +58,14 @@ function createEventTemplate(point, allOffers) {
 }
 
 export default class TripEventView {
-  constructor ({point, allOffers}) {
+  constructor ({point, pointDestination, pointOffers}) {
     this.point = point;
-    this.allOffers = allOffers;
+    this.pointDestination = pointDestination;
+    this.pointOffers = pointOffers;
   }
 
   getTemplate() {
-    return createEventTemplate(this.point, this.allOffers);
+    return createEventTemplate(this.point, this.pointDestination, this.pointOffers);
   }
 
   getElement() {

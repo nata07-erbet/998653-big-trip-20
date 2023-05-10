@@ -35,14 +35,14 @@ function createDestinationsCites(destinations) {
   );
 }
 
-// function createPicturiesOfDestination (pictures) {
-//   return (
-//     pictures.map((picture) => /*html*/ `<img class="event__photo" src=${picture.src} alt="Event photo">`));
-// }
+function createPicturiesOfDestination (pictures) {
+  return (
+    pictures.map((image) => /*html*/ `<img class="event__photo" src=${image.src} alt="Event photo">`));
+}
 
 function createEventEditTemplate(point, pointDestination, pointOffers) {
   const { basePrice, dateFrom, dateTo, destination, type } = point;
-  const { description, pictures } = pointDestination;  //нет диструктуризации
+  const {description, pictures} = pointDestination;
 
   return (/*html*/`<form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -109,6 +109,8 @@ function createEventEditTemplate(point, pointDestination, pointOffers) {
     <p class="event__destination-description">${description}</p>
     <div class="event__photos-container">
     <div class="event__photos-tape">
+
+    ${createPicturiesOfDestination(pictures)}
 
     </div>
   </div>
