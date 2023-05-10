@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { getRandomValue } from '../utils.js';
-import { CITIES, DESCRIPTION } from './const.js';
+import { CITIES, DESCRIPTION } from '../constants/const.js';
 
 
 const generateDestination = () => {
