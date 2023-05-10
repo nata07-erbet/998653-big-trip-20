@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { CITY_NAME } from '../constants/constants.js';
 import { DATE_GAP } from '../constants//constants.js';
 import { createElement } from '../render.js';
-import {getRandomArrayElement, humanizePointDueDate, humanizePointDueTime } from '../utils.js';
+import {getRandomArrayElement, humanizePointDueDate, humanizePointDueTime, getDiffFromDates } from '../utils.js';
 
 
 function createCurrentOffer(offers) {
@@ -17,7 +17,7 @@ function createCurrentOffer(offers) {
 
 
 function createEventTemplate(point, allOffers) {
-  const { basePrice, dateFrom, offers,type } = point;
+  const { basePrice, dateFrom, dateTo, offers,type } = point;
   const availableOffers = allOffers.find((x) => x.type === type).offers;
   const currentOffers = availableOffers.filter((x) => offers.some((y) => y === x.id));
 
@@ -30,11 +30,13 @@ function createEventTemplate(point, allOffers) {
     <h3 class="event__title">${type} ${getRandomArrayElement(CITY_NAME)}</h3>
     <div class="event__schedule">
       <p class="event__time">
-        <time class="event__start-time" datetime="2019-03-18T10:30">${humanizePointDueTime(dayjs())}</time>
+        <time class="event__start-time" datetime="2019-03-18T10:30">${humanizePointDueTime(dateFrom)}</time>
         —
-        <time class="event__end-time" datetime="2019-03-18T11:00">${humanizePointDueTime(dayjs().hour(DATE_GAP))}</time>
+        <time class="event__end-time" datetime="2019-03-18T11:00">${humanizePointDueTime(dateTo)}</time>
       </p>
-      <p class="event__duration">30M</p>
+      <p class="event__duration">
+      ${getDiffFromDates(dateFrom, dateTo)}
+      </p>
     </div>
     <p class="event__price">
       €&nbsp;<span class="event__price-value">${basePrice}</span>

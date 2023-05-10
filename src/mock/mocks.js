@@ -1,5 +1,5 @@
 import {getRandomArrayElement, getRandomInt } from '../utils.js';
-import {PointType, CITY_NAME, CITY_DESCRIPTION, PICTURE_DESCRIPTION, OFFER_TITLE, OFFER_COUNT, OFFER_DESCRIPTION_COUNT, PRICE, PICTURE_COUNT } from '../constants/constants.js';
+import {PointType, CITY_NAME, CITY_DESCRIPTION, PICTURE_DESCRIPTION, OFFER_TITLE, OFFER_COUNT, OFFER_DESCRIPTION_COUNT, PRICE, PICTURE_COUNT, DATE_GAP } from '../constants/constants.js';
 import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
 //объект переведем в массив
@@ -46,7 +46,7 @@ const getPoint = () =>
     id: nanoid(),
     basePrice: getRandomInt(PRICE.MIN, PRICE.MAX),
     dateFrom: dayjs(),
-    dateTo: dayjs().hour(17),
+    dateTo: dayjs().hour(DATE_GAP),
     destination: getDestination(),
     isFavorite: false,
     offers: getOffersArr(),
