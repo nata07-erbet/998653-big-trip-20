@@ -5,9 +5,11 @@ import {POINT_EMPTY} from '../constants/constants.js';
 function createCurrentOffer(pointOffers) {
   return(
     pointOffers
-      .map((offer) => `<span class="event__offer-title">${offer.title}</span>
-        +€&nbsp;
-        <span class="event__offer-price">${offer.price}</span>`)
+      .map((offer) => /*html*/`<li class="event__offer">
+          <span class="event__offer-title">${offer.title}</span>
+          &plus;&euro;&nbsp;
+          <span class="event__offer-price">${offer.price}</span>
+        </li>`)
       .join('')
   );
 }
@@ -21,7 +23,7 @@ function createEventTemplate(point = POINT_EMPTY, pointDestination, pointOffers)
   <div class="event">
     <time class="event__date" datetime="2019-03-18">${humanizePointDueDate(dateFrom)}</time>
     <div class="event__type">
-      <img class="event__${type}-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event ${type} icon">
+      <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event ${type} icon">
     </div>
     <h3 class="event__title">${type} ${name}</h3>
     <div class="event__schedule">
