@@ -13,7 +13,7 @@ function createEventType() {
 
 function createOffersByPointType (point, pointOffers) {
   return (
-    pointOffers.find((x) => x.type === point.type)
+    pointOffers.find((pointOffer) => pointOffer.type === pointOffer.type)
       .offers
       .map((offer) => /*html*/`<div class="event__offer-selector">
           <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${(point.offers.includes(offer.id) ? 'checked' : '')}>
@@ -30,7 +30,7 @@ function createOffersByPointType (point, pointOffers) {
 function createDestinationsCites(destinations) {
   return(
     destinations
-      .map((dest) => `<option value=${dest.name}>${dest.name}</option>`)
+      .map((dest) => `<option value=${dest.id}>${dest.name}</option>`)
       .join()
   );
 }

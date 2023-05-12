@@ -19,6 +19,5 @@ const boardPresentor = new BoardPresentor({
   offersModel,
   pointsModel
 });
-
 boardPresentor.init();
 

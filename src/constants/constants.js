@@ -13,7 +13,7 @@ const SEC_IN_MIN = 60;
 const MIN_IN_HOUR = 60;
 const HOUR_IN_DAY = 24;
 
-const DAY_HOUR_MIN = 'DD[D] HH[H] HH[H] mm[M]';
+const DAY_HOUR_MIN = 'DD[D] HH[H] mm[M]';
 const HOUR_MIN = 'HH[H] mm[M]';
 const MIN = 'mm[M]';
 

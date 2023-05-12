@@ -1,5 +1,5 @@
 import { createElement } from '../render.js';
-import { humanizePointDueDate, humanizePointDueTime, } from '../utils.js';
+import { humanizePointDueDate, humanizePointDueTime, getDiffFromDates } from '../utils.js';
 import {POINT_EMPTY} from '../constants/constants.js';
 
 function createCurrentOffer(pointOffers) {
@@ -21,19 +21,19 @@ function createEventTemplate(point = POINT_EMPTY, pointDestination, pointOffers)
 
   return /*html*/ (`<li class="trip-events__item">
   <div class="event">
-    <time class="event__date" datetime="2019-03-18">${humanizePointDueDate(dateFrom)}</time>
+    <time class="event__date" datetime="${dateFrom}">${humanizePointDueDate(dateFrom)}</time>
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event ${type} icon">
     </div>
     <h3 class="event__title">${type} ${name}</h3>
     <div class="event__schedule">
       <p class="event__time">
-        <time class="event__start-time" datetime="2019-03-18T10:30">${humanizePointDueTime(dateFrom)}</time>
+        <time class="event__start-time" datetime="${dateFrom}">${humanizePointDueTime(dateFrom)}</time>
         —
-        <time class="event__end-time" datetime="2019-03-18T11:00">${humanizePointDueTime(dateTo)}</time>
+        <time class="event__end-time" datetime="${dateTo}">${humanizePointDueTime(dateTo)}</time>
       </p>
       <p class="event__duration">
-
+      ${getDiffFromDates(dateFrom, dateTo)}
       </p>
     </div>
     <p class="event__price">
