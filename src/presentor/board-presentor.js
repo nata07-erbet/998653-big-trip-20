@@ -29,7 +29,7 @@ export default class BoardPresentor {
     render(
       new TripEventEditView({
         point: this.points[0],
-        pointDestination: this.destinationsModel.get(),
+        pointDestinations: this.destinationsModel.get(),
         pointOffers: this.offersModel.get()
       }),
       this.tripEventsContainer, RenderPosition.BEFOREEND);

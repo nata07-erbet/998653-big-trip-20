@@ -14,6 +14,22 @@ const generateDestination = () => {
       {
         src: `https://loremflickr.com/248/152?random=${nanoid()}`,
         description: `${city} description`
+      },
+
+
+      {
+        src: `https://loremflickr.com/248/152?random=${nanoid()}`,
+        description: `${city} description`
+      },
+
+      {
+        src: `https://loremflickr.com/248/152?random=${nanoid()}`,
+        description: `${city} description`
+      },
+
+      {
+        src: `https://loremflickr.com/248/152?random=${nanoid()}`,
+        description: `${city} description`
       }
     ]
   };

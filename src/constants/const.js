@@ -28,7 +28,7 @@ const DESCRIPTION = [
   'Its a beautiful old town'
 ];
 const DESTINATION_COUNT = 4;
-const OFFER_COUNT = 3;
+const OFFER_COUNT = 6;
 const POINT_COUNT = 15;
 
 const Price = {

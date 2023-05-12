@@ -1,7 +1,7 @@
 const POINT_COUNT = 15;
-const PICTURE_COUNT = 4;
+const PICTURE_COUNT = 6;
 const OFFER_COUNT = 15;
-const OFFER_DESCRIPTION_COUNT = 4;
+const OFFER_DESCRIPTION_COUNT = 5;
 
 const PRICE = {
   MIN: 100,
@@ -90,7 +90,7 @@ const OFFER_TITLE = [
 
 const DATE_GAP = 3;
 
-const DATA_TIME = 'DD/MM/YY_HH:mm';
+const DATA_TIME = 'DD/MM/YY  HH:mm';
 
 const DATA_NUMBER_MONTH = 'D MMM';
 const DATA_HOUR_MINUTE = 'HH:mm';
