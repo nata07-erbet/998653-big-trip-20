@@ -8,41 +8,47 @@ import TripEventSortView from '../view/trip-sort.js';
 import {render, RenderPosition } from '../framework/render.js';
 
 export default class BoardPresentor {
-  tripEventListComponent = new TripEventListView();
+  #tripMainContainer = null;
+  #tripEventsContainer = null;
+  #destinationsModel = null;
+  #offersModel = null;
+  #pointsModel = null;
+  #points = null;
+  #tripEventListComponent = new TripEventListView();
 
   constructor ({tripMainContainer, tripEventsContainer, destinationsModel, offersModel, pointsModel}) {
-    this.tripMainContainer = tripMainContainer;
-    this.tripEventsContainer = tripEventsContainer;
-    this.destinationsModel = destinationsModel;
-    this.offersModel = offersModel;
-    this.pointsModel = pointsModel;
+    this.#tripMainContainer = tripMainContainer;
+    this.#tripEventsContainer = tripEventsContainer;
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
+    this.#pointsModel = pointsModel;
 
-    this.points = [...pointsModel. get()];
+    this.#points = [...this.#pointsModel.get()];
   }
 
   init() {
 
-    render(new TripEventInfoView(), this.tripMainContainer, RenderPosition.AFTERBEGIN);
-    render(new TripEventFiltersView(), this.tripMainContainer);
-    render (new TripEventSortView(), this.tripEventsContainer);
+    render(new TripEventInfoView(), this.#tripMainContainer, RenderPosition.AFTERBEGIN);
+    render(new TripEventFiltersView(), this.#tripMainContainer);
+    render (new TripEventSortView(), this.#tripEventsContainer);
 
     render(
       new TripEventEditView({
-        point: this.points[0],
-        pointDestinations: this.destinationsModel.get(),
-        pointOffers: this.offersModel.get()
+        point: this.#points[0],
+        pointDestinations: this.#destinationsModel.get(),
+        pointOffers: this.#offersModel.get()
       }),
-      this.tripEventsContainer, RenderPosition.BEFOREEND);
+      this.#tripEventsContainer, RenderPosition.BEFOREEND);
 
-    render (this.tripEventListComponent, this.tripEventsContainer);
-    this.points.forEach((point) => {
+    render (this.#tripEventListComponent, this.#tripEventsContainer);
+    this.#points.forEach((point) => {
       render(
         new TripEventView({
           point,
-          pointDestination: this.destinationsModel.getById(point.destination),
-          pointOffers: this.offersModel.getByType(point.type)
+          pointDestination: this.#destinationsModel.getById(point.destination),
+          pointOffers: this.#offersModel.getByType(point.type)
         }),
-        this.tripEventListComponent.element);
+        this.#tripEventListComponent.element);
     });
   }
 }
