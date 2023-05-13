@@ -41,14 +41,20 @@ export default class BoardPresentor {
       this.#tripEventsContainer, RenderPosition.BEFOREEND);
 
     render (this.#tripEventListComponent, this.#tripEventsContainer);
+
     this.#points.forEach((point) => {
-      render(
-        new TripEventView({
-          point,
-          pointDestination: this.#destinationsModel.getById(point.destination),
-          pointOffers: this.#offersModel.getByType(point.type)
-        }),
-        this.#tripEventListComponent.element);
+      this.#renderPoint(point);
     });
+
+  }
+
+  #renderPoint(point) {
+    render(
+      new TripEventView({
+        point,
+        pointDestination: this.#destinationsModel.getById(point.destination),
+        pointOffers: this.#offersModel.getByType(point.type)
+      }),
+      this.#tripEventListComponent.element);
   }
 }
