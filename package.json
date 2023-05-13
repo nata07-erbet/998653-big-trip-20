@@ -10,7 +10,6 @@
     "not op_mini all",
     "not < 0.25%"
   ],
-  "type": "module",
   "scripts": {
     "lint": "eslint src/",
     "build": "webpack --mode production",
