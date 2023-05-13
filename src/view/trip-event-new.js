@@ -15,15 +15,19 @@ function createEventNewTemplate () {
 }
 
 export default class TripEventNew extends AbstractView{
+  #point = null;
+  #pointDestination = null;
+  #pointOffers = null;
+
   constructor ({point, pointDestination, pointOffers}) {
     super();
 
-    this.point = point;
-    this.pointDestination = pointDestination;
-    this.pointOffers = pointOffers;
+    this.#point = point;
+    this.#pointDestination = pointDestination;
+    this.#pointOffers = pointOffers;
   }
 
   get template() {
-    return createEventNewTemplate (this.point, this.pointDestination, this.pointOffers);
+    return createEventNewTemplate (this.#point, this.#pointDestination, this.#pointOffers);
   }
 }
