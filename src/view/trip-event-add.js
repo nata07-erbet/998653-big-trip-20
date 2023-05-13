@@ -1,4 +1,5 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
+
 
 function createEventAddTemplate () {
   return (/*html*/`<form class="event event--edit" action="#" method="post">
@@ -163,22 +164,10 @@ function createEventAddTemplate () {
 </form>`);
 }
 
-export default class TripEventAddView {
-  element = null;
+export default class TripEventAddView extends AbstractView {
 
-  getTemplate() {
+  get template() {
     return createEventAddTemplate();
-  }
-
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }
 

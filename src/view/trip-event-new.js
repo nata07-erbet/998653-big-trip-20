@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 function createEventNewTemplate () {
   return (
     /*html*/ `<section class="trip-events">
@@ -14,27 +14,16 @@ function createEventNewTemplate () {
 </section>`);
 }
 
-export default class TripEventNew {
+export default class TripEventNew extends AbstractView{
   constructor ({point, pointDestination, pointOffers}) {
+    super();
+
     this.point = point;
     this.pointDestination = pointDestination;
     this.pointOffers = pointOffers;
   }
 
-  getTemplate() {
+  get template() {
     return createEventNewTemplate (this.point, this.pointDestination, this.pointOffers);
   }
-
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
-
-
 }

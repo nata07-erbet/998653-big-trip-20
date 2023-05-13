@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {humanizePointDueDateTime} from '../utils.js';
 import {PointType,PointTypeDescription} from '../constants/constants.js';
 
@@ -121,26 +121,16 @@ function createEventEditTemplate(point, pointDestinations, pointOffers) {
 </form>`);
 }
 
-export default class TripEventEditView {
+export default class TripEventEditView extends AbstractView{
   constructor ({ point, pointDestinations, pointOffers}) {
+    super();
+
     this.point = point;
     this.pointDestinations = pointDestinations;
     this.pointOffers = pointOffers;
   }
 
-  getTemplate() {
+  get template() {
     return createEventEditTemplate (this.point, this.pointDestinations, this.pointOffers);
   }
-
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
-
 }

@@ -5,7 +5,7 @@ import TripEventListView from '../view/trip-events-list.js';
 import TripEventInfoView from '../view/trip-info.js';
 import TripEventFiltersView from '../view/trip-filters.js';
 import TripEventSortView from '../view/trip-sort.js';
-import {render, RenderPosition} from '../render.js';
+import {render, RenderPosition } from '../framework/render.js';
 
 export default class BoardPresentor {
   tripEventListComponent = new TripEventListView();
@@ -42,7 +42,7 @@ export default class BoardPresentor {
           pointDestination: this.destinationsModel.getById(point.destination),
           pointOffers: this.offersModel.getByType(point.type)
         }),
-        this.tripEventListComponent.getElement());
+        this.tripEventListComponent.element);
     });
   }
 }
