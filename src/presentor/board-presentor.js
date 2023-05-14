@@ -16,6 +16,7 @@ export default class BoardPresentor {
   #points = null;
   #tripEventListComponent = new TripEventListView();
 
+
   constructor ({tripMainContainer, tripEventsContainer, destinationsModel, offersModel, pointsModel}) {
     this.#tripMainContainer = tripMainContainer;
     this.#tripEventsContainer = tripEventsContainer;
@@ -24,6 +25,8 @@ export default class BoardPresentor {
     this.#pointsModel = pointsModel;
 
     this.#points = [...this.#pointsModel.get()];
+    this.pointDestination = [...this.#destinationsModel.get()];
+    this.pointOffers = [...this.#offersModel.get()];
   }
 
   init() {
@@ -32,29 +35,45 @@ export default class BoardPresentor {
     render(new TripEventFiltersView(), this.#tripMainContainer);
     render (new TripEventSortView(), this.#tripEventsContainer);
 
-    render(
-      new TripEventEditView({
-        point: this.#points[0],
-        pointDestinations: this.#destinationsModel.get(),
-        pointOffers: this.#offersModel.get()
-      }),
-      this.#tripEventsContainer, RenderPosition.BEFOREEND);
-
     render (this.#tripEventListComponent, this.#tripEventsContainer);
 
     this.#points.forEach((point) => {
       this.#renderPoint(point);
+      this.#renderPointEdit();
     });
 
   }
 
   #renderPoint(point) {
+    const tripEventViewComponent = new TripEventView({
+      point,
+      pointDestination: this.#destinationsModel.getById(point.destination),
+      pointOffers: this.#offersModel.getByType(point.type),
+      onClickDown: this.#handleButtomDownClick
+    });
+
     render(
-      new TripEventView({
-        point,
-        pointDestination: this.#destinationsModel.getById(point.destination),
-        pointOffers: this.#offersModel.getByType(point.type)
-      }),
+      tripEventViewComponent,
       this.#tripEventListComponent.element);
   }
+
+  #renderPointEdit() {
+    const tripEventViewEditComponent = new TripEventEditView({
+      point: this.#points[0],
+      pointDestinations: this.#destinationsModel.get(),
+      pointOffers: this.#offersModel.get(),
+      onClickUp: this.#handleButtomUpClick
+    });
+
+    render(
+      tripEventViewEditComponent,
+      this.#tripEventListComponent.element);
+  }
+
+  #handleButtomDownClick = () => {
+  };
+
+  #handleButtomUpClick = () => {
+
+  };
 }
