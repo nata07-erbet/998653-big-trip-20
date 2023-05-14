@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {humanizePointDueDateTime} from '../utils.js';
 import {PointType,PointTypeDescription} from '../constants/constants.js';
 
@@ -121,26 +121,39 @@ function createEventEditTemplate(point, pointDestinations, pointOffers) {
 </form>`);
 }
 
-export default class TripEventEditView {
-  constructor ({ point, pointDestinations, pointOffers}) {
-    this.point = point;
-    this.pointDestinations = pointDestinations;
-    this.pointOffers = pointOffers;
+export default class TripEventEditView extends AbstractView{
+  #point = null;
+  #pointDestinations = null;
+  #pointOffers = null;
+  #handleClickUp = null;
+  #handleFormSubmit = null;
+
+  constructor ({ point, pointDestinations, pointOffers, onClickUp, onFormSubmit}) {
+    super();
+
+    this.#point = point;
+    this.#pointDestinations = pointDestinations;
+    this.#pointOffers = pointOffers;
+
+    this.#handleClickUp = onClickUp;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandlerUp);
+
+    this.#handleFormSubmit = onFormSubmit;
+    this.element.addEventListener('submit', this.#formSumbitHandler);
   }
 
-  getTemplate() {
-    return createEventEditTemplate (this.point, this.pointDestinations, this.pointOffers);
+  get template() {
+    return createEventEditTemplate (this.#point, this.#pointDestinations, this.#pointOffers);
   }
 
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
+  #clickHandlerUp = (evt) => {
+    evt.preventDefault();
+    this.#handleClickUp();
+  };
 
-  removeElement() {
-    this.element = null;
-  }
+  #formSumbitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 
 }

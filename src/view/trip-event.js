@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { humanizePointDueDate, humanizePointDueTime, getDiffFromDates } from '../utils.js';
 import {POINT_EMPTY} from '../constants/constants.js';
 
@@ -59,25 +59,29 @@ function createEventTemplate(point = POINT_EMPTY, pointDestination, pointOffers)
   </li>`);
 }
 
-export default class TripEventView {
-  constructor ({point, pointDestination, pointOffers}) {
-    this.point = point;
-    this.pointDestination = pointDestination;
-    this.pointOffers = pointOffers;
+export default class TripEventView extends AbstractView {
+  #point = null;
+  #pointDestination = null;
+  #pointOffers = null;
+  #handleClickDown = null;
+
+  constructor ({point, pointDestination, pointOffers, onClickDown}) {
+    super();
+
+    this.#point = point;
+    this.#pointDestination = pointDestination;
+    this.#pointOffers = pointOffers;
+
+    this.#handleClickDown = onClickDown;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandlerDown);
   }
 
-  getTemplate() {
-    return createEventTemplate(this.point, this.pointDestination, this.pointOffers);
+  get template() {
+    return createEventTemplate(this.#point, this.#pointDestination, this.#pointOffers);
   }
 
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #clickHandlerDown = (evt) => {
+    evt.preventDefault();
+    this.#handleClickDown();
+  };
 }
