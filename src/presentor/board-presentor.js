@@ -40,13 +40,16 @@ export default class BoardPresentor {
     this.#points.forEach((point) => {
       this.#renderPoint(point);
     });
-
   }
 
 
   #renderPoint(point) {
     const escKeyDownHandler = (evt) => {
-      evt.preventDefault();
+      if(evt.key === 'Escape' || evt.key === 'Ecs') {
+        evt.preventDefault();
+        replaceFormToPoint();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
     };
 
     const tripEventViewComponent = new TripEventView({
@@ -69,7 +72,8 @@ export default class BoardPresentor {
       },
 
       onFormSubmit: () => {
-        //что сюда писать?
+        replaceFormToPoint();
+        document.removeEventListener('keydown', escKeyDownHandler);
       }
     });
 
