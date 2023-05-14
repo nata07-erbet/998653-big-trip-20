@@ -5,7 +5,7 @@ import TripEventListView from '../view/trip-events-list.js';
 import TripEventInfoView from '../view/trip-info.js';
 import TripEventFiltersView from '../view/trip-filters.js';
 import TripEventSortView from '../view/trip-sort.js';
-import {render, RenderPosition } from '../framework/render.js';
+import {render, RenderPosition, replace } from '../framework/render.js';
 
 export default class BoardPresentor {
   #tripMainContainer = null;
@@ -39,41 +39,53 @@ export default class BoardPresentor {
 
     this.#points.forEach((point) => {
       this.#renderPoint(point);
-      this.#renderPointEdit();
     });
 
   }
 
+
   #renderPoint(point) {
+    const escKeyDownHandler = (evt) => {
+      evt.preventDefault();
+    };
+
     const tripEventViewComponent = new TripEventView({
       point,
       pointDestination: this.#destinationsModel.getById(point.destination),
       pointOffers: this.#offersModel.getByType(point.type),
-      onClickDown: this.#handleButtomDownClick
+      onClickDown: () => {
+        replacePointToForm();
+        document.addEventListener('keydown', escKeyDownHandler);
+      }
     });
+
+    const tripEventViewEditComponent = new TripEventEditView({
+      point: this.#points[0],
+      pointDestinations: this.#destinationsModel.get(),
+      pointOffers: this.#offersModel.get(),
+      onClickUp: () => {
+        replaceFormToPoint();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      },
+
+      onFormSubmit: () => {
+        //что сюда писать?
+      }
+    });
+
+    function replacePointToForm() {
+      replace(tripEventViewEditComponent, tripEventViewComponent);
+    }
+
+    function replaceFormToPoint() {
+      replace(tripEventViewComponent, tripEventViewEditComponent);
+    }
+
 
     render(
       tripEventViewComponent,
       this.#tripEventListComponent.element);
   }
 
-  #renderPointEdit() {
-    const tripEventViewEditComponent = new TripEventEditView({
-      point: this.#points[0],
-      pointDestinations: this.#destinationsModel.get(),
-      pointOffers: this.#offersModel.get(),
-      onClickUp: this.#handleButtomUpClick
-    });
 
-    render(
-      tripEventViewEditComponent,
-      this.#tripEventListComponent.element);
-  }
-
-  #handleButtomDownClick = () => {
-  };
-
-  #handleButtomUpClick = () => {
-
-  };
 }

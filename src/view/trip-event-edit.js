@@ -126,8 +126,9 @@ export default class TripEventEditView extends AbstractView{
   #pointDestinations = null;
   #pointOffers = null;
   #handleClickUp = null;
+  #handleFormSubmit = null;
 
-  constructor ({ point, pointDestinations, pointOffers, onClickUp}) {
+  constructor ({ point, pointDestinations, pointOffers, onClickUp, onFormSubmit}) {
     super();
 
     this.#point = point;
@@ -136,6 +137,9 @@ export default class TripEventEditView extends AbstractView{
 
     this.#handleClickUp = onClickUp;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandlerUp);
+
+    this.#handleFormSubmit = onFormSubmit;
+    this.element.addEventListener('submit', this.#formSumbitHandler);
   }
 
   get template() {
@@ -146,4 +150,10 @@ export default class TripEventEditView extends AbstractView{
     evt.preventDefault();
     this.#handleClickUp();
   };
+
+  #formSumbitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
+
 }
