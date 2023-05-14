@@ -6,6 +6,7 @@ import TripEventInfoView from '../view/trip-info.js';
 import TripEventFiltersView from '../view/trip-filters.js';
 import TripEventSortView from '../view/trip-sort.js';
 import {render, RenderPosition, replace } from '../framework/render.js';
+import TripEventNoPointView from '../view/trip-no-point.js';
 
 export default class BoardPresentor {
   #tripMainContainer = null;
@@ -33,7 +34,11 @@ export default class BoardPresentor {
 
     render(new TripEventInfoView(), this.#tripMainContainer, RenderPosition.AFTERBEGIN);
     render(new TripEventFiltersView(), this.#tripMainContainer);
-    render (new TripEventSortView(), this.#tripEventsContainer);
+    render(new TripEventSortView(), this.#tripEventsContainer);
+
+    if(this.#points.length === 0) {
+      render(new TripEventNoPointView(), this.#tripEventsContainer);
+    }
 
     render (this.#tripEventListComponent, this.#tripEventsContainer);
 
