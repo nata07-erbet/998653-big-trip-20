@@ -65,29 +65,19 @@ export default class BoardPresentor {
       }
     };
 
-    const tripEventViewComponent = new TripEventView({
+    const tripEventViewComponent = new TripEventView({ //pointEditClickHandlerDown
       point,
       pointDestination: this.#destinationsModel.getById(point.destination),
       pointOffers: this.#offersModel.getByType(point.type),
-      onClickDown: () => {
-        replacePointToForm();
-        document.addEventListener('keydown', escKeyDownHandler);
-      }
+      onClickDown: pointEditClickHandlerDown
     });
 
     const tripEventViewEditComponent = new TripEventEditView({
       point: this.#points[0],
       pointDestinations: this.#destinationsModel.get(),
       pointOffers: this.#offersModel.get(),
-      onClickUp: () => {
-        replaceFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      },
-
-      onFormSubmit: () => {
-        replaceFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
+      onClickUp: pointEditClickHandlerUp,
+      onFormSubmit: pointSumitHandler
     });
 
     function replacePointToForm() {
@@ -98,6 +88,20 @@ export default class BoardPresentor {
       replace(tripEventViewComponent, tripEventViewEditComponent);
     }
 
+    function pointEditClickHandlerDown() {
+      replacePointToForm();
+      document.addEventListener('keydown', escKeyDownHandler);
+    }
+
+    function pointEditClickHandlerUp() {
+      replaceFormToPoint();
+      document.removeEventListener('keydown', escKeyDownHandler);
+    }
+
+    function pointSumitHandler() {
+      replaceFormToPoint();
+      document.removeEventListener('keydown', escKeyDownHandler);
+    }
 
     render(
       tripEventViewComponent,
