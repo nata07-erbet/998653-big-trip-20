@@ -1,33 +1,60 @@
 import AbstractView from '../framework/view/abstract-view.js';
+import {TYPES} from '../constants/const.js';
+
+function createEventTypeTemplate(type) {
+  return (
+  /*html*/`<label class="event__type  event__type-btn" for="event-type-toggle-1">
+        <span class="visually-hidden">Choose event type</span>
+        <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event ${type} icon">
+      </label>`);
+}
+
+function createEventTypeList() {
+  return(
+    TYPES
+      .map((type) => /*html*/` <div class="event__type-item">
+        <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type[0].toUpperCase() + type.slice(1)}</label>
+        <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}">
+        `).join(''));
+}
+
+function createEventType(type) {
+  return (
+    /*html*/`<label class="event__label  event__type-output" for="event-destination-1">
+      ${type}
+     </label>`
+  );
+}
+
+function createEventTypeName(name) {
+  return (
+    /*html*/`<input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">`);
+}
+function createEventAddTemplate (point, pointDestinations) {
+  const {destination, type} = point;
+  const pointDestination = pointDestinations.find((itemDestination) => (itemDestination.id === destination));
+  const {description, name, pictures} = pointDestination;
 
 
-function createEventAddTemplate () {
   return (
     /*html*/`<form class="event event--edit" action="#" method="post">
     <header class="event__header">
     <div class="event__type-wrapper">
-      <label class="event__type  event__type-btn" for="event-type-toggle-1">
-        <span class="visually-hidden">Choose event type</span>
-        <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
-      </label>
+      ${createEventTypeTemplate(type)}
     <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
     <div class="event__type-list">
       <fieldset class="event__type-group">
         <legend class="visually-hidden">Event type</legend>
-         <div class="event__type-item">
-          <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
-         <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
+          ${createEventTypeList(TYPES)}
         </div>
       </fieldset>
     </div>
   </div>
 
   <div class="event__field-group  event__field-group--destination">
-    <label class="event__label  event__type-output" for="event-destination-1">
-     Flight
-    </label>
-    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="Geneva" list="destination-list-1">
+    ${createEventType(type)}
+    ${createEventTypeName(name)}
     <datalist id="destination-list-1">
     <option value="Amsterdam"></option>
     <option value="Geneva"></option>
@@ -93,20 +120,20 @@ function createEventAddTemplate () {
 
 export default class TripEventAddView extends AbstractView {
   #point = null;
-  #pointDestination = null;
+  #pointDestinations = null;
   #pointOffers = null;
 
 
-  constructor ({point, pointDestination, pointOffers,onNewPointCreateButton}) {
+  constructor ({point, pointDestinations, pointOffers}) {
     super();
 
     this.#point = point;
-    this.#pointDestination = pointDestination;
+    this.#pointDestinations = pointDestinations;
     this.#pointOffers = pointOffers;
   }
 
   get template() {
-    return createEventAddTemplate();
+    return createEventAddTemplate(this.#point, this.#pointDestinations, this.#pointOffers);
   }
 }
 
