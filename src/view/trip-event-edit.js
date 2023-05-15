@@ -37,7 +37,7 @@ function createDestinationsCites(destinations) {
 
 function createPicturiesOfDestination (pictures) {
   return (
-    pictures.map((image) => /*html*/ `<img class="event__photo" src=${image.src} alt="Event photo">`));
+    pictures.map((image) => /*html*/ `<img class="event__photo" src="${image.src}" alt="Event photo">`));
 }
 
 function createEventEditTemplate(point, pointDestinations, pointOffers) {

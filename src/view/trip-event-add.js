@@ -53,13 +53,18 @@ function createOffersList(offers) {
   );
 }
 
+function createDestinationPictures(pictures) {
+  return(
+    pictures
+      .map((picture) => /*html*/`<img class="event__photo" src="${picture.src}" alt="Event photo">`)
+  );
+}
+
 function createEventAddTemplate (point, pointDestinations,pointOffers) {
   const {basePrice, dateFrom, dateTo, destination, type} = point;
   const pointDestination = pointDestinations.find((itemDestination) => (itemDestination.id === destination));
   const {description, name, pictures} = pointDestination;
   const pointOffersByType = pointOffers.find((pointOffer) => pointOffer.type === type).offers;
-
-
 
   return (
     /*html*/`<form class="event event--edit" action="#" method="post">
@@ -116,15 +121,11 @@ function createEventAddTemplate (point, pointDestinations,pointOffers) {
 
 <section class="event__section  event__section--destination">
   <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-  <p class="event__destination-description">Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.</p>
+  <p class="event__destination-description">${description}</p>
 
   <div class="event__photos-container">
     <div class="event__photos-tape">
-      <img class="event__photo" src="img/photos/1.jpg" alt="Event photo">
-      <img class="event__photo" src="img/photos/2.jpg" alt="Event photo">
-      <img class="event__photo" src="img/photos/3.jpg" alt="Event photo">
-      <img class="event__photo" src="img/photos/4.jpg" alt="Event photo">
-      <img class="event__photo" src="img/photos/5.jpg" alt="Event photo">
+    ${createDestinationPictures(pictures)}
     </div>
   </div>
 </section>
