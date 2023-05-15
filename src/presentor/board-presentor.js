@@ -1,4 +1,3 @@
-// import TripEventAddView from '../view/trip-event-add.js';
 import TripEventEditView from '../view/trip-event-edit.js';
 import TripEventView from '../view/trip-event.js';
 import TripEventListView from '../view/trip-events-list.js';
