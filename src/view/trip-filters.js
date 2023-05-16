@@ -28,9 +28,16 @@ function createFiltersTemplate() {
 }
 
 export default class TripEventFiltersView extends AbstractView{
+  #fultres = null;
+
+  constructor(fultres) {
+    super();
+
+    this.#fultres = fultres;
+  }
 
   get template() {
-    return createFiltersTemplate();
+    return createFiltersTemplate(this.#fultres);
   }
 }
 

@@ -5,7 +5,6 @@ import DestinationsModel from './model/destinations-model.js';
 import OffersModel from './model/offers-model.js';
 import PointsModel from './model/points-model.js';
 
-
 const tripMainContainer = document.querySelector('.trip-main');
 const tripEventsContainer = document.querySelector('.trip-events');
 const tripFilterContainer = document.querySelector('.trip-controls__filters');
@@ -28,6 +27,7 @@ const boardPresentor = new BoardPresentor({
   offersModel,
   pointsModel
 });
+
 
 filterpresentor.init();
 boardPresentor.init();
