@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { humanizePointDueDate, humanizePointDueTime, getDiffFromDates } from '../utils.js';
+import { humanizePointDueDate, humanizePointDueTime, getDiffFromDates } from '../utils/utils.js';
 import {POINT_EMPTY} from '../constants/constants.js';
 
 function createCurrentOffer(pointOffers) {

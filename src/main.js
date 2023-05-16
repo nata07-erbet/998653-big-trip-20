@@ -1,9 +1,10 @@
+import FilterPresentor from './presentor/filter-presentor.js';
 import BoardPresentor from './presentor/board-presentor.js';
 import MockService from './servise/mock-service.js';
 import DestinationsModel from './model/destinations-model.js';
 import OffersModel from './model/offers-model.js';
 import PointsModel from './model/points-model.js';
-import FilterPresentor from './presentor/filter-presentor.js';
+
 
 const tripMainContainer = document.querySelector('.trip-main');
 const tripEventsContainer = document.querySelector('.trip-events');
@@ -15,9 +16,8 @@ const destinationsModel = new DestinationsModel(mockService);
 const offersModel = new OffersModel(mockService);
 const pointsModel = new PointsModel(mockService);
 
-
-const filterPresentor = new FilterPresentor({
-  container:tripFilterContainer,
+const filterpresentor = new FilterPresentor({
+  container: tripFilterContainer,
   pointsModel
 });
 
@@ -29,6 +29,6 @@ const boardPresentor = new BoardPresentor({
   pointsModel
 });
 
-filterPresentor.init();
+filterpresentor.init();
 boardPresentor.init();
 

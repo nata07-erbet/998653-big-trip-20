@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {TYPES} from '../constants/const.js';
-import {humanizePointDueDateTime} from '../utils.js';
+import {humanizePointDueDateTime} from '../utils/utils.js';
 
 function createEventTypeTemplate(type) {
   return (

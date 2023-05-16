@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {humanizePointDueDateTime} from '../utils.js';
+import {humanizePointDueDateTime} from '../utils/utils.js';
 import {PointType,PointTypeDescription} from '../constants/constants.js';
 
 function createEventType() {
