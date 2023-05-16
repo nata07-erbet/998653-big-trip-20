@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {humanizePointDueDateTime} from '../utils.js';
+import {humanizePointDueDateTime} from '../utils/utils.js';
 import {PointType,PointTypeDescription} from '../constants/constants.js';
 
 function createEventType() {
@@ -37,7 +37,7 @@ function createDestinationsCites(destinations) {
 
 function createPicturiesOfDestination (pictures) {
   return (
-    pictures.map((image) => /*html*/ `<img class="event__photo" src=${image.src} alt="Event photo">`));
+    pictures.map((image) => /*html*/ `<img class="event__photo" src="${image.src}" alt="Event photo">`));
 }
 
 function createEventEditTemplate(point, pointDestinations, pointOffers) {

@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { getRandomInteger, getDate } from '../utils.js';
+import { getRandomInteger, getDate } from '../utils/utils.js';
 import { Price } from '../constants/const.js';
 
 

@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { getRandomValue } from '../utils.js';
+import { getRandomValue } from '../utils/utils.js';
 import { CITIES, DESCRIPTION } from '../constants/const.js';
 
 
