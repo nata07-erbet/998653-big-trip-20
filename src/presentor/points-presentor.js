@@ -8,14 +8,19 @@ export default class PointPresentor {
   #tripEventViewEditComponent = null;
 
   #points = null;
+  #destinationsModel = null;
+  #offersModel = null;
+  #pointsModel = null;
   #point = null;
   #pointDestination = null;
   #pointOffers = null;
-  #destinationsModel = null;
-  #offersModel = null;
 
-  constructor({tripEventListComponent}) {
+  constructor({tripEventListComponent, pointsModel, destinationsModel, offersModel}) {
     this.#tripEventListComponent = tripEventListComponent;
+    this.#pointsModel = pointsModel;
+    this.destinationsModel = destinationsModel;
+    this.offersModel = offersModel;
+
   }
 
   init(points) {

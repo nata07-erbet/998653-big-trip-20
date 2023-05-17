@@ -42,9 +42,12 @@ export default class BoardPresentor {
     render(new TripEventSortView(), this.#tripEventsContainer);
   }
 
-  #renderPoints(points) {
+  #renderPoints(points,pointsModel,destinationsModel,offersModel) {
     const pointPresentor = new PointPresentor({
-      tripEventListComponent: this.#tripEventListComponent.element
+      tripEventListComponent: this.#tripEventListComponent.element,
+      pointsModel,
+      destinationsModel,
+      offersModel
     });
     pointPresentor.init(points);
   }
