@@ -21,20 +21,20 @@ export default class BoardPresentor {
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#pointsModel = pointsModel;
-
-    this.#points = [...this.#pointsModel.get()];
-    this.pointDestination = [...this.#destinationsModel.get()];
-    this.pointOffers = [...this.#offersModel.get()];
   }
 
   init() {
+    this.#points = [...this.#pointsModel.get()];
+    this.pointDestination = [...this.#destinationsModel.get()];
+    this.pointOffers = [...this.#offersModel.get()];
 
     render(new TripEventInfoView(), this.#tripMainContainer, RenderPosition.AFTERBEGIN);
     this.#renderSort();
     this.#renderNewPoint();
 
     render (new TripEventListView(), this.#tripEventsContainer);
-    this.#renderPoints();
+
+    this.#renderPoints(this.#points);
     this.#renderNoPoint();
   }
 
@@ -42,11 +42,11 @@ export default class BoardPresentor {
     render(new TripEventSortView(), this.#tripEventsContainer);
   }
 
-  #renderPoints() {
+  #renderPoints(points) {
     const pointPresentor = new PointPresentor({
       tripEventListComponent: this.#tripEventListComponent.element
     });
-    pointPresentor.init();
+    pointPresentor.init(points);
   }
 
   #renderNewPoint() {

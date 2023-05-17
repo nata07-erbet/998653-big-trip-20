@@ -7,8 +7,10 @@ export default class PointPresentor {
   #tripEventViewComponent = null;
   #tripEventViewEditComponent = null;
 
-
   #points = null;
+  #point = null;
+  #pointDestination = null;
+  #pointOffers = null;
   #destinationsModel = null;
   #offersModel = null;
 
@@ -16,14 +18,15 @@ export default class PointPresentor {
     this.#tripEventListComponent = tripEventListComponent;
   }
 
-  init() {
-    this.#points.forEach((point) => {
-      this.#renderPoint(point);
-    });
+  init(points) {
+    this.#renderPoints(points);
   }
 
-  #renderPoint(point) {
+  #renderPoint(point, pointDestination, pointOffers) {
 
+    this.#point = point;
+    this.#pointDestination = pointDestination;
+    this.#pointOffers = pointOffers;
 
     this.#tripEventViewComponent = new TripEventView({
       point,
@@ -43,6 +46,13 @@ export default class PointPresentor {
     render(
       this.#tripEventViewComponent,
       this.#tripEventListComponent.element);
+  }
+
+  #renderPoints(points) {
+    this.#points = points;
+    this.#points.forEach((point) => {
+      this.#renderPoint(point);
+    });
   }
 
   #replacePointToForm() {
