@@ -17,6 +17,8 @@ export default class BoardPresentor {
   #points = null;
   #tripEventListComponent = new TripEventListView();
 
+  #pointPresentontors = new Map();
+
   constructor ({tripMainContainer, tripEventsContainer, destinationsModel, offersModel, pointsModel}) {
     this.#tripMainContainer = tripMainContainer;
     this.#tripEventsContainer = tripEventsContainer;
@@ -52,6 +54,7 @@ export default class BoardPresentor {
         offersModel: this.#offersModel
       });
       pointPresentor.init(point);
+      this.#pointPresentontors.set(point.id, pointPresentor);
     });
   }
 
