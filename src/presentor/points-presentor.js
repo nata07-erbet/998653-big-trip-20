@@ -1,6 +1,6 @@
 import TripEventView from '../view/trip-event.js';
 import TripEventEditView from '../view/trip-event-edit.js';
-import {replace, render} from '../framework/render.js';
+import { replace, render } from '../framework/render.js';
 
 export default class PointPresentor {
   #tripEventListComponent = null;
@@ -10,12 +10,10 @@ export default class PointPresentor {
   #destinationsModel = null;
   #offersModel = null;
 
-  constructor({tripEventListComponent, destinationsModel, offersModel}) {
+  constructor({ tripEventListComponent, destinationsModel, offersModel }) {
     this.#tripEventListComponent = tripEventListComponent;
-
-    this.destinationsModel = destinationsModel;
-    this.offersModel = offersModel;
-
+    this.#destinationsModel = destinationsModel;
+    this.#offersModel = offersModel;
   }
 
   init(point) {
@@ -38,11 +36,10 @@ export default class PointPresentor {
       onFormSubmit: this.#pointSumitHandler
     });
 
-    render(
-      this.#tripEventViewComponent, this.#tripEventListComponent);
+    render(this.#tripEventViewComponent, this.#tripEventListComponent);
   }
 
-  #replacePointToForm = () =>{
+  #replacePointToForm = () => {
     replace(this.#tripEventViewEditComponent, this.#tripEventViewComponent);
   };
 
@@ -51,25 +48,25 @@ export default class PointPresentor {
   };
 
   #escKeyDownHandler = (evt) => {
-    if(evt.key === 'Escape' || evt.key === 'Ecs') {
+    if (evt.key === 'Escape' || evt.key === 'Ecs') {
       evt.preventDefault();
       this.#replaceFormToPoint();
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
   };
 
-  #pointEditClickHandlerDown() {
+  #pointEditClickHandlerDown = () => {
     this.#replacePointToForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
-  }
+  };
 
-  #pointEditClickHandlerUp() {
+  #pointEditClickHandlerUp = () => {
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
-  }
+  };
 
-  #pointSumitHandler() {
+  #pointSumitHandler = () => {
     this.#replaceFormToPoint();
-    document.removeEventListener('keydown',this.#escKeyDownHandler);
-  }
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+  };
 }
