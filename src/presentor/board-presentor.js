@@ -1,7 +1,7 @@
 import TripEventListView from '../view/trip-events-list.js';
 import TripEventInfoView from '../view/trip-info.js';
 import TripEventSortView from '../view/trip-sort.js';
-import {render, RenderPosition} from '../framework/render.js';
+import {remove, render, RenderPosition} from '../framework/render.js';
 import TripEventNoPointView from '../view/trip-no-point.js';
 // import TripEventAddView from '../view/trip-event-add.js';
 import PointPresentor from './points-presentor.js';
@@ -40,6 +40,12 @@ export default class BoardPresentor {
 
     this.#renderPoints(this.#points);
     this.#renderNoPoint();
+  }
+
+  #clearPointList() {
+    this. #pointPresentontors.forEach((pointPresentontor) => pointPresentontor.destroy());
+    this.#pointPresentontors.clear();
+    // remove(this.editform)
   }
 
   #renderSort() {
