@@ -1,11 +1,13 @@
 import TripEventView from '../view/trip-event.js';
 import TripEventEditView from '../view/trip-event-edit.js';
-import { replace, render } from '../framework/render.js';
+import { replace, render, remove } from '../framework/render.js';
 
 export default class PointPresentor {
   #tripEventListComponent = null;
   #tripEventViewComponent = null;
   #tripEventViewEditComponent = null;
+
+  #point = null;
 
   #destinationsModel = null;
   #offersModel = null;
@@ -17,19 +19,40 @@ export default class PointPresentor {
   }
 
   init(point) {
-    this.#renderPoint(point);
+    const prevPointComponent = this.#tripEventViewComponent;
+    const prevPointEditComponent = this.#tripEventViewEditComponent;
+
+    if(prevPointComponent === null || prevPointEditComponent === null) {
+      this.#renderPoint(point);
+      return;
+    }
+
+    if(this.#tripEventListComponent.contains(prevPointComponent.element)) {
+      replace(this.#tripEventViewComponent, prevPointComponent);
+    }
+
+    if(this.#tripEventListComponent.contains(prevPointEditComponent.element)) {
+      replace(this.#tripEventViewEditComponent, prevPointEditComponent);
+    }
+  }
+
+  destroy() {
+    remove(this.#tripEventViewComponent);
+    remove(this.#tripEventViewEditComponent);
   }
 
   #renderPoint(point) {
+    this.#point = point;
+
     this.#tripEventViewComponent = new TripEventView({
-      point,
+      point: this.#point,
       pointDestination: this.#destinationsModel.getById(point.destination),
       pointOffers: this.#offersModel.getByType(point.type),
       onClickDown: this.#pointEditClickHandlerDown
     });
 
     this.#tripEventViewEditComponent = new TripEventEditView({
-      point: point,
+      point: this.#point,
       pointDestinations: this.#destinationsModel.get(),
       pointOffers: this.#offersModel.get(),
       onClickUp: this.#pointEditClickHandlerUp,
