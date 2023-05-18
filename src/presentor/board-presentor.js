@@ -3,13 +3,15 @@ import TripEventInfoView from '../view/trip-info.js';
 import TripEventSortView from '../view/trip-sort.js';
 import {render, RenderPosition} from '../framework/render.js';
 import TripEventNoPointView from '../view/trip-no-point.js';
-import TripEventAddView from '../view/trip-event-add.js';
+// import TripEventAddView from '../view/trip-event-add.js';
 import PointPresentor from './points-presentor.js';
 
 export default class BoardPresentor {
   #tripMainContainer = null;
   #tripEventsContainer = null;
   #destinationsModel = null;
+  #pointDestination = null;
+  #pointOffers = null;
   #offersModel = null;
   #pointsModel = null;
   #points = null;
@@ -25,14 +27,14 @@ export default class BoardPresentor {
 
   init() {
     this.#points = [...this.#pointsModel.get()];
-    this.pointDestination = [...this.#destinationsModel.get()];
-    this.pointOffers = [...this.#offersModel.get()];
+    this.#pointDestination = [...this.#destinationsModel.get()];
+    this.#pointOffers = [...this.#offersModel.get()];
 
     render(new TripEventInfoView(), this.#tripMainContainer, RenderPosition.AFTERBEGIN);
     this.#renderSort();
-    this.#renderNewPoint();
+    // this.#renderNewPoint();
 
-    render (new TripEventListView(), this.#tripEventsContainer);
+    render (this.#tripEventListComponent, this.#tripEventsContainer);
 
     this.#renderPoints(this.#points);
     this.#renderNoPoint();
@@ -42,24 +44,26 @@ export default class BoardPresentor {
     render(new TripEventSortView(), this.#tripEventsContainer);
   }
 
-  #renderPoints(points,pointsModel,destinationsModel,offersModel) {
-    const pointPresentor = new PointPresentor({
-      tripEventListComponent: this.#tripEventListComponent.element,
-      pointsModel,
-      destinationsModel,
-      offersModel
+  #renderPoints(points) {
+    points.forEach((point) => {
+      const pointPresentor = new PointPresentor({
+        tripEventListComponent: this.#tripEventListComponent.element,
+        destinationsModel: this.#destinationsModel,
+        offersModel: this.#offersModel
+      });
+      pointPresentor.init(point);
     });
-    pointPresentor.init(points);
   }
 
-  #renderNewPoint() {
-    const tripEventAddComponent = new TripEventAddView({
-      point: this.#points[0],
-      pointDestinations: this.#destinationsModel.get(),
-      pointOffers: this.#offersModel.get()
-    });
-    render (tripEventAddComponent, this.#tripEventsContainer);
-  }
+
+  // #renderNewPoint() {
+  //   const tripEventAddComponent = new TripEventAddView({
+  //     point: this.#points[0],
+  //     pointDestinations: this.#destinationsModel.get(),
+  //     pointOffers: this.#offersModel.get()
+  //   });
+  //   render (tripEventAddComponent, this.#tripEventsContainer);
+  // }
 
   #renderNoPoint() {
     if(this.#points.length === 0) {

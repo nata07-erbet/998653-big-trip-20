@@ -7,32 +7,22 @@ export default class PointPresentor {
   #tripEventViewComponent = null;
   #tripEventViewEditComponent = null;
 
-  #points = null;
   #destinationsModel = null;
   #offersModel = null;
-  #pointsModel = null;
-  #point = null;
-  #pointDestination = null;
-  #pointOffers = null;
 
-  constructor({tripEventListComponent, pointsModel, destinationsModel, offersModel}) {
+  constructor({tripEventListComponent, destinationsModel, offersModel}) {
     this.#tripEventListComponent = tripEventListComponent;
-    this.#pointsModel = pointsModel;
+
     this.destinationsModel = destinationsModel;
     this.offersModel = offersModel;
 
   }
 
-  init(points) {
-    this.#renderPoints(points);
+  init(point) {
+    this.#renderPoint(point);
   }
 
-  #renderPoint(point, pointDestination, pointOffers) {
-
-    this.#point = point;
-    this.#pointDestination = pointDestination;
-    this.#pointOffers = pointOffers;
-
+  #renderPoint(point) {
     this.#tripEventViewComponent = new TripEventView({
       point,
       pointDestination: this.#destinationsModel.getById(point.destination),
@@ -41,7 +31,7 @@ export default class PointPresentor {
     });
 
     this.#tripEventViewEditComponent = new TripEventEditView({
-      point: this.#points[0],
+      point: point,
       pointDestinations: this.#destinationsModel.get(),
       pointOffers: this.#offersModel.get(),
       onClickUp: this.#pointEditClickHandlerUp,
@@ -49,24 +39,16 @@ export default class PointPresentor {
     });
 
     render(
-      this.#tripEventViewComponent,
-      this.#tripEventListComponent.element);
+      this.#tripEventViewComponent, this.#tripEventListComponent);
   }
 
-  #renderPoints(points) {
-    this.#points = points;
-    this.#points.forEach((point) => {
-      this.#renderPoint(point);
-    });
-  }
-
-  #replacePointToForm() {
+  #replacePointToForm = () =>{
     replace(this.#tripEventViewEditComponent, this.#tripEventViewComponent);
-  }
+  };
 
-  #replaceFormToPoint() {
+  #replaceFormToPoint = () => {
     replace(this.#tripEventViewComponent, this.#tripEventViewEditComponent);
-  }
+  };
 
   #escKeyDownHandler = (evt) => {
     if(evt.key === 'Escape' || evt.key === 'Ecs') {
