@@ -48,6 +48,9 @@ export default class BoardPresentor {
     // remove(this.editform)
   }
 
+  //метод изменения данных: обновление моков и обновление конкретной точки маршруа
+  
+
   #renderSort() {
     render(new TripEventSortView(), this.#tripEventsContainer);
   }

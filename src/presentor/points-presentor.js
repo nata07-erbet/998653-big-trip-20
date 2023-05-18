@@ -48,7 +48,8 @@ export default class PointPresentor {
       point: this.#point,
       pointDestination: this.#destinationsModel.getById(point.destination),
       pointOffers: this.#offersModel.getByType(point.type),
-      onClickDown: this.#pointEditClickHandlerDown
+      onClickDown: this.#pointEditClickHandlerDown,
+      onClickFavorite: this.#pointAddClickHandlerFavorite
     });
 
     this.#tripEventViewEditComponent = new TripEventEditView({
@@ -92,4 +93,8 @@ export default class PointPresentor {
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
+
+  #pointAddClickHandlerFavorite = () => {
+    this.#replaceFormToPoint(); // как пример
+  }
 }
