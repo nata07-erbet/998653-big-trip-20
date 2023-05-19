@@ -5,6 +5,7 @@ import {remove, render, RenderPosition} from '../framework/render.js';
 import TripEventNoPointView from '../view/trip-no-point.js';
 // import TripEventAddView from '../view/trip-event-add.js';
 import PointPresentor from './points-presentor.js';
+import {updateItem} from '../utils/utils.js';
 
 export default class BoardPresentor {
   #tripMainContainer = null;
@@ -17,7 +18,7 @@ export default class BoardPresentor {
   #points = null;
   #tripEventListComponent = new TripEventListView();
 
-  #pointPresentontors = new Map();
+  #pointPresentors = new Map();
 
   constructor ({tripMainContainer, tripEventsContainer, destinationsModel, offersModel, pointsModel}) {
     this.#tripMainContainer = tripMainContainer;
@@ -43,13 +44,16 @@ export default class BoardPresentor {
   }
 
   #clearPointList() {
-    this. #pointPresentontors.forEach((pointPresentontor) => pointPresentontor.destroy());
-    this.#pointPresentontors.clear();
+    this. #pointPresentors.forEach((pointPresentontor) => pointPresentontor.destroy());
+    this.#pointPresentors.clear();
     // remove(this.editform)
   }
 
-  //метод изменения данных: обновление моков и обновление конкретной точки маршруа
-  
+  //метод изменения данных: обновление моков и обновление конкретной точки маршр???
+  #handlePointChange(updatedPoint) {
+    this.#points = updateItem(this.#points, updatedPoint);
+    this.#pointPresentors.get(updatedPoint.id).init(updatedPoint);
+  }
 
   #renderSort() {
     render(new TripEventSortView(), this.#tripEventsContainer);
@@ -63,7 +67,7 @@ export default class BoardPresentor {
         offersModel: this.#offersModel
       });
       pointPresentor.init(point);
-      this.#pointPresentontors.set(point.id, pointPresentor);
+      this.#pointPresentors.set(point.id, pointPresentor);
     });
   }
 
