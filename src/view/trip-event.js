@@ -63,17 +63,22 @@ export default class TripEventView extends AbstractView {
   #point = null;
   #pointDestination = null;
   #pointOffers = null;
-  #handleClickDown = null;
+  #onClickDown = null;
+  #onfavoriteClick = null;
 
-  constructor ({point, pointDestination, pointOffers, onClickDown}) {
+  constructor ({point, pointDestination, pointOffers, onClickDown, onFavoriteClick}) {
     super();
 
     this.#point = point;
     this.#pointDestination = pointDestination;
     this.#pointOffers = pointOffers;
 
-    this.#handleClickDown = onClickDown;
+    this.#onClickDown = onClickDown;
+    this.#onfavoriteClick = onFavoriteClick;
+
+
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandlerDown);
+    this.element.querySelector('.event__favorite-icon').addEventListener('click', this.#favoriteClick);
   }
 
   get template() {
@@ -82,6 +87,12 @@ export default class TripEventView extends AbstractView {
 
   #clickHandlerDown = (evt) => {
     evt.preventDefault();
-    this.#handleClickDown();
+    this.#onClickDown();
   };
+
+  #favoriteClick = (evt) => {
+    evt.preventDefault();
+    this.#onfavoriteClick();
+  };
+
 }

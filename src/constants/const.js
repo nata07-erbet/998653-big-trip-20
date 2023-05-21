@@ -49,4 +49,9 @@ const FilterTypes = {
   PAST: 'past'
 };
 
-export {TYPES, CITIES, DESCRIPTION, Price, Duration, DESTINATION_COUNT, OFFER_COUNT, POINT_COUNT, FilterTypes};
+const Mode = {
+  DEFAULT: 'default',
+  EDITING: 'editing'
+};
+
+export {TYPES, CITIES, DESCRIPTION, Price, Duration, DESTINATION_COUNT, OFFER_COUNT, POINT_COUNT, FilterTypes, Mode};
