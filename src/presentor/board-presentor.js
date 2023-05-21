@@ -17,6 +17,7 @@ export default class BoardPresentor {
   #pointsModel = null;
   #points = null;
   #tripEventListComponent = new TripEventListView();
+  #sortComponent = null;
 
   #pointPresentors = new Map();
 
@@ -67,8 +68,15 @@ export default class BoardPresentor {
     // remove(this.editform)
   }
 
+  #handleSortTypeChange = (sortType) => {
+
+  };
+
   #renderSort() {
-    render(new TripEventSortView(), this.#tripEventsContainer);
+    this.#sortComponent = new TripEventSortView({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
+    render(this.#sortComponent, this.#tripEventsContainer);
   }
 
   // #renderNewPoint() {

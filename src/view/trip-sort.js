@@ -14,16 +14,33 @@ function createEventSortTemplate() {
   return (
     /*html*/ `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
     ${Object.values(SortTypes)
-      .map((filterType) => createEventSortItem(filterType))
+      .map((sortType) => createEventSortItem(sortType))
       .join('')}
     </form>`);
 }
 
 export default class TripEventSortView extends AbstractView{
+  #handleonSortTypeChange = null;
+
+  constructor({onSortTypeChange}) {
+    super();
+
+    this.#handleonSortTypeChange = onSortTypeChange;
+    this.element.addEventListener('click', this.#sortTypeChangeHandler);
+  }
 
   get template() {
     return createEventSortTemplate();
   }
+
+  #sortTypeChangeHandler = (evt) => {
+    if(evt.target.tagName !== 'INPUT') {
+      return;
+    }
+
+    evt.preventDefault();
+    this.#handleonSortTypeChange(evt.target.dataset.SortType);
+  };
 }
 
 
