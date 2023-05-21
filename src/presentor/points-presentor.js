@@ -13,14 +13,15 @@ export default class PointPresentor {
 
   #destinationsModel = null;
   #offersModel = null;
+  #onDataChange = null;
+  #onModeChange = null;
 
-  #handleModeChange = null;
-
-  constructor({ tripEventListComponent, destinationsModel, offersModel, onModeChange }) {
+  constructor({ tripEventListComponent, destinationsModel, offersModel, onDataChange, onModeChange }) {
     this.#tripEventListComponent = tripEventListComponent;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
-    this.#handleModeChange = onModeChange;
+    this.#onDataChange = onDataChange;
+    this.#onModeChange = onModeChange;
   }
 
   init(point) {
@@ -34,7 +35,7 @@ export default class PointPresentor {
       pointDestination: this.#destinationsModel.getById(point.destination),
       pointOffers: this.#offersModel.getByType(point.type),
       onClickDown: this.#pointEditClickHandlerDown,
-      onClickFavorite: this.#pointAddClickHandlerFavorite
+      onFavoriteClick: this.#favoriteClickHandler
     });
 
     this.#tripEventViewEditComponent = new TripEventEditView({
@@ -93,6 +94,13 @@ export default class PointPresentor {
     }
   };
 
+  #favoriteClickHandler = () => {
+    this.#onDataChange({
+      ...this.#point,
+      isFavorite: !this.#point.isFavorite
+    });
+  };
+
   #pointEditClickHandlerDown = () => {
     this.#replacePointToForm();
     document.addEventListener('keydown', this.#escKeyDownHandler);
@@ -108,7 +116,7 @@ export default class PointPresentor {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #pointAddClickHandlerFavorite = () => {
-    this.#replaceFormToPoint(); // как пример
+  #handleModeChange = () => {
+
   };
 }

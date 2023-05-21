@@ -45,13 +45,7 @@ export default class BoardPresentor {
 
   #handleModeChange = () => {
     this.#pointPresentors.forEach((presentor) => presentor.resetView());
-    console.log(1);
   };
-
-  #handlePointChange(updatedPoint) {
-    this.#points = updateItem(this.#points, updatedPoint);
-    this.#pointPresentors.get(updatedPoint.id).init(updatedPoint);
-  }
 
   #renderPoints(points) {
     points.forEach((point) => {
@@ -59,7 +53,8 @@ export default class BoardPresentor {
         tripEventListComponent: this.#tripEventListComponent.element,
         destinationsModel: this.#destinationsModel,
         offersModel: this.#offersModel,
-        onModeChange: this.#handleModeChange
+        onModeChange: this.#handleModeChange,
+        onDataChange: this.#handleDataChange
       });
       pointPresentor.init(point);
       this.#pointPresentors.set(point.id, pointPresentor);
@@ -91,4 +86,8 @@ export default class BoardPresentor {
     }
   }
 
+  #handleDataChange = (updatedPoint) => {
+    this.#points = updateItem(this.#points, updatedPoint);
+    this.#pointPresentors.get(updatedPoint.id).init(updatedPoint);
+  };
 }
