@@ -1,6 +1,7 @@
 import TripEventView from '../view/trip-event.js';
 import TripEventEditView from '../view/trip-event-edit.js';
 import { replace, render, remove } from '../framework/render.js';
+import { Mode } from '../constants/const.js';
 
 export default class PointPresentor {
   #tripEventListComponent = null;
@@ -8,41 +9,25 @@ export default class PointPresentor {
   #tripEventViewEditComponent = null;
 
   #point = null;
+  #mode = Mode.DEFAULTn;
 
   #destinationsModel = null;
   #offersModel = null;
 
-  constructor({ tripEventListComponent, destinationsModel, offersModel }) {
+  #handleModeChange = null;
+
+  constructor({ tripEventListComponent, destinationsModel, offersModel, onModeChange }) {
     this.#tripEventListComponent = tripEventListComponent;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
+    this.#handleModeChange = onModeChange
   }
 
   init(point) {
+    this.#point = point;
+
     const prevPointComponent = this.#tripEventViewComponent;
     const prevPointEditComponent = this.#tripEventViewEditComponent;
-
-    if(prevPointComponent === null || prevPointEditComponent === null) {
-      this.#renderPoint(point);
-      return;
-    }
-
-    if(this.#tripEventListComponent.contains(prevPointComponent.element)) {
-      replace(this.#tripEventViewComponent, prevPointComponent);
-    }
-
-    if(this.#tripEventListComponent.contains(prevPointEditComponent.element)) {
-      replace(this.#tripEventViewEditComponent, prevPointEditComponent);
-    }
-  }
-
-  destroy() {
-    remove(this.#tripEventViewComponent);
-    remove(this.#tripEventViewEditComponent);
-  }
-
-  #renderPoint(point) {
-    this.#point = point;
 
     this.#tripEventViewComponent = new TripEventView({
       point: this.#point,
@@ -60,7 +45,31 @@ export default class PointPresentor {
       onFormSubmit: this.#pointSumitHandler
     });
 
-    render(this.#tripEventViewComponent, this.#tripEventListComponent);
+    if(prevPointComponent === null || prevPointEditComponent === null) {
+      render(this.#tripEventViewComponent, this.#tripEventListComponent);
+      return;
+    }
+
+    if(this.#mode === Mode.DEFAULT) {
+      replace(this.#tripEventViewComponent, prevPointComponent);
+    }
+
+    if(this.#mode === Mode.EDITING) {
+      replace(this.#tripEventViewEditComponent, prevPointEditComponent);
+    }
+    remove(prevPointComponent);
+    remove (prevPointEditComponent);
+  }
+
+  resetView = () => {
+    if(this.#mode !== Mode.DEFAULT) {
+      this.#replaceFormToPoint();
+    }
+  };
+
+  destroy() {
+    remove(this.#tripEventViewComponent);
+    remove(this.#tripEventViewEditComponent);
   }
 
   #replacePointToForm = () => {
@@ -96,5 +105,5 @@ export default class PointPresentor {
 
   #pointAddClickHandlerFavorite = () => {
     this.#replaceFormToPoint(); // как пример
-  }
+  };
 }

@@ -43,13 +43,29 @@ export default class BoardPresentor {
     this.#renderNoPoint();
   }
 
+  #handleModeChange = () => {
+    this.#pointPresentors.forEach((presentor) => presentor.resetView());
+  };
+
+  #renderPoints(points) {
+    points.forEach((point) => {
+      const pointPresentor = new PointPresentor({
+        tripEventListComponent: this.#tripEventListComponent.element,
+        destinationsModel: this.#destinationsModel,
+        offersModel: this.#offersModel,
+        onModeChange: this.#handleModeChange
+      });
+      pointPresentor.init(point);
+      this.#pointPresentors.set(point.id, pointPresentor);
+    });
+  }
+
   #clearPointList() {
     this. #pointPresentors.forEach((pointPresentontor) => pointPresentontor.destroy());
     this.#pointPresentors.clear();
     // remove(this.editform)
   }
 
-  //метод изменения данных: обновление моков и обновление конкретной точки маршр???
   #handlePointChange(updatedPoint) {
     this.#points = updateItem(this.#points, updatedPoint);
     this.#pointPresentors.get(updatedPoint.id).init(updatedPoint);
@@ -58,19 +74,6 @@ export default class BoardPresentor {
   #renderSort() {
     render(new TripEventSortView(), this.#tripEventsContainer);
   }
-
-  #renderPoints(points) {
-    points.forEach((point) => {
-      const pointPresentor = new PointPresentor({
-        tripEventListComponent: this.#tripEventListComponent.element,
-        destinationsModel: this.#destinationsModel,
-        offersModel: this.#offersModel
-      });
-      pointPresentor.init(point);
-      this.#pointPresentors.set(point.id, pointPresentor);
-    });
-  }
-
 
   // #renderNewPoint() {
   //   const tripEventAddComponent = new TripEventAddView({
