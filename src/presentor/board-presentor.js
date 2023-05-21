@@ -45,7 +45,13 @@ export default class BoardPresentor {
 
   #handleModeChange = () => {
     this.#pointPresentors.forEach((presentor) => presentor.resetView());
+    console.log(1);
   };
+
+  #handlePointChange(updatedPoint) {
+    this.#points = updateItem(this.#points, updatedPoint);
+    this.#pointPresentors.get(updatedPoint.id).init(updatedPoint);
+  }
 
   #renderPoints(points) {
     points.forEach((point) => {
@@ -64,11 +70,6 @@ export default class BoardPresentor {
     this. #pointPresentors.forEach((pointPresentontor) => pointPresentontor.destroy());
     this.#pointPresentors.clear();
     // remove(this.editform)
-  }
-
-  #handlePointChange(updatedPoint) {
-    this.#points = updateItem(this.#points, updatedPoint);
-    this.#pointPresentors.get(updatedPoint.id).init(updatedPoint);
   }
 
   #renderSort() {

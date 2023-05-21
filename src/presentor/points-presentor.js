@@ -9,7 +9,7 @@ export default class PointPresentor {
   #tripEventViewEditComponent = null;
 
   #point = null;
-  #mode = Mode.DEFAULTn;
+  #mode = Mode.DEFAULT;
 
   #destinationsModel = null;
   #offersModel = null;
@@ -20,7 +20,7 @@ export default class PointPresentor {
     this.#tripEventListComponent = tripEventListComponent;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
-    this.#handleModeChange = onModeChange
+    this.#handleModeChange = onModeChange;
   }
 
   init(point) {
@@ -74,10 +74,15 @@ export default class PointPresentor {
 
   #replacePointToForm = () => {
     replace(this.#tripEventViewEditComponent, this.#tripEventViewComponent);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
+    this.#handleModeChange();
+    this.#mode = Mode.EDITING;
   };
 
   #replaceFormToPoint = () => {
     replace(this.#tripEventViewComponent, this.#tripEventViewEditComponent);
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#mode = Mode.DEFAULT;
   };
 
   #escKeyDownHandler = (evt) => {
