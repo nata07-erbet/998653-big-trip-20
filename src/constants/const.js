@@ -49,9 +49,25 @@ const FilterTypes = {
   PAST: 'past'
 };
 
+const SortTypes = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFERS: 'offers'
+};
+
+const SortTypesDescription = {
+  [SortTypes.DAY]: 'day',
+  [SortTypes.EVENT]: 'event',
+  [SortTypes.TIME]: 'time',
+  [SortTypes.PRICE]: 'price',
+  [SortTypes.OFFERS]: 'offers'
+};
+
 const Mode = {
   DEFAULT: 'default',
   EDITING: 'editing'
 };
 
-export {TYPES, CITIES, DESCRIPTION, Price, Duration, DESTINATION_COUNT, OFFER_COUNT, POINT_COUNT, FilterTypes, Mode};
+export {TYPES, CITIES, DESCRIPTION, Price, Duration, DESTINATION_COUNT, OFFER_COUNT, POINT_COUNT, FilterTypes, SortTypes,SortTypesDescription, Mode};

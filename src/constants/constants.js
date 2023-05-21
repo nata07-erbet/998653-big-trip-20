@@ -36,14 +36,14 @@ const PointType = {
 
 const PointTypeDescription = {
   [PointType.TAXI]: 'Taxi',
-  [PointType.BUS]: 'bus',
-  [PointType.TRAIN]: 'train',
-  [PointType.SHIP]: 'ship',
-  [PointType.DRIVE]: 'drive',
-  [PointType.FLIGHT]: 'flight',
-  [PointType.CHECKIN]: 'check-in',
-  [PointType.SIGHTSEEING]: 'sightseeing',
-  [PointType.RESTAURANT]: 'restaurant',
+  [PointType.BUS]: 'Bus',
+  [PointType.TRAIN]: 'Train',
+  [PointType.SHIP]: 'Ship',
+  [PointType.DRIVE]: 'Drive',
+  [PointType.FLIGHT]: 'Flight',
+  [PointType.CHECKIN]: 'Check-in',
+  [PointType.SIGHTSEEING]: 'Sightseeing',
+  [PointType.RESTAURANT]: 'Restaurant',
 };
 const CITY_NAME = ['Chamonix', 'Geneva', 'Amsterdam', 'Helsinki', 'Oslo', 'Kopenhagen', 'Den Haag', 'Rotterdam', 'Saint Petersburg', 'Moscow', 'Sochi', 'Tokio', 'Kioto', 'Nagasaki', 'Hiroshima', 'Berlin', 'Munich', 'Frankfurt', 'Vien', 'Rome', 'Naples', 'Venice', 'Milan', 'Monaco', 'Paris', 'Barcelona', 'Valencia', 'Madrid'];
 
