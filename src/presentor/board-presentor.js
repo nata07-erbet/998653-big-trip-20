@@ -6,6 +6,8 @@ import TripEventNoPointView from '../view/trip-no-point.js';
 // import TripEventAddView from '../view/trip-event-add.js';
 import PointPresentor from './points-presentor.js';
 import {updateItem} from '../utils/utils.js';
+import {SortTypes} from '../constants/const.js';
+import {sortUp} from '../utils/sort-points.js';
 
 export default class BoardPresentor {
   #tripMainContainer = null;
@@ -20,6 +22,8 @@ export default class BoardPresentor {
   #sortComponent = null;
 
   #pointPresentors = new Map();
+  #currentSortType = SortTypes.DAY;
+  #sourcedListPoints = [];
 
   constructor ({tripMainContainer, tripEventsContainer, destinationsModel, offersModel, pointsModel}) {
     this.#tripMainContainer = tripMainContainer;
@@ -33,6 +37,8 @@ export default class BoardPresentor {
     this.#points = [...this.#pointsModel.get()];
     this.#pointDestination = [...this.#destinationsModel.get()];
     this.#pointOffers = [...this.#offersModel.get()];
+
+    this.#sourcedListPoints = [...this.#pointsModel.get()];
 
     render(new TripEventInfoView(), this.#tripMainContainer, RenderPosition.AFTERBEGIN);
     this.#renderSort();
@@ -68,8 +74,38 @@ export default class BoardPresentor {
     // remove(this.editform)
   }
 
-  #handleSortTypeChange = (sortType) => {
+  #renderPointsList(points) {
+    render (this.#tripEventListComponent, this.#tripEventsContainer);
 
+    this.#renderPoints(points);
+
+  }
+
+  #sortPoints(sortType) {
+    switch(sortType) {
+      case SortTypes.DAY: this.#points.sort(sortUp);
+        break;
+
+      case SortTypes.EVENT: this.#points.sort(sortUp);
+        break;
+
+      case SortTypes.PRICE: this.#points.sort(sortUp);
+        break;
+
+      default:
+        this.#points = [...this.#sourcedListPoints];
+    }
+    this.#currentSortType = sortType;
+  }
+
+  #handleSortTypeChange = (sortType) => {
+    if(this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortPoints(sortType);
+    this.#clearPointList();
+    this.#renderPointsList();
   };
 
   #renderSort() {
@@ -96,6 +132,7 @@ export default class BoardPresentor {
 
   #handleDataChange = (updatedPoint) => {
     this.#points = updateItem(this.#points, updatedPoint);
+    this.#sourcedListPoints = updateItem(this.#sourcedListPoints, updatedPoint);
     this.#pointPresentors.get(updatedPoint.id).init(updatedPoint);
   };
 }
