@@ -13,5 +13,17 @@ function isPointPast(point) {
   return dayjs().isAfter(point.dateTo);
 }
 
+function getPointsDateDiff() {
 
-export {isPointFuture, isPointPresent, isPointPast};
+}
+
+function getPointsPriceDiff() {
+
+}
+
+function getPointsDurationDiff() {
+
+}
+
+
+export {isPointFuture, isPointPresent, isPointPast, getPointsDateDiff, getPointsPriceDiff, getPointsDurationDiff };
