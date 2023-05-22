@@ -13,16 +13,21 @@ function isPointPast(point) {
   return dayjs().isAfter(point.dateTo);
 }
 
-function getPointsDateDiff() {
+function getPointsDateDiff(pointA, pointB) {
+  return new Date(pointB.dateFrom) - new Date(pointA.dateFrom);
+
 
 }
 
-function getPointsPriceDiff() {
-
+function getPointsPriceDiff(pointA, pointB) {
+  return pointB.basePrice - pointA.basePrice;
 }
 
-function getPointsDurationDiff() {
+function getPointsDurationDiff(pointA, pointB) {
+  const durationA = new Date(pointA.dateTo) - new Date(pointB.dateFrom);
+  const durationB = new Date(pointB.dateFrom) - new Date(pointB.dateTo);
 
+  return durationB - durationA;
 }
 
 
