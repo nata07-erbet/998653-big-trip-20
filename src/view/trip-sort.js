@@ -1,45 +1,73 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {SortTypes, SortTypesDescription} from '../constants/const.js';
+import {SortTypes} from '../constants/const.js';
 
-function createEventSortItem(sortType) {
+const enabledSortType = {
+  [SortTypes.DAY]: true,
+  [SortTypes.EVENT]: false,
+  [SortTypes.TIME]: true,
+  [SortTypes.PRICE]: true,
+  [SortTypes.OFFERS]: false
+};
+
+function createEventSortItem(sortItem) {
   return(
-    /*html*/`<div class="trip-sort__item  trip-sort__item--day">
-    <input id="sort-day" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-day" checked="" data-sort-type ="${SortTypesDescription[sortType]}">
-    <label class="trip-sort__btn" for="sort-day">${sortType}</label>
+    /*html*/`<div class="trip-sort__item  trip-sort__item--${sortItem.type}">
+    <input
+      id="sort-${sortItem.type}"
+      class="trip-sort__input  visually-hidden"
+      type="radio"
+      name="trip-sort"
+      value="sort-${sortItem.type}"
+      ${sortItem.isChecked ? 'checked' : ''}
+      ${sortItem.isDisabled ? 'disabled' : ''}
+      data-sort-type ="${sortItem.type}"
+      >
+    <label
+      class="trip-sort__btn"
+      for="sort-${sortItem.type}">${sortItem.type}</label>
   </div>`
   );
 }
 
-function createEventSortTemplate() {
+function createEventSortTemplate(sortMap) {
   return (
     /*html*/ `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-    ${Object.values(SortTypes)
-      .map((sortType) => createEventSortItem(sortType))
-      .join('')}
+    ${sortMap.map((sortItem) => createEventSortItem(sortItem)).join('')}
     </form>`);
 }
 
-export default class TripEventSortView extends AbstractView{
-  #handleonSortTypeChange = null;
+function createSortMap(sortType) {
+  return (
+    Object.values(SortTypes)
+      .map((type) => ({
+        type,
+        isChecked: (type === sortType),
+        isDisabled: !enabledSortType[type]
+      }))
+  );
+}
 
-  constructor({onSortTypeChange}) {
+export default class TripEventSortView extends AbstractView{
+  #sortMap = null;
+  #handleSortTypeChange = null;
+
+  constructor(sortType, onSortTypeChange) {
     super();
 
-    this.#handleonSortTypeChange = onSortTypeChange;
-    this.element.addEventListener('click', this.#sortTypeChangeHandler);
+    this.#sortMap = createSortMap(SortTypes, sortType);
+
+    this.#handleSortTypeChange = onSortTypeChange;
+    this.element.addEventListener('change', this.#sortTypeChangeHandler);
   }
 
   get template() {
-    return createEventSortTemplate();
+    return createEventSortTemplate(this.#sortMap);
   }
 
   #sortTypeChangeHandler = (evt) => {
-    if(evt.target.tagName !== 'INPUT') {
-      return;
-    }
-
     evt.preventDefault();
-    this.#handleonSortTypeChange(evt.target.dataset.SortType);
+
+    this.#handleSortTypeChange(evt.target.dataset.sortType);
   };
 }
 
