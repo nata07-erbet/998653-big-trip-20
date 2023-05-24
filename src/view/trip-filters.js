@@ -1,5 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
+
 function createFilterItem(filter) {
   const {type, hasPoints} = filter;
 
