@@ -1,4 +1,4 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {humanizePointDueDateTime} from '../utils/utils.js';
 import {PointType,PointTypeDescription} from '../constants/constants.js';
 
@@ -121,7 +121,7 @@ function createEventEditTemplate(point, pointDestinations, pointOffers) {
 </form>`);
 }
 
-export default class TripEventEditView extends AbstractView{
+export default class TripEventEditView extends AbstractStatefulView {
   #point = null;
   #pointDestinations = null;
   #pointOffers = null;
@@ -143,7 +143,7 @@ export default class TripEventEditView extends AbstractView{
   }
 
   get template() {
-    return createEventEditTemplate (this.#point, this.#pointDestinations, this.#pointOffers);
+    return createEventEditTemplate (this._state);
   }
 
   #clickHandlerUp = (evt) => {
@@ -155,5 +155,25 @@ export default class TripEventEditView extends AbstractView{
     evt.preventDefault();
     this.#handleFormSubmit();
   };
+
+  _restoreHandlers() {
+
+  }
+
+  static parsePointToState(point, pointDestinations, pointOffers) {
+    return {
+      ...point,
+      ...pointDestinations,
+      ...pointOffers,
+      isTypeOfPointChange,
+      isDestinationChange
+    };
+  }
+
+  static parseStatetoPoint(state) {
+    const point = {...state};
+
+    
+  }
 
 }
