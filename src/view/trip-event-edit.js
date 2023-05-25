@@ -1,6 +1,8 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import {humanizePointDueDateTime} from '../utils/utils.js';
-import {PointType,PointTypeDescription} from '../constants/constants.js';
+import { humanizePointDueDateTime } from '../utils/utils.js';
+import { PointType,PointTypeDescription } from '../constants/constants.js';
+import { generateOffer } from '../mock/offer.js';
+import { generateDestination } from '../mock/destination.js';
 
 function createEventType() {
   return(
@@ -165,15 +167,23 @@ export default class TripEventEditView extends AbstractStatefulView {
       ...point,
       ...pointDestinations,
       ...pointOffers,
-      isTypeOfPointChange,
-      isDestinationChange
+      isTypeOfPointChange: generateOffer(point.type),
+      isDestinationChange: generateDestination()
     };
   }
 
   static parseStatetoPoint(state) {
     const point = {...state};
 
-    
+    if(!point.isTypeOfPointChange) {
+      point.offers = null;
+    }
+
+    if(point.isDestinationChange) {
+      point.destination = null;
+    }
+    delete point.isDestinationChange;
+    delete point.isTypeOfPointChange;
   }
 
 }
