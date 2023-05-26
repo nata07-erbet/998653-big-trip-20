@@ -4,7 +4,7 @@ import TripEventSortView from '../view/trip-sort.js';
 import {render, RenderPosition} from '../framework/render.js';
 import TripEventNoPointView from '../view/trip-no-point.js';
 // import TripEventAddView from '../view/trip-event-add.js';
-import PointPresentor from './points-presentor.js';
+import PointPresentor from './point-presentor.js';
 import {updateItem} from '../utils/utils.js';
 import {sort} from '../utils/sort.js';
 import { SortTypes } from '../constants/const.js';
@@ -104,6 +104,7 @@ export default class BoardPresentor {
     this.#sortPoints(sortType);
     this.#clearPointList();
     this.#renderPointsList();
+    this.#renderPoints(this.#points);
   };
 
   #handleDataChange = (updatedPoint) => {

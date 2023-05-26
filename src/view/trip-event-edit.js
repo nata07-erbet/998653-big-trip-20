@@ -147,7 +147,7 @@ export default class TripEventEditView extends AbstractStatefulView {
   }
 
   get template() {
-    return createEventEditTemplate (this._state);
+    return createEventEditTemplate (this.#point, this.#pointDestinations, this.#pointOffers);
   }
 
   #clickHandlerUp = (evt) => {
@@ -163,7 +163,8 @@ export default class TripEventEditView extends AbstractStatefulView {
   _restoreHandlers() {
     this.element.addEventListener('submit', this.#formSumbitHandler);
     this.element.querySelector('.event__type').addEventListener('click', this.#eventTypeChangehandler);
-    this.element.querySelector('.event__input').addEventListener('click', this.#eventCityInput);
+    this.element.querySelector('#destination-list-1').addEventListener('click', this.#eventCityInput);
+    this.element.querySelector('.event__input').addEventListener('input', this.#cityNameInputHandler);
   }
 
   #eventTypeChangehandler = (evt) => {
@@ -174,6 +175,13 @@ export default class TripEventEditView extends AbstractStatefulView {
 
   #eventCityInput = (evt) => {
     evt.preventDefault();
+  };
+
+  #cityNameInputHandler = (evt) => {
+    evt.preventDefault();
+    this._setState({
+      destination: evt.target.value,
+    });
   };
 
   static parsePointToState(point, pointDestinations, pointOffers) {
