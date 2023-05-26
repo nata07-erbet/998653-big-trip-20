@@ -1,8 +1,7 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizePointDueDateTime } from '../utils/utils.js';
 import { PointType,PointTypeDescription } from '../constants/constants.js';
-import { generateOffer } from '../mock/offer.js';
-import { generateDestination } from '../mock/destination.js';
+import { POINT_EMPTY } from '../constants/constants.js';
 
 function createEventType() {
   return(
@@ -42,7 +41,9 @@ function createPicturiesOfDestination (pictures) {
     pictures.map((image) => /*html*/ `<img class="event__photo" src="${image.src}" alt="Event photo">`));
 }
 
-function createEventEditTemplate(point, pointDestinations, pointOffers) {
+function createEventEditTemplate({state, pointDestinations, pointOffers}) {
+  const {point} = state;
+
   const { basePrice, dateFrom, dateTo, destination, type } = point;
   const pointDestination = pointDestinations.find((x) => x.id === destination);
   const {description, name, pictures} = pointDestination;
@@ -130,16 +131,15 @@ export default class TripEventEditView extends AbstractStatefulView {
   #handleClickUp = null;
   #handleFormSubmit = null;
 
-  constructor ({ point, pointDestinations, pointOffers, onClickUp, onFormSubmit}) {
+  constructor ({ point = POINT_EMPTY, pointDestinations, pointOffers, onClickUp, onFormSubmit}) {
     super();
 
-    this.#point = point;
     this.#pointDestinations = pointDestinations;
     this.#pointOffers = pointOffers;
 
-    this.#handleClickUp = onClickUp;
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#clickHandlerUp);
+    this._setState(TripEventEditView.parsePointToState({point})); //?
 
+    this.#handleClickUp = onClickUp;
     this.#handleFormSubmit = onFormSubmit;
 
     this._restoreHandlers();
@@ -147,8 +147,38 @@ export default class TripEventEditView extends AbstractStatefulView {
   }
 
   get template() {
-    return createEventEditTemplate (this.#point, this.#pointDestinations, this.#pointOffers);
+    return createEventEditTemplate ({
+      state: this._state,
+      pointDestinations: this.#pointDestinations,
+      pointOffers: this.#pointOffers
+    });
   }
+
+  reset = (point) => this.updateElement({point}); //?
+
+  _restoreHandlers = () => {
+    this.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#clickHandlerUp);
+
+    this.element
+      .addEventListener('submit', this.#formSumbitHandler);
+
+    this.element
+      .querySelector('.event__type-group')
+      .addEventListener('change', this.#typeInputhandler);
+
+    this.element
+      .querySelector('.event__input--destination')
+      .addEventListener('change', this.#destinationInputChangeHandler);
+
+    const offerBlock = this.element
+      .querySelector('.event__available-offers');
+
+    if(offerBlock) {
+      offerBlock.addEventListener('change', this.#offerClickHandler);
+    }
+  };
 
   #clickHandlerUp = (evt) => {
     evt.preventDefault();
@@ -160,52 +190,60 @@ export default class TripEventEditView extends AbstractStatefulView {
     this.#handleFormSubmit();
   };
 
-  _restoreHandlers() {
-    this.element.addEventListener('submit', this.#formSumbitHandler);
-    this.element.querySelector('.event__type').addEventListener('click', this.#eventTypeChangehandler);
-    this.element.querySelector('#destination-list-1').addEventListener('click', this.#eventCityInput);
-    this.element.querySelector('.event__input').addEventListener('input', this.#cityNameInputHandler);
-  }
-
-  #eventTypeChangehandler = (evt) => {
+  #typeInputhandler = (evt) => { //?
     evt.preventDefault();
     this.updateElement({
-      isTypeOfPointChange: this._state.isTypeOfPointChange});
-  };
-
-  #eventCityInput = (evt) => {
-    evt.preventDefault();
-  };
-
-  #cityNameInputHandler = (evt) => {
-    evt.preventDefault();
-    this._setState({
-      destination: evt.target.value,
+      point: {
+        ...this._state.point,
+        type: evt.target.value,
+        offers: []
+      }
     });
   };
 
-  static parsePointToState(point, pointDestinations, pointOffers) {
-    return {
-      ...point,
-      ...pointDestinations,
-      ...pointOffers,
-      isTypeOfPointChange: generateOffer(point.type),
-      isDestinationChange: generateDestination()
-    };
-  }
+  #destinationInputChangeHandler = (evt) => {
+    evt.preventDefault();
 
-  static parseStatetoPoint(state) {
-    const point = {...state};
+    const selectedDestination = this.#pointDestinations
+      .find((pointDestination) => pointDestination.name);
 
-    if(!point.isTypeOfPointChange) {
-      point.offers = null;
-    }
+    const selectedDestinationId = selectedDestination.id;
 
-    if(point.isDestinationChange) {
-      point.destination = null;
-    }
-    delete point.isDestinationChange;
-    delete point.isTypeOfPointChange;
-  }
+    this.updateElement({
+      point: {
+        ...this._state.point,
+        destination: selectedDestinationId
+      }
+    });
+
+  };
+
+  #offerClickHandler = (evt) => {
+    evt.preventDefault();
+
+    const checkboxBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
+
+    this._setState({
+      point: {
+        ...this._state.point,
+        offers: checkboxBoxes.map((element) => element.dataset.offerID)
+      }
+    });
+  };
+
+  #priceInputChange = (evt) => {
+    evt.preventDefault();
+
+    this._setState({
+      point:{
+        ...this.state.point,
+        basePrice: evt.target.valueAsNumber
+
+      }
+    });
+  };
+
+  static parsePointToState = ({point}) => ({point}); //?
+  static parseStatetoPoint = (state) => state.point; //?
 
 }
