@@ -111,7 +111,11 @@ export default class PointPresentor {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #pointSumitHandler = () => {
+  #pointSumitHandler = (point) => {
+    this.#onDataChange({ //не понимаю что передаем в обработчик
+      ...this.point,
+      ...point
+    });
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };

@@ -1,24 +1,38 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizePointDueDateTime } from '../utils/utils.js';
-import { PointType,PointTypeDescription } from '../constants/constants.js';
+import { PointType, PointTypeDescription } from '../constants/constants.js';
 import { POINT_EMPTY } from '../constants/constants.js';
 
-function createEventType() {
+function createEventType(type) {
   return(
     Object.values(PointType).map((pointType) => /*html*/`<div class="event__type-item">
-    <input id="event-${pointType}-taxi-1" class="event__${pointType}-input  visually-hidden" type="radio" name="event-type" value=${pointType}>
-    <label class="event__type-label  event__type-label--${pointType}" for="event-type-${pointType}-1">${PointTypeDescription[pointType]}</label>
+    <input
+      id="event--type-${pointType}-1"
+      class="event__type-input  visually-hidden"
+      type="radio"
+      name="event-type"
+      value="${pointType}"
+      ${pointType === type ? 'checked' : ''}>
+    <label
+      class="event__type-label  event__type-label--${pointType}" for="event-type-${pointType}-1">
+      ${PointTypeDescription[pointType]}</label>
       </div>`).join('')
   );
 }
 
 function createOffersByPointType (point, pointOffers) {
   return (
-    pointOffers.find((pointOffer) => pointOffer.type === pointOffer.type)
+    pointOffers.find((pointOffer) => pointOffer.type === point.type)
       .offers
-      .map((offer) => /*html*/`<div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${(point.offers.includes(offer.id) ? 'checked' : '')}>
-          <label class="event__offer-label" for="event-offer-luggage-1">
+      .map((offer, index) => /*html*/`<div class="event__offer-selector">
+          <input class="event__offer-checkbox  visually-hidden"
+           id="event-offer-luggage-${index}"
+           data-offer-id = "${offer.id}"
+           type="checkbox"
+           name="event-offer-luggage"
+           ${(point.offers.includes(offer.id) ? 'checked' : '')}>
+
+          <label class="event__offer-label" for="event-offer-luggage-${index}">
            <span class="event__offer-title">${offer.title}</span>
             &plus;&euro;&nbsp;
             <span class="event__offer-price">${offer.price}</span>
@@ -31,22 +45,21 @@ function createOffersByPointType (point, pointOffers) {
 function createDestinationsCites(destinations) {
   return(
     destinations
-      .map((dest) => `<option value=${dest.id}>${dest.name}</option>`)
-      .join()
+      .map((dest) => `<option value="${dest.id}">${dest.name}</option>`)
+      .join('')
   );
 }
 
-function createPicturiesOfDestination (pictures) {
+function createPicturiesOfDestination(pictures) {
   return (
     pictures.map((image) => /*html*/ `<img class="event__photo" src="${image.src}" alt="Event photo">`));
 }
 
-function createEventEditTemplate({state, pointDestinations, pointOffers}) {
-  const {point} = state;
+function createEventEditTemplate({point, pointDestinations, pointOffers}) {
 
   const { basePrice, dateFrom, dateTo, destination, type } = point;
   const pointDestination = pointDestinations.find((x) => x.id === destination);
-  const {description, name, pictures} = pointDestination;
+  const { description, name, pictures } = pointDestination;
 
   return (/*html*/`<form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -60,7 +73,7 @@ function createEventEditTemplate({state, pointDestinations, pointOffers}) {
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
-            ${createEventType(PointType,PointTypeDescription)};
+            ${createEventType(type)};
           </fieldset>
         </div>
       </div>
@@ -86,8 +99,7 @@ function createEventEditTemplate({state, pointDestinations, pointOffers}) {
           <span class="visually-hidden">Price</span>
           €
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value=
-          ${basePrice}>
+        <input class="event__input  event__input--price" id="event-price-1" type="number" min="0", max="1000" name="event-price" value="${basePrice}">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -125,8 +137,6 @@ function createEventEditTemplate({state, pointDestinations, pointOffers}) {
 }
 
 export default class TripEventEditView extends AbstractStatefulView {
-  #point = null;
-  #pointDestinations = null;
   #pointOffers = null;
   #handleClickUp = null;
   #handleFormSubmit = null;
@@ -134,10 +144,8 @@ export default class TripEventEditView extends AbstractStatefulView {
   constructor ({ point = POINT_EMPTY, pointDestinations, pointOffers, onClickUp, onFormSubmit}) {
     super();
 
-    this.#pointDestinations = pointDestinations;
     this.#pointOffers = pointOffers;
-
-    this._setState(TripEventEditView.parsePointToState({point})); //?
+    this._setState(TripEventEditView.parsePointToState({point, pointDestinations}));
 
     this.#handleClickUp = onClickUp;
     this.#handleFormSubmit = onFormSubmit;
@@ -148,8 +156,8 @@ export default class TripEventEditView extends AbstractStatefulView {
 
   get template() {
     return createEventEditTemplate ({
-      state: this._state,
-      pointDestinations: this.#pointDestinations,
+      point: this._state.point, //объяснить что записываем в свойства через state
+      pointDestinations: this._state.pointDestinations,
       pointOffers: this.#pointOffers
     });
   }
@@ -166,16 +174,20 @@ export default class TripEventEditView extends AbstractStatefulView {
 
     this.element
       .querySelector('.event__type-group')
-      .addEventListener('change', this.#typeInputhandler);
+      .addEventListener('click', this.#typeInputhandler);
 
     this.element
       .querySelector('.event__input--destination')
       .addEventListener('change', this.#destinationInputChangeHandler);
 
+    this.element
+      .querySelector('.event__input--price')
+      .addEventListener('change', this.#priceInputChange);
+
     const offerBlock = this.element
       .querySelector('.event__available-offers');
 
-    if(offerBlock) {
+    if (offerBlock) {
       offerBlock.addEventListener('change', this.#offerClickHandler);
     }
   };
@@ -187,15 +199,21 @@ export default class TripEventEditView extends AbstractStatefulView {
 
   #formSumbitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit();
+    this.#handleFormSubmit(this._state.point);
   };
 
-  #typeInputhandler = (evt) => { //?
+  #typeInputhandler = (evt) => {
     evt.preventDefault();
+    const type = evt.target.previousElementSibling ? evt.target.previousElementSibling.value : null;
+
+    if (!type) {
+      return;
+    }
+
     this.updateElement({
       point: {
         ...this._state.point,
-        type: evt.target.value,
+        type,
         offers: []
       }
     });
@@ -203,9 +221,8 @@ export default class TripEventEditView extends AbstractStatefulView {
 
   #destinationInputChangeHandler = (evt) => {
     evt.preventDefault();
-
-    const selectedDestination = this.#pointDestinations
-      .find((pointDestination) => pointDestination.name);
+    const selectedDestination = this._state.pointDestinations
+      .find((pointDestination) => pointDestination.id === evt.target.value); //не понимаю связи по Id
 
     const selectedDestinationId = selectedDestination.id;
 
@@ -226,7 +243,7 @@ export default class TripEventEditView extends AbstractStatefulView {
     this._setState({
       point: {
         ...this._state.point,
-        offers: checkboxBoxes.map((element) => element.dataset.offerID)
+        offers: checkboxBoxes.map((element) => element.dataset.offerId)
       }
     });
   };
@@ -235,7 +252,7 @@ export default class TripEventEditView extends AbstractStatefulView {
     evt.preventDefault();
 
     this._setState({
-      point:{
+      point: {
         ...this.state.point,
         basePrice: evt.target.valueAsNumber
 
@@ -243,7 +260,8 @@ export default class TripEventEditView extends AbstractStatefulView {
     });
   };
 
-  static parsePointToState = ({point}) => ({point}); //?
-  static parseStatetoPoint = (state) => state.point; //?
+
+  static parsePointToState = ({point, pointDestinations}) => ({point, pointDestinations}); // из входящих данных формируем новый объект с нужными свойствами?
+  static parseStatetoPoint = (state) => (state.point);
 
 }
