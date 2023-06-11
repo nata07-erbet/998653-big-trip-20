@@ -51,10 +51,10 @@ export default class TripEventSortView extends AbstractView{
   #sortMap = null;
   #handleSortTypeChange = null;
 
-  constructor(sortType, onSortTypeChange) {
+  constructor({sortType, onSortTypeChange}) {
     super();
 
-    this.#sortMap = createSortMap(SortTypes, sortType);
+    this.#sortMap = createSortMap (sortType);
 
     this.#handleSortTypeChange = onSortTypeChange;
     this.element.addEventListener('change', this.#sortTypeChangeHandler);

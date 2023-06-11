@@ -1,10 +1,11 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import { humanizePointDueDate, humanizePointDueTime, getDiffFromDates } from '../utils/utils.js';
-import {POINT_EMPTY} from '../constants/constants.js';
+import { POINT_EMPTY } from '../constants/constants.js';
 
-function createCurrentOffer(pointOffers) {
+function createCurrentOffer(pointOffers, offers) {
   return(
     pointOffers
+      .filter((offer) => offers.includes(offer.id)) //зачем делаем фильтрацию?
       .map((offer) => /*html*/`<li class="event__offer">
           <span class="event__offer-title">${offer.title}</span>
           &plus;&euro;&nbsp;
@@ -16,8 +17,8 @@ function createCurrentOffer(pointOffers) {
 
 
 function createEventTemplate(point = POINT_EMPTY, pointDestination, pointOffers) {
-  const { basePrice, dateFrom, dateTo, type } = point;
-  const {name} = pointDestination;
+  const { basePrice, dateFrom, dateTo, isFavorite, type, offers } = point;
+  const {name } = pointDestination;
 
   return /*html*/ (`<li class="trip-events__item">
   <div class="event">
@@ -43,13 +44,13 @@ function createEventTemplate(point = POINT_EMPTY, pointDestination, pointOffers)
     <h4 class="visually-hidden">Offers:</h4>
     <ul class="event__selected-offers">
     <li class="event__offer">
-    ${createCurrentOffer(pointOffers)}
+    ${createCurrentOffer(pointOffers, offers)}
     </li>
     </ul>
-    <button class="event__favorite-btn event__favorite-btn--active" type="button">
+    <button class="event__favorite-btn ${isFavorite ? ' event__favorite-btn--active' : '' }" type="button">
       <span class="visually-hidden">Add to favorite</span>
       <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
-        <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"></path>
+        <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"></path>!
       </svg>
     </button>
     <button class="event__rollup-btn" type="button">
@@ -66,7 +67,7 @@ export default class TripEventView extends AbstractView {
   #onClickDown = null;
   #onfavoriteClick = null;
 
-  constructor ({point, pointDestination, pointOffers, onClickDown, onFavoriteClick}) {
+  constructor ({ point, pointDestination, pointOffers, onClickDown, onFavoriteClick }) {
     super();
 
     this.#point = point;
