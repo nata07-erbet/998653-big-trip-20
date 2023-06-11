@@ -31,6 +31,18 @@ export default class BoardPresentor {
     this.#pointsModel = pointsModel;
   }
 
+  get point() {
+    return this.#pointsModel.get();
+  }
+
+  get offers() {
+    return this.#offersModel.get();
+  }
+
+  get destination() {
+    return this.#destinationsModel.get();
+  }
+
   init() {
     this.#points = sort[SortTypes.DAY]([...this.#pointsModel.get()]);
     this.#pointDestination = [...this.#destinationsModel.get()];
