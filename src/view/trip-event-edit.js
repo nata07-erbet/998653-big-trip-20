@@ -2,6 +2,9 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizePointDueDateTime } from '../utils/utils.js';
 import { PointType, PointTypeDescription } from '../constants/constants.js';
 import { POINT_EMPTY } from '../constants/constants.js';
+import flatpickr from 'flatpickr';
+
+import 'flatpickr/dist/flatpickr.min.css';
 
 function createEventType(type) {
   return(
@@ -137,6 +140,8 @@ function createEventEditTemplate({point, pointDestinations, pointOffers}) {
 }
 
 export default class TripEventEditView extends AbstractStatefulView {
+  #datepickerFrom = null;
+  #datepickerTo = null;
   #pointOffers = null;
   #handleClickUp = null;
   #handleFormSubmit = null;
@@ -160,6 +165,20 @@ export default class TripEventEditView extends AbstractStatefulView {
       pointDestinations: this._state.pointDestinations,
       pointOffers: this.#pointOffers
     });
+  }
+
+  removeElement() {
+    super.removeElement();
+
+    if(this.#datepickerFrom) {
+      this.#datepickerFrom.destroy();
+      this.#datepickerTo.destroy();
+    }
+
+    if (this.#datepickerTo) {
+      this.#datepickerFrom = null;
+      this.#datepickerTo = null;
+    }
   }
 
   reset = (point) => this.updateElement({point}); //?
@@ -190,6 +209,8 @@ export default class TripEventEditView extends AbstractStatefulView {
     if (offerBlock) {
       offerBlock.addEventListener('change', this.#offerClickHandler);
     }
+
+    this.#setDatePicker();
   };
 
   #clickHandlerUp = (evt) => {
@@ -201,6 +222,27 @@ export default class TripEventEditView extends AbstractStatefulView {
     evt.preventDefault();
     this.#handleFormSubmit(this._state.point);
   };
+
+  #dateFromChangeHandler = ([userDate]) => {
+    this._setState({ //почему на upDateElement
+      point: {
+        ...this._state.point, //?
+        dateFrom: userDate
+      }
+    });
+    this.#datepickerTo.set('minDate', this._state.point.dateFrom); //почему #datepickerTo
+  };
+
+  #dateToChangeHandler = ([userDate]) => {
+    this._setState({
+      point: {
+        ...this._state.point,
+        dateTo: userDate
+      }
+    });
+    this.#datepickerFrom.set('maxDate', this._state.point.dateTo);
+  };
+
 
   #typeInputhandler = (evt) => {
     evt.preventDefault();
@@ -258,6 +300,41 @@ export default class TripEventEditView extends AbstractStatefulView {
 
       }
     });
+  };
+
+  #setDatePicker = () => {
+    const [dateFromElement, dateToElement] = this.element.querySelectorAll('.event__input--time');
+
+    this.#datepickerFrom = flatpickr(
+      dateFromElement,
+      {
+        dateFormat: 'd/m/y H:i',
+        defaultDate: this._state.point.dateFrom,
+        onClose: this.#dateFromChangeHandler,
+        enableTime: true,
+        maxDate: this._state.point.dateTo,
+        locale: {
+          firstDayOfWeak: 1,
+        },
+        'time_24hr': true
+      }
+    );
+
+    this.#datepickerTo = flatpickr(
+      dateToElement,
+      {
+        dateFormat: 'd/m/y H:i',
+        defaultDate: this._state.point.dateTo,
+        onClose: this.#dateToChangeHandler,
+        enableTime: true,
+        minDate: this._state.point.dateFrom,
+        locale: {
+          firstDayOfWeak: 1,
+        },
+        'time_24hr': true
+      }
+    );
+
   };
 
 
