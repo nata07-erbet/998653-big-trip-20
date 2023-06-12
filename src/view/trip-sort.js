@@ -9,9 +9,9 @@ const enabledSortType = {
   [SortTypes.OFFERS]: false
 };
 
-function createEventSortItem(sortItem) {
+function createEventSortItem(currentSortType, sortItem) {
   return(
-    /*html*/`<div class="trip-sort__item  trip-sort__item--${sortItem.type}">
+    /*html*/`<div class="trip-sort__item  trip-sort__item--${sortItem.type} ${currentSortType === SortTypes.DAY ? 'trip-sort__item--active' : ''}">
     <input
       id="sort-${sortItem.type}"
       class="trip-sort__input  visually-hidden"
@@ -29,10 +29,10 @@ function createEventSortItem(sortItem) {
   );
 }
 
-function createEventSortTemplate(sortMap) {
+function createEventSortTemplate(currentSortType,sortMap) {
   return (
     /*html*/ `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-    ${sortMap.map((sortItem) => createEventSortItem(sortItem)).join('')}
+    ${sortMap.map((sortItem) => createEventSortItem(currentSortType,sortItem)).join('')}
     </form>`);
 }
 
@@ -48,20 +48,22 @@ function createSortMap(sortType) {
 }
 
 export default class TripEventSortView extends AbstractView{
+  #currentSortType = null;
   #sortMap = null;
   #handleSortTypeChange = null;
 
-  constructor({sortType, onSortTypeChange}) {
+  constructor({currentSortType, sortType, onSortTypeChange}) {
     super();
 
     this.#sortMap = createSortMap (sortType);
+    this.#currentSortType = currentSortType;
 
     this.#handleSortTypeChange = onSortTypeChange;
     this.element.addEventListener('change', this.#sortTypeChangeHandler);
   }
 
   get template() {
-    return createEventSortTemplate(this.#sortMap);
+    return createEventSortTemplate(this.#currentSortType, this.#sortMap);
   }
 
   #sortTypeChangeHandler = (evt) => {
