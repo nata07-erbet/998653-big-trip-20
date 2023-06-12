@@ -2,7 +2,7 @@ import TripEventView from '../view/trip-event.js';
 import TripEventEditView from '../view/trip-event-edit.js';
 import { replace, render, remove } from '../framework/render.js';
 import { Mode } from '../constants/const.js';
-import{UpDateType, UserAction} from '../constants/const.js';
+import{UpdateType, UserAction} from '../constants/const.js';
 
 export default class PointPresentor {
   #tripEventListComponent = null;
@@ -98,7 +98,7 @@ export default class PointPresentor {
   #favoriteClickHandler = () => {
     this.#onDataChange(
       UserAction.UPDATE_POINT,
-      UpDateType.MINOR,
+      UpdateType.MINOR,
       {
         ...this.#point,
         isFavorite: !this.#point.isFavorite
@@ -118,7 +118,7 @@ export default class PointPresentor {
   #pointSumitHandler = (point) => {
     this.#onDataChange( // в обработчик передаем действия и тип обновления
       UserAction.UPDATE_POINT,
-      UpDateType.MINOR,
+      UpdateType.MINOR,
       {
         ...this.#point,
         ...point

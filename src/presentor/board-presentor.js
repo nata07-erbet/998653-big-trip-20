@@ -5,9 +5,8 @@ import {render, RenderPosition} from '../framework/render.js';
 import TripEventNoPointView from '../view/trip-no-point.js';
 // import TripEventAddView from '../view/trip-event-add.js';
 import PointPresentor from './point-presentor.js';
-import {updateItem} from '../utils/utils.js';
 import {sort} from '../utils/sort.js';
-import { SortTypes } from '../constants/const.js';
+import { SortTypes, UpdateType, UserAction} from '../constants/const.js';
 
 
 export default class BoardPresentor {
@@ -60,6 +59,43 @@ export default class BoardPresentor {
     // this.#renderNewPoint();
   }
 
+  #handleViewAction = (actonType, updateType, update) => {
+    //действия пользователя, которые приводят к изменению модели
+    switch(actonType) {
+      case UserAction.UPDATE_POINT:
+        this.#pointsModel.updateTask(updateType, update);
+        break;
+
+      case UserAction.ADD_POINT:
+        this.#pointsModel.addPoint(updateType, update);
+        break;
+
+      case UserAction.DELETE_POINT:
+        this.#points.delete(updateType, update);
+        break;
+    }
+  };
+
+  //обработчик, срабатывающий на измененении модели
+  //обновленные данные берем из модели this._notify(updateType, update)
+  //в зависимости от типа решаем что перерисовывать
+  #handleModelEvent = (updateType, data) => {
+    debugger;
+    switch(updateType) {
+      case UpdateType.PATCH:
+        this.#pointPresentors.get(data.id).init(data);
+        break;
+
+      case UpdateType.MINOR:
+        //
+        break;
+
+      case UpdateType.MAJOR:
+        //
+        break;
+    }
+  };
+
   #renderSort() {
     this.#sortComponent = new TripEventSortView({
       sortType: this.#currentSortType,
@@ -78,8 +114,8 @@ export default class BoardPresentor {
         tripEventListComponent: this.#tripEventListComponent.element,
         destinationsModel: this.#destinationsModel,
         offersModel: this.#offersModel,
-        onModeChange: this.#handleViewAction,
-        onDataChange: this.#handleDataChange
+        onModeChange: this.#handleModeChange,
+        onDataChange: this.#handleViewAction
       });
       pointPresentor.init(point);
       this.#pointPresentors.set(point.id, pointPresentor);
@@ -123,23 +159,10 @@ export default class BoardPresentor {
     this.#renderPoints(this.#points);
   };
 
-  #handleDataChange = (updatedPoint) => {
-    this.#points = updateItem(this.#points, updatedPoint);
-    this.#pointPresentors.get(updatedPoint.id).init(updatedPoint);
-  };
-
   #handleModeChange = () => {
     this.#pointPresentors.forEach((presentor) => presentor.resetView());
   };
 
   //заглушка
-  #handleViewAction = (actonType, updateType, update) => {
-    //действия пользователя, которые приводят к изменению модели
-  };
 
-  //обработчик, срабатывающий на измененени модели
-  //обновленные данные берем из модели this._notify(updateType, update)
-  #handleModelEvent = (updateType, data) => {
-
-  };
 }

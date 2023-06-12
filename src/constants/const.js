@@ -77,10 +77,10 @@ const UserAction = {
 };
 
 
-const UpDateType = {
+const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR'
 };
 
-export {TYPES, CITIES, DESCRIPTION, Price, Duration, DESTINATION_COUNT, OFFER_COUNT, POINT_COUNT, FilterTypes, SortTypes,SortTypesDescription, Mode, UpDateType, UserAction};
+export {TYPES, CITIES, DESCRIPTION, Price, Duration, DESTINATION_COUNT, OFFER_COUNT, POINT_COUNT, FilterTypes, SortTypes,SortTypesDescription, Mode, UpdateType, UserAction};
