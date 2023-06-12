@@ -9,6 +9,7 @@ import {updateItem} from '../utils/utils.js';
 import {sort} from '../utils/sort.js';
 import { SortTypes } from '../constants/const.js';
 
+
 export default class BoardPresentor {
   #tripMainContainer = null;
   #tripEventsContainer = null;
@@ -29,6 +30,9 @@ export default class BoardPresentor {
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#pointsModel = pointsModel;
+
+    //при изменении модели вызывается обработччик
+    this.#pointsModel.addObserver(this.#handleModelEvent);
   }
 
   get point() {
@@ -74,7 +78,7 @@ export default class BoardPresentor {
         tripEventListComponent: this.#tripEventListComponent.element,
         destinationsModel: this.#destinationsModel,
         offersModel: this.#offersModel,
-        onModeChange: this.#handleModeChange,
+        onModeChange: this.#handleViewAction,
         onDataChange: this.#handleDataChange
       });
       pointPresentor.init(point);
@@ -126,5 +130,16 @@ export default class BoardPresentor {
 
   #handleModeChange = () => {
     this.#pointPresentors.forEach((presentor) => presentor.resetView());
+  };
+
+  //заглушка
+  #handleViewAction = (actonType, updateType, update) => {
+    //действия пользователя, которые приводят к изменению модели
+  };
+
+  //обработчик, срабатывающий на измененени модели
+  //обновленные данные берем из модели this._notify(updateType, update)
+  #handleModelEvent = (updateType, data) => {
+
   };
 }
