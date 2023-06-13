@@ -11,7 +11,8 @@ const enabledSortType = {
 
 function createEventSortItem(currentSortType, sortItem) {
   return(
-    /*html*/`<div class="trip-sort__item  trip-sort__item--${sortItem.type} ${currentSortType === SortTypes.DAY ? 'trip-sort__item--active' : ''}">
+    /*html*/`<div class="trip-sort__item  trip-sort__item--${sortItem.type}
+     ${currentSortType === SortTypes.DAY ? 'trip-sort__input--active' : ''}">
     <input
       id="sort-${sortItem.type}"
       class="trip-sort__input  visually-hidden"

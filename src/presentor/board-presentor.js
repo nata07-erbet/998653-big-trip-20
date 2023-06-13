@@ -76,6 +76,7 @@ export default class BoardPresentor {
 
   #handleViewAction = (actonType, updateType, update) => {
     //действия пользователя, которые приводят к изменению модели
+    debugger;
     switch(actonType) {
       case UserAction.UPDATE_POINT:
         this.#pointsModel.updateTask(updateType, update);

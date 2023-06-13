@@ -145,8 +145,9 @@ export default class TripEventEditView extends AbstractStatefulView {
   #pointOffers = null;
   #handleClickUp = null;
   #handleFormSubmit = null;
+  #handleDeleteClick = null;
 
-  constructor ({ point = POINT_EMPTY, pointDestinations, pointOffers, onClickUp, onFormSubmit}) {
+  constructor ({ point = POINT_EMPTY, pointDestinations, pointOffers, onClickUp, onFormSubmit, onDeleteClick}) {
     super();
 
     this.#pointOffers = pointOffers;
@@ -154,6 +155,7 @@ export default class TripEventEditView extends AbstractStatefulView {
 
     this.#handleClickUp = onClickUp;
     this.#handleFormSubmit = onFormSubmit;
+    this.#handleDeleteClick = onDeleteClick;
 
     this._restoreHandlers();
 
@@ -202,6 +204,10 @@ export default class TripEventEditView extends AbstractStatefulView {
     this.element
       .querySelector('.event__input--price')
       .addEventListener('change', this.#priceInputChange);
+
+    this.element
+      .querySelector('.event__reset-btn')
+      .addEventListener('click', this.#formDeleteClickHandler);
 
     const offerBlock = this.element
       .querySelector('.event__available-offers');
@@ -334,7 +340,13 @@ export default class TripEventEditView extends AbstractStatefulView {
         'time_24hr': true
       }
     );
+  };
 
+  #formDeleteClickHandler = (evt) => {
+
+    evt.preventDefault();
+
+    this.#handleDeleteClick(TripEventEditView.parseStatetoPoint(this._state.point)); //?
   };
 
 

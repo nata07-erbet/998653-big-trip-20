@@ -44,7 +44,8 @@ export default class PointPresentor {
       pointDestinations: this.#destinationsModel.get(),
       pointOffers: this.#offersModel.get(),
       onClickUp: this.#pointEditClickHandlerUp,
-      onFormSubmit: this.#pointSumitHandler
+      onFormSubmit: this.#pointSumitHandler,
+      onDeleteClick: this.#pointDeleteClickHandler,
     });
 
     if(prevPointComponent === null || prevPointEditComponent === null) {
@@ -129,6 +130,15 @@ export default class PointPresentor {
   };
 
   #handleModeChange = () => {
+
+  };
+
+  #pointDeleteClickHandler = (point) => { //почему point underfind?
+    this.#onDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point
+    );
 
   };
 }
