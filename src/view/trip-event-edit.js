@@ -1,9 +1,8 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizePointDueDateTime } from '../utils/utils.js';
-import { PointType, PointTypeDescription } from '../constants/constants.js';
-import { POINT_EMPTY } from '../constants/constants.js';
+import { PointType, PointTypeDescription,POINT_EMPTY } from '../constants/constants.js';
+import { EditType } from '../constants/const.js';
 import flatpickr from 'flatpickr';
-
 import 'flatpickr/dist/flatpickr.min.css';
 
 function createEventType(type) {
@@ -147,7 +146,9 @@ export default class TripEventEditView extends AbstractStatefulView {
   #handleFormSubmit = null;
   #handleDeleteClick = null;
 
-  constructor ({ point = POINT_EMPTY, pointDestinations, pointOffers, onClickUp, onFormSubmit, onDeleteClick}) {
+  #type;
+
+  constructor ({ point = POINT_EMPTY, pointDestinations, pointOffers, onClickUp, onFormSubmit, onDeleteClick}, type = EditType.EDITING) {
     super();
 
     this.#pointOffers = pointOffers;
@@ -156,6 +157,7 @@ export default class TripEventEditView extends AbstractStatefulView {
     this.#handleClickUp = onClickUp;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleDeleteClick = onDeleteClick;
+    this.#type = type;
 
     this._restoreHandlers();
 

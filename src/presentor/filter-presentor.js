@@ -1,16 +1,17 @@
-import AbstractView from '../framework/view/abstract-view.js';
 import TripEventFiltersView from '../view/trip-filters.js';
-import { render } from '../framework/render.js';
+import { render, remove, replace } from '../framework/render.js';
+import { UpdateType } from '../constants/const.js';
+import { filter } from '../utils/filter.js';
 import {generateFilter} from '../mock/filter.js';
 
-export default class FilterPresentor extends AbstractView {
+export default class FilterPresentor {
   #container = null;
   #pointsModel = null;
 
   #fultres = [];
 
   constructor({container, pointsModel}) {
-    super();
+
 
     this.#container = container;
     this.#pointsModel = pointsModel;
