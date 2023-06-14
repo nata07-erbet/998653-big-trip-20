@@ -1,11 +1,12 @@
 import TripEventListView from '../view/trip-events-list.js';
 import TripEventInfoView from '../view/trip-info.js';
 import TripEventSortView from '../view/trip-sort.js';
-import {remove, render, RenderPosition} from '../framework/render.js';
+import { remove, render, RenderPosition } from '../framework/render.js';
 import TripEventNoPointView from '../view/trip-no-point.js';
 // import TripEventAddView from '../view/trip-event-add.js';
 import PointPresentor from './point-presentor.js';
-import {sort} from '../utils/sort.js';
+import { sort } from '../utils/sort.js';
+import { filter } from '../utils/filter.js';
 import { SortTypes, UpdateType, UserAction} from '../constants/const.js';
 
 
@@ -17,6 +18,7 @@ export default class BoardPresentor {
   #pointOffers = null;
   #offersModel = null;
   #pointsModel = null;
+  #filterModel = null;
   #points = null;
   #tripEventListComponent = new TripEventListView();
   #tripEventNoPointComponent = new TripEventNoPointView();
@@ -24,27 +26,23 @@ export default class BoardPresentor {
   #currentSortType = SortTypes.DAY;
   #pointPresentors = new Map();
 
-  constructor ({tripMainContainer, tripEventsContainer, destinationsModel, offersModel, pointsModel}) {
+  constructor ({tripMainContainer, tripEventsContainer, destinationsModel, offersModel, pointsModel, filterModel}) {
     this.#tripMainContainer = tripMainContainer;
     this.#tripEventsContainer = tripEventsContainer;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#pointsModel = pointsModel;
+    this.#filterModel = filterModel;
 
     //при изменении модели вызывается обработччик
-    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#pointsModel.addObserver(this.#modelEventHandler);
+    this.#filterModel.addObserver(this.#modelEventHandler);
   }
 
-  get point() {
-    return this.#pointsModel.get();
-  }
-
-  get offers() {
-    return this.#offersModel.get();
-  }
-
-  get destination() {
-    return this.#destinationsModel.get();
+  get points() {
+    const filterType = this.#filterModel.get();
+    const filteredPoints = filter[filterType](this.#pointsModel.get());
+    return sort[this.#currentSortType](filteredPoints);
   }
 
   init() {
@@ -182,6 +180,9 @@ export default class BoardPresentor {
     this.#pointPresentors.forEach((presentor) => presentor.resetView());
   };
 
+  #modelEventHandler = (evt) => {
+    evt.prevent.Default();
+  };
   //заглушка
 
 }
