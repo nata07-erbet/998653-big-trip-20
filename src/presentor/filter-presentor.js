@@ -1,5 +1,5 @@
 import TripEventFiltersView from '../view/trip-filters.js';
-import { render, remove, replace } from '../framework/render.js';
+import { render, replace } from '../framework/render.js';
 import { UpdateType } from '../constants/const.js';
 import { filter } from '../utils/filter.js';
 
@@ -21,10 +21,10 @@ export default class FilterPresentor {
     this.#filterModel.addObserver(this.#modelEventHandler);
   }
 
-  get filtres() {
+  get filters() {
     const points = this.#pointsModel.get();
 
-    return Object.entries(filter) // [[FilterTypes.EVERYTHING], (points) => [...points]...]
+    return Object.entries(filter)
       .map(([filterType, filterPoints]) => ({
         type: filterType,
         hasPoints: filterPoints(points).length > 0
@@ -36,26 +36,24 @@ export default class FilterPresentor {
     const prevFilterComponent = this.#filterComponent;
 
     this.#filterComponent = new TripEventFiltersView({
-      filters: this.filtres, //фильтры рисуем  с помощью геттера
+      filters: this.filters, //фильтры рисуем  с помощью геттера
       currentFilter: this.#currentFilter,
       onFilterChange: this.#filterTypeChangeHandler
     });
 
     if(prevFilterComponent === null) {
       render(this.#filterComponent, this.#container);
+    } else {
+      replace(this.#filterComponent, prevFilterComponent);
     }
-    //   render(new TripEventFiltersView(this.#fultres), this.#container);
-
-    replace(this.#filterComponent, prevFilterComponent);
-    remove(prevFilterComponent);
   }
 
-  #modelEventHandler = () => { //не поняла сути
+  #modelEventHandler = () => {
     this.init();
   };
 
   #filterTypeChangeHandler = (filterType) => {
-    if(this.#filterModel.get() === filterType) {// ?
+    if(this.#filterModel.get() === filterType) {
       return;
     }
     this.#filterModel.setFilter(UpdateType.MAJOR, filterType);

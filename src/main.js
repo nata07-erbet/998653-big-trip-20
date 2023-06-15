@@ -1,4 +1,4 @@
-// import FilterPresentor from './presentor/filter-presentor.js';
+import FilterPresentor from './presentor/filter-presentor.js';
 import BoardPresentor from './presentor/board-presentor.js';
 import MockService from './servise/mock-service.js';
 import DestinationsModel from './model/destinations-model.js';
@@ -9,7 +9,7 @@ import NewPointPresentor from './presentor/new-point-presentor.js';
 
 const tripMainContainer = document.querySelector('.trip-main');
 const tripEventsContainer = document.querySelector('.trip-events');
-// const tripFilterContainer = document.querySelector('.trip-controls__filters');
+const tripFilterContainer = document.querySelector('.trip-controls__filters');
 
 
 const mockService = new MockService();
@@ -18,12 +18,12 @@ const offersModel = new OffersModel(mockService);
 const pointsModel = new PointsModel(mockService);
 const filterModel = new FilterModel();
 
-// const filterPresentor = new FilterPresentor({
-//   container: tripFilterContainer,
-//   pointsModel,
-//   filterModel,
+const filterPresentor = new FilterPresentor({
+  container: tripFilterContainer,
+  pointsModel,
+  filterModel,
 
-// });
+});
 
 const boardPresentor = new BoardPresentor({
   tripMainContainer,
@@ -41,7 +41,7 @@ const newPointPresentor = new NewPointPresentor({ //что сюда переда
 });
 
 
-// filterPresentor.init();
+filterPresentor.init();
 boardPresentor.init();
 newPointPresentor.init();
 

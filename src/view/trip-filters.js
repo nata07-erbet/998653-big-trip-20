@@ -18,35 +18,42 @@ function createFilterItem(filter, currentFilter) {
   );
 }
 
-function createFiltersTemplate({fultres, currentFilter}) {
+function createFiltersTemplate({filters, currentFilter}) {
   return (
     /*html*/`<form class="trip-filters" action="#" method="get">
-      ${fultres.map(createFilterItem(fultres, currentFilter))
+      ${filters.map((filter) => createFilterItem(filter, currentFilter))
       .join('')}
       <button class="visually-hidden" type="submit">Accept filter</button>
     </form>`);
 
 }
 
-export default class TripEventFiltersView extends AbstractView{
-  #fultres = null;
+export default class TripEventFiltersView extends AbstractView {
+  #filters = null;
   #currentFilter = null;
   #onFilterChange = null;
 
 
-  constructor({fultres, currentFilter, onFilterChange}) {
+  constructor({filters, currentFilter, onFilterChange}) {
     super();
 
-    this.#fultres = fultres;
+    this.#filters = filters;
     this.#currentFilter = currentFilter;
     this.#onFilterChange = onFilterChange;
+    this.element.addEventListener('change', this.#onChange);
   }
 
   get template() {
     return createFiltersTemplate({
-      filtres: this.#fultres,
-      currentFilter:this.#currentFilter});
+      filters: this.#filters,
+      currentFilter:this.#currentFilter
+    });
   }
+
+  #onChange = (evt) => {
+    console.log(evt);
+    this.#onFilterChange(evt.target.value);
+  };
 }
 
 
