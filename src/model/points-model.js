@@ -21,18 +21,41 @@ export default class PointsModel extends Observable {
   }
 
   update(updateType, update) {
-    this.#points = this.#service.updatePoints(update); //updatePoints - что это за метод?
+    const index = this.#points.findIndex((point) => point.id === update.id);
+
+    if (index === -1) {
+      throw new Error('Can\'t update unexisting point');
+    }
+
+    this.#points = [
+      ...this.#points.slice(0, index),
+      update,
+      ...this.#points.slice(index + 1)
+    ];
+
     this._notify(updateType, update);
   }
 
-  add(updateType, point) {
-    this.#points = this.#service.addPoint(point); //addPoin?
-    this._notify(updateType, point);
+  add(updateType, update) {
+    this.#points = [
+      update,
+      ...this.#points
+    ];
+    this._notify(updateType, update);
   }
 
-  delete(updateType, point) {
+  delete(updateType, update) {
 
-    this.#points = this.#service.deletePoint(point); //deletePoint ?
-    this._notify(updateType, point);
+    const index = this.#points.findIndex((point) => point.id === update.id);
+
+    if (index === -1) {
+      throw new Error('Can\'t update unexisting point');
+    }
+
+    this.#points = [
+      ...this.#points.slice(0, index),
+      ...this.#points.slice(index + 1)
+    ];
+    this._notify(updateType, update);
   }
 }

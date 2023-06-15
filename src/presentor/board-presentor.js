@@ -76,7 +76,7 @@ export default class BoardPresentor {
     //действия пользователя, которые приводят к изменению модели
     switch(actonType) {
       case UserAction.UPDATE_POINT:
-        this.#pointsModel.updateTask(updateType, update);
+        this.#pointsModel.update(updateType, update);
         break;
 
       case UserAction.ADD_POINT:

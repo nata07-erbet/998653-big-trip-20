@@ -148,7 +148,7 @@ export default class TripEventEditView extends AbstractStatefulView {
 
   #type;
 
-  constructor ({ point = POINT_EMPTY, pointDestinations, pointOffers, onClickUp, onFormSubmit, onDeleteClick}, type = EditType.EDITING) {
+  constructor ({ point = POINT_EMPTY, pointDestinations, pointOffers, onClickUp, onFormSubmit, onDeleteClick, type = EditType.EDITING}) {
     super();
 
     this.#pointOffers = pointOffers;
@@ -165,9 +165,10 @@ export default class TripEventEditView extends AbstractStatefulView {
 
   get template() {
     return createEventEditTemplate ({
-      point: this._state.point, //объяснить что записываем в свойства через state
+      point: this._state.point,
       pointDestinations: this._state.pointDestinations,
-      pointOffers: this.#pointOffers
+      pointOffers: this.#pointOffers,
+      type: this.#type
     });
   }
 
@@ -188,9 +189,21 @@ export default class TripEventEditView extends AbstractStatefulView {
   reset = (point) => this.updateElement({point}); //?
 
   _restoreHandlers = () => {
-    this.element
-      .querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#clickHandlerUp);
+    if(this.type === EditType.EDITING) {
+      this.element
+        .querySelector('.event__rollup-btn')
+        .addEventListener('click', this.#rollupButtonClickHadnler);
+
+      this.element
+        .querySelector('.event__reset-btn')
+        .addEventListener('click', this.#deleteButtonClickHandler);
+    }
+
+    if (this.#type === EditType.CREATING) {
+      this.element
+        .querySelector('.event__reset-btn')
+        .addEventListener('click', this.#resetButtonClickHander);
+    }
 
     this.element
       .addEventListener('submit', this.#formSumbitHandler);
@@ -207,10 +220,6 @@ export default class TripEventEditView extends AbstractStatefulView {
       .querySelector('.event__input--price')
       .addEventListener('change', this.#priceInputChange);
 
-    this.element
-      .querySelector('.event__reset-btn')
-      .addEventListener('click', this.#formDeleteClickHandler);
-
     const offerBlock = this.element
       .querySelector('.event__available-offers');
 
@@ -221,7 +230,7 @@ export default class TripEventEditView extends AbstractStatefulView {
     this.#setDatePicker();
   };
 
-  #clickHandlerUp = (evt) => {
+  #rollupButtonClickHadnler = (evt) => { //стрелка вверх в форме редактирования
     evt.preventDefault();
     this.#handleClickUp();
   };
@@ -344,15 +353,21 @@ export default class TripEventEditView extends AbstractStatefulView {
     );
   };
 
-  #formDeleteClickHandler = (evt) => {
-
+  #deleteButtonClickHandler = (evt) => {
     evt.preventDefault();
 
-    this.#handleDeleteClick(TripEventEditView.parseStatetoPoint(this._state.point)); //?
+    this.#handleDeleteClick(TripEventEditView.parseStatetoPoint(this._state.point));
   };
 
 
-  static parsePointToState = ({point, pointDestinations}) => ({point, pointDestinations}); // из входящих данных формируем новый объект с нужными свойствами?
-  static parseStatetoPoint = (state) => (state.point);
+  #resetButtonClickHander = (evt) => { // что пришем в этом обработчике?
+    evt.preventDefault();
 
+    this.#handleDeleteClick(TripEventEditView.parseStatetoPoint(this._state.point));
+  };
+
+
+  static parsePointToState = ({point, pointDestinations}) => ({point, pointDestinations});
+  static parseStatetoPoint = (state) => (state.point);
 }
+
