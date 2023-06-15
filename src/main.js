@@ -5,7 +5,7 @@ import DestinationsModel from './model/destinations-model.js';
 import OffersModel from './model/offers-model.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
-import NewPointPresentor from './presentor/new-point-presentor.js';
+
 
 const tripMainContainer = document.querySelector('.trip-main');
 const tripEventsContainer = document.querySelector('.trip-events');
@@ -34,14 +34,6 @@ const boardPresentor = new BoardPresentor({
   filterModel,
 });
 
-const newPointPresentor = new NewPointPresentor({ //что сюда передавать?
-  container: tripEventsContainer,
-  destinationsModel,
-  offersModel,
-});
-
-
 filterPresentor.init();
 boardPresentor.init();
-newPointPresentor.init();
 

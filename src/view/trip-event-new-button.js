@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 import AbstractView from '../framework/view/abstract-view.js';
 
 function createEventNewButton(){

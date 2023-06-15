@@ -58,7 +58,6 @@ function createPicturiesOfDestination(pictures) {
 }
 
 function createEventEditTemplate({point, pointDestinations, pointOffers}) {
-
   const { basePrice, dateFrom, dateTo, destination, type } = point;
   const pointDestination = pointDestinations.find((x) => x.id === destination);
   const { description, name, pictures } = pointDestination;
@@ -360,10 +359,10 @@ export default class TripEventEditView extends AbstractStatefulView {
   };
 
 
-  #resetButtonClickHander = (evt) => { // что пришем в этом обработчике?
+  #resetButtonClickHander = (evt) => { // что пишем в этом обработчике?
     evt.preventDefault();
 
-    this.#handleDeleteClick(TripEventEditView.parseStatetoPoint(this._state.point));
+    this.#handleDeleteClick(TripEventEditView.parseStatetoPoint(this._state.point)); //это неверно
   };
 
 

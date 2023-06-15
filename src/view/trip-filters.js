@@ -51,7 +51,6 @@ export default class TripEventFiltersView extends AbstractView {
   }
 
   #onChange = (evt) => {
-    console.log(evt);
     this.#onFilterChange(evt.target.value);
   };
 }

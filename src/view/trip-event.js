@@ -18,7 +18,7 @@ function createCurrentOffer(pointOffers, offers) {
 
 function createEventTemplate(point = POINT_EMPTY, pointDestination, pointOffers) {
   const { basePrice, dateFrom, dateTo, isFavorite, type, offers } = point;
-  const {name } = pointDestination;
+  const { name } = pointDestination;
 
   return /*html*/ (`<li class="trip-events__item">
   <div class="event">

@@ -3,16 +3,20 @@ import TripEventInfoView from '../view/trip-info.js';
 import TripEventSortView from '../view/trip-sort.js';
 import { remove, render, RenderPosition } from '../framework/render.js';
 import TripEventNoPointView from '../view/trip-no-point.js';
-// import TripEventAddView from '../view/trip-event-add.js';
 import PointPresentor from './point-presentor.js';
 import { sort } from '../utils/sort.js';
 import { filter } from '../utils/filter.js';
-import { SortTypes, UpdateType, UserAction} from '../constants/const.js';
+import { FilterTypes, SortTypes, UpdateType, UserAction} from '../constants/const.js';
+import NewPointPresentor from './new-point-presentor.js';
+import TripEventNewButton from '../view/trip-event-new-button.js';
+import TripEvevntMessageView from '../view/trip-event-message-view.js';
 
 
 export default class BoardPresentor {
   #tripMainContainer = null;
+  #newPointButtonContainer = null;
   #tripEventsContainer = null;
+
   #destinationsModel = null;
   #pointDestination = null;
   #pointOffers = null;
@@ -20,11 +24,18 @@ export default class BoardPresentor {
   #pointsModel = null;
   #filterModel = null;
   #points = null;
+
   #tripEventListComponent = new TripEventListView();
   #tripEventNoPointComponent = new TripEventNoPointView();
+
   #sortComponent = null;
   #currentSortType = SortTypes.DAY;
+
   #pointPresentors = new Map();
+  #newPointPresentor = null;
+  #newPointButton = null;
+  #isCreating = false;
+  #messageComponent = null;
 
   constructor ({tripMainContainer, tripEventsContainer, destinationsModel, offersModel, pointsModel, filterModel}) {
     this.#tripMainContainer = tripMainContainer;
@@ -34,13 +45,15 @@ export default class BoardPresentor {
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
 
+
     //при изменении модели вызывается обработччик
-    this.#pointsModel.addObserver(this.#modelEventHandler);
-    this.#filterModel.addObserver(this.#modelEventHandler);
+    this.#pointsModel.addObserver(this.#handleModelEvent); //проверить этот обработчик
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
     const filterType = this.#filterModel.get();
+
     const filteredPoints = filter[filterType](this.#pointsModel.get());
     return sort[this.#currentSortType](filteredPoints);
   }
@@ -50,12 +63,15 @@ export default class BoardPresentor {
     this.#pointDestination = [...this.#destinationsModel.get()];
     this.#pointOffers = [...this.#offersModel.get()];
 
+    this.#newPointButton = new TripEventNewButton({onNewPointCreateButton: this.#newPointButtonClickHandler});
+    render(this.#newPointButton, this.#tripMainContainer); //такой контейнер?
+
     render(new TripEventInfoView(), this.#tripMainContainer, RenderPosition.AFTERBEGIN);
     this.#renderSort();
     this.#renderBoard();
     this.#renderPoints(this.#points);
     this.#renderNoPoint();
-    // this.#renderNewPoint();
+    this.#renderNewPoint();
   }
 
   #clearBoard({ resetSortType = false } = {}) { //что за запись?
@@ -73,7 +89,6 @@ export default class BoardPresentor {
 
 
   #handleViewAction = (actonType, updateType, update) => {
-    //действия пользователя, которые приводят к изменению модели
     switch(actonType) {
       case UserAction.UPDATE_POINT:
         this.#pointsModel.update(updateType, update);
@@ -112,11 +127,19 @@ export default class BoardPresentor {
 
   #renderSort() {
     this.#sortComponent = new TripEventSortView({
-      currentSortType: this.#currentSortType,
+      // currentSortType: this.#currentSortType,
       sortType: this.#currentSortType,
       onSortTypeChange: this.#handleSortTypeChange});
 
     render(this.#sortComponent, this.#tripEventsContainer);
+  }
+
+  #renderMessage() {
+    this.#messageComponent = new TripEvevntMessageView({
+      filterType:this.#filterModel.get()
+    });
+
+    render(this.#messageComponent, this.#tripEventsContainer);
   }
 
   #renderBoard() {
@@ -138,30 +161,34 @@ export default class BoardPresentor {
   }
 
   #renderNoPoint() {
-    if(this.#points.length === 0) {
-      render(this.#tripEventNoPointComponent, this.#tripEventsContainer);
+    if(this.#points.length === 0 && !this.#isCreating) {
+      this.#renderMessage();
     }
   }
 
-  // #renderNewPoint() {
-  //   const tripEventAddComponent = new TripEventAddView({
-  //     point: this.#points[0],
-  //     pointDestinations: this.#destinationsModel.get(),
-  //     pointOffers: this.#offersModel.get()
-  //   });
-  //   render (tripEventAddComponent, this.#tripEventsContainer);
-  // }
+  #renderNewPoint() {
+    this.#newPointPresentor = new NewPointPresentor({
+      buttonContainer: this.#tripMainContainer,
+      container: this.#tripEventsContainer,
+      destinationsModel: this.#destinationsModel,
+      offersModel: this.#offersModel,
+      onDataChange: this.#handleViewAction,
+      onDestroy: this.#newPointDestroyHandler // написать
+    });
+
+    this.#newPointPresentor.init();
+  }
 
   #sortPoints = (sortType) => {
     this.#currentSortType = sortType;
     this.#points = sort[this.#currentSortType](this.#points);
   };
 
-  // #clearPointList() {
-  //   this. #pointPresentors.forEach((pointPresentontor) => pointPresentontor.destroy());
-  //   this.#pointPresentors.clear();
-  //   remove(this.editform)
-  // }
+  #clearPoint = () => {
+    this. #pointPresentors.forEach((pointPresentontor) => pointPresentontor.destroy());
+    this.#pointPresentors.clear();
+    this.#newPointPresentor.destroy();
+  };
 
   #handleSortTypeChange = (sortType) => {
     if(this.#currentSortType === sortType) {
@@ -178,11 +205,24 @@ export default class BoardPresentor {
 
   #handleModeChange = () => {
     this.#pointPresentors.forEach((presentor) => presentor.resetView());
+    this.#newPointPresentor.destroy();
   };
 
-  #modelEventHandler = (evt) => {
-    evt.prevent.Default();
+  #newPointButtonClickHandler = () => {
+    this.#isCreating = true;// разобраться
+    this.#currentSortType = SortTypes.DAY;
+    this.filterModel.set(UpdateType.MAJOR, FilterTypes.EVERYTHING);
+    this.#newPointButton.setDisabled(true); //что за метод
+    this.#newPointPresentor.init();
   };
-  //заглушка
 
+  #newPointDestroyHandler = () => {
+    this.#isCreating = false;
+    this.#newPointButton.setDisabled(false);
+    if(isCanceled && this.points.length === 0) { //???
+      remove(this.#sortComponent);
+      this.#sortComponent = null;
+      this.#renderMessage();
+    }
+  };
 }

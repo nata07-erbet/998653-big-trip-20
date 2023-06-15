@@ -15,14 +15,14 @@ export default class PointPresentor {
   #destinationsModel = null;
   #offersModel = null;
   #onDataChange = null;
-  #onModeChange = null;
+  #handleModeChange = null;
 
   constructor({ tripEventListComponent, destinationsModel, offersModel, onDataChange, onModeChange }) {
     this.#tripEventListComponent = tripEventListComponent;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#onDataChange = onDataChange;
-    this.#onModeChange = onModeChange;
+    this.#handleModeChange = onModeChange;
   }
 
   init(point) {
@@ -127,10 +127,6 @@ export default class PointPresentor {
 
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
-  };
-
-  #handleModeChange = () => {
-
   };
 
   #pointDeleteClickHandler = (point) => { //почему point underfind?

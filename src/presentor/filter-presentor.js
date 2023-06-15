@@ -24,7 +24,7 @@ export default class FilterPresentor {
   get filters() {
     const points = this.#pointsModel.get();
 
-    return Object.entries(filter)
+    return Object.entries(filter) // [[FilterTypes.EVERYTHING], (points) => [...points]...]
       .map(([filterType, filterPoints]) => ({
         type: filterType,
         hasPoints: filterPoints(points).length > 0
