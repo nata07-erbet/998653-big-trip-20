@@ -2,6 +2,7 @@ import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizePointDueDateTime } from '../utils/utils.js';
 import { PointType, PointTypeDescription,POINT_EMPTY } from '../constants/constants.js';
 import { EditType } from '../constants/const.js';
+import { createPointEditControlsTemplate } from '../view/trip-event-controls-template.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -57,10 +58,10 @@ function createPicturiesOfDestination(pictures) {
     pictures.map((image) => /*html*/ `<img class="event__photo" src="${image.src}" alt="Event photo">`));
 }
 
-function createEventEditTemplate({point, pointDestinations, pointOffers}) {
+function createEventEditTemplate({point, pointDestinations, pointOffers, typeOfAction}) {
   const { basePrice, dateFrom, dateTo, destination, type } = point;
-  const pointDestination = pointDestinations.find((x) => x.id === destination);
-  const { description, name, pictures } = pointDestination;
+  const pointDestination = pointDestinations.find((x) => x.id === destination) || { pictures: [] }; //???
+  const { description, name, pictures } = pointDestination ;
 
   return (/*html*/`<form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -103,9 +104,7 @@ function createEventEditTemplate({point, pointDestinations, pointOffers}) {
         <input class="event__input  event__input--price" id="event-price-1" type="number" min="0", max="1000" name="event-price" value="${basePrice}">
       </div>
 
-      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
-      <button class="event__rollup-btn" type="button">
+    ${createPointEditControlsTemplate(typeOfAction)}
         <span class="visually-hidden">Open event</span>
       </button>
     </header>
@@ -145,9 +144,9 @@ export default class TripEventEditView extends AbstractStatefulView {
   #handleFormSubmit = null;
   #handleDeleteClick = null;
 
-  #type;
+  #typeOfAction;
 
-  constructor ({ point = POINT_EMPTY, pointDestinations, pointOffers, onClickUp, onFormSubmit, onDeleteClick, type = EditType.EDITING}) {
+  constructor ({ point = POINT_EMPTY, pointDestinations, pointOffers, onClickUp, onFormSubmit, onDeleteClick, typeOfAction = EditType.EDITING}) {
     super();
 
     this.#pointOffers = pointOffers;
@@ -156,7 +155,7 @@ export default class TripEventEditView extends AbstractStatefulView {
     this.#handleClickUp = onClickUp;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleDeleteClick = onDeleteClick;
-    this.#type = type;
+    this.#typeOfAction = typeOfAction;
 
     this._restoreHandlers();
 
@@ -167,7 +166,7 @@ export default class TripEventEditView extends AbstractStatefulView {
       point: this._state.point,
       pointDestinations: this._state.pointDestinations,
       pointOffers: this.#pointOffers,
-      type: this.#type
+      typeOfAction: this.#typeOfAction
     });
   }
 
@@ -188,7 +187,7 @@ export default class TripEventEditView extends AbstractStatefulView {
   reset = (point) => this.updateElement({point}); //?
 
   _restoreHandlers = () => {
-    if(this.type === EditType.EDITING) {
+    if(this.#typeOfAction === EditType.EDITING) {
       this.element
         .querySelector('.event__rollup-btn')
         .addEventListener('click', this.#rollupButtonClickHadnler);
@@ -198,7 +197,7 @@ export default class TripEventEditView extends AbstractStatefulView {
         .addEventListener('click', this.#deleteButtonClickHandler);
     }
 
-    if (this.#type === EditType.CREATING) {
+    if (this.#typeOfAction === EditType.CREATING) {
       this.element
         .querySelector('.event__reset-btn')
         .addEventListener('click', this.#resetButtonClickHander);

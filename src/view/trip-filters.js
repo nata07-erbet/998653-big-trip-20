@@ -36,7 +36,6 @@ export default class TripEventFiltersView extends AbstractView {
 
   constructor({filters, currentFilter, onFilterChange}) {
     super();
-
     this.#filters = filters;
     this.#currentFilter = currentFilter;
     this.#onFilterChange = onFilterChange;

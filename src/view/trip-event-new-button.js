@@ -1,19 +1,21 @@
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+
 
 function createEventNewButton(){
   return (
-    /*html*/`<button class="trip-main__event-add-btn  btn  btn--big  btn--yellow" type="button">New event</button>`
+    /*html*/`<button class="trip-main__event-add-btn  btn  btn--big  btn--yellow" type="button">TEST</button>`
   );
 }
 
-export default class TripEventNewButton extends AbstractView {
+export default class TripEventNewButton extends AbstractStatefulView {
   #handleNewPointCreateButton = null;
 
-  constructor({onNewPointCreateButton}) {
+  constructor({ onNewPointCreateButton }) {
     super();
 
     this.#handleNewPointCreateButton = onNewPointCreateButton;
-    this.element.querySelector('.trip-main__event-add-btn').addEventListener('click',this.#clickHandlerCreateButton);
+    this.element.addEventListener('click',this.#clickHandlerCreateButton);
+    this.setDisabled();
   }
 
   get template() {
@@ -24,4 +26,8 @@ export default class TripEventNewButton extends AbstractView {
     evt.preventDefault();
     this.#handleNewPointCreateButton();
   };
+
+  setDisabled() {
+    console.log('1');
+  }
 }

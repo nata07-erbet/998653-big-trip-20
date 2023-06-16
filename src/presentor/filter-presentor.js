@@ -1,6 +1,6 @@
 import TripEventFiltersView from '../view/trip-filters.js';
 import { render, replace } from '../framework/render.js';
-import { UpdateType } from '../constants/const.js';
+// import { UpdateType } from '../constants/const.js';
 import { filter } from '../utils/filter.js';
 
 export default class FilterPresentor {
@@ -32,11 +32,11 @@ export default class FilterPresentor {
   }
 
   init() {
-    this.#currentFilter = this.#filterModel.get(); //данные пришли
+    this.#currentFilter = this.#filterModel.get();
     const prevFilterComponent = this.#filterComponent;
 
     this.#filterComponent = new TripEventFiltersView({
-      filters: this.filters, //фильтры рисуем  с помощью геттера
+      filters: this.filters,
       currentFilter: this.#currentFilter,
       onFilterChange: this.#filterTypeChangeHandler
     });
@@ -56,6 +56,6 @@ export default class FilterPresentor {
     if(this.#filterModel.get() === filterType) {
       return;
     }
-    this.#filterModel.setFilter(UpdateType.MAJOR, filterType);
+    this.#filterModel.setFilter(filterType);
   };
 }

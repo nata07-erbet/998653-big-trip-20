@@ -48,7 +48,7 @@ export default class BoardPresentor {
 
     //при изменении модели вызывается обработччик
     this.#pointsModel.addObserver(this.#handleModelEvent); //проверить этот обработчик
-    this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleFilterModelEvent);
   }
 
   get points() {
@@ -59,14 +59,14 @@ export default class BoardPresentor {
   }
 
   init() {
+
+
     this.#points = sort[SortTypes.DAY]([...this.#pointsModel.get()]);
     this.#pointDestination = [...this.#destinationsModel.get()];
     this.#pointOffers = [...this.#offersModel.get()];
 
-    this.#newPointButton = new TripEventNewButton({onNewPointCreateButton: this.#newPointButtonClickHandler});
-    render(this.#newPointButton, this.#tripMainContainer); //такой контейнер?
-
     render(new TripEventInfoView(), this.#tripMainContainer, RenderPosition.AFTERBEGIN);
+    this.#renderButton();
     this.#renderSort();
     this.#renderBoard();
     this.#renderPoints(this.#points);
@@ -125,6 +125,26 @@ export default class BoardPresentor {
     }
   };
 
+  #handleFilterModelEvent = (filterType) => {
+
+    const filteredPoints = filter[filterType](this.#pointsModel.get());
+    this.#points = sort[this.#currentSortType](filteredPoints);
+    this.#clearBoard();
+    this.#renderBoard();
+
+    if(this.#points.length === 0) {
+      this.#renderMessage();
+    }
+    this.#renderPoints(this.#points);
+  };
+
+  #renderButton () {
+    this.#newPointButton = new TripEventNewButton({
+      onNewPointCreateButton: this.#newPointButtonClickHandler
+    });
+    render(this.#newPointButton, this.#tripMainContainer);
+  }
+
   #renderSort() {
     this.#sortComponent = new TripEventSortView({
       // currentSortType: this.#currentSortType,
@@ -173,10 +193,8 @@ export default class BoardPresentor {
       destinationsModel: this.#destinationsModel,
       offersModel: this.#offersModel,
       onDataChange: this.#handleViewAction,
-      onDestroy: this.#newPointDestroyHandler // написать
+      // onDestroy: this.#newPointDestroyHandler // написать
     });
-
-    this.#newPointPresentor.init();
   }
 
   #sortPoints = (sortType) => {
@@ -209,20 +227,20 @@ export default class BoardPresentor {
   };
 
   #newPointButtonClickHandler = () => {
-    this.#isCreating = true;// разобраться
+    this.#isCreating = true;
     this.#currentSortType = SortTypes.DAY;
-    this.filterModel.set(UpdateType.MAJOR, FilterTypes.EVERYTHING);
-    this.#newPointButton.setDisabled(true); //что за метод
+    this.#filterModel.setFilter(FilterTypes.EVERYTHING);
+    // this.#newPointButton.setDisabled(true); //что за метод
     this.#newPointPresentor.init();
   };
 
-  #newPointDestroyHandler = () => {
-    this.#isCreating = false;
-    this.#newPointButton.setDisabled(false);
-    if(isCanceled && this.points.length === 0) { //???
-      remove(this.#sortComponent);
-      this.#sortComponent = null;
-      this.#renderMessage();
-    }
-  };
+  // #newPointDestroyHandler = (isCanceled) => {
+  //   this.#isCreating = false;
+  //   this.#newPointButton.setDisabled(false);
+  //   if(isCanceled && this.points.length === 0) { //???
+  //     remove(this.#sortComponent);
+  //     this.#sortComponent = null;
+  //     this.#renderMessage();
+  //   }
+  // };
 }
