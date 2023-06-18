@@ -1,25 +1,61 @@
-import AbstractView from '../framework/view/abstract-view.js';
 import TripEventFiltersView from '../view/trip-filters.js';
-import { render } from '../framework/render.js';
-import {generateFilter} from '../mock/filter.js';
+import { render, replace } from '../framework/render.js';
+// import { UpdateType } from '../constants/const.js';
+import { filter } from '../utils/filter.js';
 
-export default class FilterPresentor extends AbstractView {
+export default class FilterPresentor {
   #container = null;
+  #filterComponent = null;
   #pointsModel = null;
+  #filterModel = null;
 
-  #fultres = [];
+  #currentFilter = null;
 
-  constructor({container, pointsModel}) {
-    super();
+  constructor({container, pointsModel, filterModel}) {
 
     this.#container = container;
     this.#pointsModel = pointsModel;
+    this.#filterModel = filterModel;
 
-    this.#fultres = generateFilter(this.#pointsModel.get());
+    this.#pointsModel.addObserver(this.#modelEventHandler);
+    this.#filterModel.addObserver(this.#modelEventHandler);
+  }
+
+  get filters() {
+    const points = this.#pointsModel.get();
+
+    return Object.entries(filter) // [[FilterTypes.EVERYTHING], (points) => [...points]...]
+      .map(([filterType, filterPoints]) => ({
+        type: filterType,
+        hasPoints: filterPoints(points).length > 0
+      }));
   }
 
   init() {
-    render(new TripEventFiltersView(this.#fultres), this.#container);
+    this.#currentFilter = this.#filterModel.get();
+    const prevFilterComponent = this.#filterComponent;
+
+    this.#filterComponent = new TripEventFiltersView({
+      filters: this.filters,
+      currentFilter: this.#currentFilter,
+      onFilterChange: this.#filterTypeChangeHandler
+    });
+
+    if(prevFilterComponent === null) {
+      render(this.#filterComponent, this.#container);
+    } else {
+      replace(this.#filterComponent, prevFilterComponent);
+    }
   }
 
+  #modelEventHandler = () => {
+    this.init();
+  };
+
+  #filterTypeChangeHandler = (filterType) => {
+    if(this.#filterModel.get() === filterType) {
+      return;
+    }
+    this.#filterModel.setFilter(filterType);
+  };
 }

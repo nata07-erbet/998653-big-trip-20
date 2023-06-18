@@ -1,28 +1,42 @@
-/* eslint-disable quotes */
-import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
-function createEventNewButton(){
+function createEventNewButton({ disabled }){
   return (
-    /*html*/`<button class="trip-main__event-add-btn  btn  btn--big  btn--yellow" type="button">New event</button>`
+    /*html*/`<button class="trip-main__event-add-btn  btn  btn--big  btn--yellow" ${disabled ? 'disabled' : ''} type="button">New event</button>`
   );
 }
 
-export default class TripEventNewButton extends AbstractView {
+export default class TripEventNewButton extends AbstractStatefulView {
   #handleNewPointCreateButton = null;
 
-  constructor({onNewPointCreateButton}) {
+  constructor({onNewPointCreateButton, disabled = false}) {
     super();
 
+    this._setState(TripEventNewButton.parseBtnStateToState({disabled}));
     this.#handleNewPointCreateButton = onNewPointCreateButton;
-    this.element.querySelector('.trip-main__event-add-btn').addEventListener('click',this.#clickHandlerCreateButton);
+
+    this._restoreHandlers();
   }
 
   get template() {
-    return createEventNewButton();
+    return createEventNewButton({
+      disabled: this._state.disabled,
+    });
+  }
+
+  _restoreHandlers() {
+    this.element.addEventListener('click',this.#clickHandlerCreateButton);
+  }
+
+  setDisabled(disabled) {
+    this.updateElement(TripEventNewButton.parseBtnStateToState({disabled}));
   }
 
   #clickHandlerCreateButton = (evt) => {
     evt.preventDefault();
     this.#handleNewPointCreateButton();
   };
+
+  static parseBtnStateToState = ({disabled}) => ({disabled});
+  static parseStatetoBtnState = (state) => (state.disabled);
 }

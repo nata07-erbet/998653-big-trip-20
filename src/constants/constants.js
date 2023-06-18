@@ -1,4 +1,4 @@
-const POINT_COUNT = 15;
+const POINT_COUNT = 0;
 const PICTURE_COUNT = 6;
 const OFFER_COUNT = 15;
 const OFFER_DESCRIPTION_COUNT = 5;

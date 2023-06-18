@@ -2,6 +2,7 @@ import TripEventView from '../view/trip-event.js';
 import TripEventEditView from '../view/trip-event-edit.js';
 import { replace, render, remove } from '../framework/render.js';
 import { Mode } from '../constants/const.js';
+import{ UpdateType, UserAction } from '../constants/const.js';
 
 export default class PointPresentor {
   #tripEventListComponent = null;
@@ -14,14 +15,14 @@ export default class PointPresentor {
   #destinationsModel = null;
   #offersModel = null;
   #onDataChange = null;
-  #onModeChange = null;
+  #handleModeChange = null;
 
   constructor({ tripEventListComponent, destinationsModel, offersModel, onDataChange, onModeChange }) {
     this.#tripEventListComponent = tripEventListComponent;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
     this.#onDataChange = onDataChange;
-    this.#onModeChange = onModeChange;
+    this.#handleModeChange = onModeChange;
   }
 
   init(point) {
@@ -43,7 +44,8 @@ export default class PointPresentor {
       pointDestinations: this.#destinationsModel.get(),
       pointOffers: this.#offersModel.get(),
       onClickUp: this.#pointEditClickHandlerUp,
-      onFormSubmit: this.#pointSumitHandler
+      onFormSubmit: this.#pointSumitHandler,
+      onDeleteClick: this.#pointDeleteClickHandler,
     });
 
     if(prevPointComponent === null || prevPointEditComponent === null) {
@@ -95,10 +97,13 @@ export default class PointPresentor {
   };
 
   #favoriteClickHandler = () => {
-    this.#onDataChange({
-      ...this.#point,
-      isFavorite: !this.#point.isFavorite
-    });
+    this.#onDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      {
+        ...this.#point,
+        isFavorite: !this.#point.isFavorite
+      });
   };
 
   #pointEditClickHandlerDown = () => {
@@ -112,15 +117,23 @@ export default class PointPresentor {
   };
 
   #pointSumitHandler = (point) => {
-    this.#onDataChange({ //не понимаю что передаем в обработчик
-      ...this.point,
-      ...point
-    });
+    this.#onDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      {
+        ...this.#point,
+        ...point
+      });
+
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #handleModeChange = () => {
-
+  #pointDeleteClickHandler = (point) => {
+    this.#onDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point
+    );
   };
 }
