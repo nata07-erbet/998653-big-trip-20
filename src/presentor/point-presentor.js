@@ -117,7 +117,7 @@ export default class PointPresentor {
   };
 
   #pointSumitHandler = (point) => {
-    this.#onDataChange( // в обработчик передаем действия и тип обновления
+    this.#onDataChange(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
       {
@@ -129,12 +129,11 @@ export default class PointPresentor {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #pointDeleteClickHandler = (point) => { //почему point underfind?
+  #pointDeleteClickHandler = (point) => {
     this.#onDataChange(
       UserAction.DELETE_POINT,
       UpdateType.MINOR,
       point
     );
-
   };
 }

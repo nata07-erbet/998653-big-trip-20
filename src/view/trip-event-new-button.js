@@ -1,25 +1,35 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
-
-function createEventNewButton(){
+function createEventNewButton({ disabled }){
   return (
-    /*html*/`<button class="trip-main__event-add-btn  btn  btn--big  btn--yellow" type="button">TEST</button>`
+    /*html*/`<button class="trip-main__event-add-btn  btn  btn--big  btn--yellow" ${disabled ? 'disabled' : ''} type="button">New event</button>`
   );
 }
 
 export default class TripEventNewButton extends AbstractStatefulView {
   #handleNewPointCreateButton = null;
 
-  constructor({ onNewPointCreateButton }) {
+  constructor({onNewPointCreateButton, disabled = false}) {
     super();
 
+    this._setState(TripEventNewButton.parseBtnStateToState({disabled}));
     this.#handleNewPointCreateButton = onNewPointCreateButton;
-    this.element.addEventListener('click',this.#clickHandlerCreateButton);
-    this.setDisabled();
+
+    this._restoreHandlers();
   }
 
   get template() {
-    return createEventNewButton();
+    return createEventNewButton({
+      disabled: this._state.disabled,
+    });
+  }
+
+  _restoreHandlers() {
+    this.element.addEventListener('click',this.#clickHandlerCreateButton);
+  }
+
+  setDisabled(disabled) {
+    this.updateElement(TripEventNewButton.parseBtnStateToState({disabled}));
   }
 
   #clickHandlerCreateButton = (evt) => {
@@ -27,7 +37,6 @@ export default class TripEventNewButton extends AbstractStatefulView {
     this.#handleNewPointCreateButton();
   };
 
-  setDisabled() {
-    console.log('1');
-  }
+  static parseBtnStateToState = ({disabled}) => ({disabled});
+  static parseStatetoBtnState = (state) => (state.disabled);
 }
