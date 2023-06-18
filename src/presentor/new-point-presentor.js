@@ -22,6 +22,7 @@ export default class NewPointPresentor {
   }
 
   init() {
+    debugger;
     if(this.#newPointComponent !== null) {
       return;
     }

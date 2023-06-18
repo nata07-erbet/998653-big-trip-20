@@ -47,7 +47,7 @@ function createOffersByPointType (point, pointOffers) {
 function createDestinationsCites(destinations) {
   return(
     destinations
-      .map((dest) => `<option value="${dest.id}">${dest.name}</option>`)
+      .map((dest) => `<option value="${dest.name}"></option>`)
       .join('')
   );
 }

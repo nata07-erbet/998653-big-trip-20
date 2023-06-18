@@ -191,11 +191,6 @@ export default class BoardPresentor {
     this.#points = sort[this.#currentSortType](this.#points);
   };
 
-  #clearPoint = () => {
-    this. #pointPresentors.forEach((pointPresentontor) => pointPresentontor.destroy());
-    this.#pointPresentors.clear();
-    this.#newPointPresentor.destroy();
-  };
 
   #handleSortTypeChange = (sortType) => {
     if(this.#currentSortType === sortType) {
