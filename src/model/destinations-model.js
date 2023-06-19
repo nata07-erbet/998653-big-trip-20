@@ -1,13 +1,21 @@
 import Observable from '../framework/observable.js';
 
 export default class DestinationsModel extends Observable {
+
   #destinations = null;
+  #service = null;
 
   constructor(service) {
     super();
+    this.#service = service;
+  }
 
-    this.service = service;
-    this.#destinations = this.service.getDestinantions();
+  async init() {
+    try{
+      this.#destinations = await this.#service.destinations;
+    } catch{
+      this.#destinations = [];
+    }
   }
 
   get() {

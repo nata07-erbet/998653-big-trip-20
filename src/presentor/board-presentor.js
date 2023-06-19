@@ -10,6 +10,7 @@ import { FilterTypes, SortTypes, UpdateType, UserAction} from '../constants/cons
 import NewPointPresentor from './new-point-presentor.js';
 import TripEventNewButton from '../view/trip-event-new-button.js';
 import TripEvevntMessageView from '../view/trip-event-message-view.js';
+import TripEventLoadingComponent from '../view/trip-event-loading-view.js';
 
 
 export default class BoardPresentor {
@@ -36,6 +37,8 @@ export default class BoardPresentor {
   #newPointButton = null;
   #isCreating = false;
   #messageComponent = null;
+  #isLoading = true;
+  #loadingComponent = null;
 
   constructor ({tripMainContainer, tripEventsContainer, destinationsModel, offersModel, pointsModel, filterModel}) {
     this.#tripMainContainer = tripMainContainer;
@@ -45,9 +48,7 @@ export default class BoardPresentor {
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
 
-
-    //при изменении модели вызывается обработччик
-    this.#pointsModel.addObserver(this.#handleModelEvent); //проверить этот обработчик
+    this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleFilterModelEvent);
   }
 
@@ -66,9 +67,7 @@ export default class BoardPresentor {
     this.#newPointButton = new TripEventNewButton({onNewPointCreateButton: this.#newPointButtonClickHandler});
     render(this.#newPointButton, this.#tripMainContainer);
     render(new TripEventInfoView(), this.#tripMainContainer, RenderPosition.AFTERBEGIN);
-    this.#renderSort();
-    this.#renderBoard();
-    this.#renderPoints(this.#points);
+    this.#renderAllBoard();
     this.#renderNoPoint();
     this.#renderNewPoint();
   }
@@ -80,6 +79,7 @@ export default class BoardPresentor {
 
     remove(this.#tripEventNoPointComponent);
     remove(this.#messageComponent);
+    remove(this.#loadingComponent);
 
     if (resetSortType) {
       this.#currentSortType = SortTypes.DAY;
@@ -118,6 +118,14 @@ export default class BoardPresentor {
         this.#clearBoard({resetRenderPointCount: true, resetSortType: true});
         this.#renderBoard();
         break;
+
+      case UpdateType.INIT:
+        // this.#isLoadingError = data.isError; //?
+        this.#isLoading = false;
+        remove(this.#isLoading);
+        this.#renderBoard();
+        break;
+
     }
   };
 
@@ -148,6 +156,26 @@ export default class BoardPresentor {
     });
 
     render(this.#messageComponent, this.#tripEventsContainer);
+  }
+
+  #renderAllBoard(){
+    if(this.#isLoading) {
+      this.#renderLoading();
+
+    } else {
+      if(!this.#points.length && !this.#isCreating) {
+        this.#renderNoPoint();
+      } else {
+        this.#renderSort();
+        this.#renderBoard();
+        this.#renderPoints(this.#points);
+      }
+    }
+  }
+
+  #renderLoading() {
+    this.#loadingComponent = new TripEventLoadingComponent();
+    render(this.#loadingComponent, this.#tripMainContainer);
   }
 
   #renderBoard() {

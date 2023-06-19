@@ -70,9 +70,5 @@ function getDate ({next}) {
   return date;
 }
 
-// function updateItem(items, update) {
-//   return items.map((item) => item.id === update.id ? update : item);
-// }
-
-
+//updateItem
 export {getRandomArrayElement, humanizePointDueDateTime, humanizePointDueDate, humanizePointDueTime, getDiffFromDates, getRandomInteger, getRandomValue, getDate };

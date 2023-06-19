@@ -1,6 +1,5 @@
 import TripEventFiltersView from '../view/trip-filters.js';
 import { render, replace } from '../framework/render.js';
-// import { UpdateType } from '../constants/const.js';
 import { filter } from '../utils/filter.js';
 
 export default class FilterPresentor {
@@ -24,7 +23,7 @@ export default class FilterPresentor {
   get filters() {
     const points = this.#pointsModel.get();
 
-    return Object.entries(filter) // [[FilterTypes.EVERYTHING], (points) => [...points]...]
+    return Object.entries(filter)
       .map(([filterType, filterPoints]) => ({
         type: filterType,
         hasPoints: filterPoints(points).length > 0

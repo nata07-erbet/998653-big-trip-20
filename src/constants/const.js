@@ -80,7 +80,8 @@ const UserAction = {
 const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
-  MAJOR: 'MAJOR'
+  MAJOR: 'MAJOR',
+  INIT: 'INIT'
 };
 
 const EditType = {
@@ -88,4 +89,6 @@ const EditType = {
   CREATING: 'CREATING '
 };
 
-export {TYPES, CITIES, DESCRIPTION, Price, Duration, DESTINATION_COUNT, OFFER_COUNT, POINT_COUNT, FilterTypes, SortTypes,SortTypesDescription, Mode, UpdateType, UserAction, EditType};
+const DESTINATION_ITEMS_LENGTH = 3;
+
+export {TYPES, CITIES, DESCRIPTION, Price, Duration, DESTINATION_COUNT, OFFER_COUNT, POINT_COUNT, FilterTypes, SortTypes,SortTypesDescription, Mode, UpdateType, UserAction, EditType, DESTINATION_ITEMS_LENGTH};
