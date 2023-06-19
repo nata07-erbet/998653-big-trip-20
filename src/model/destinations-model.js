@@ -7,12 +7,15 @@ export default class DestinationsModel extends Observable {
 
   constructor(service) {
     super();
-    this.service = service;
+    this.#service = service;
   }
 
   async init() {
-    this.#destinations = await this.#service.destinations;
-    return this.#destinations;
+    try{
+      this.#destinations = await this.#service.destinations;
+    } catch{
+      this.#destinations = [];
+    }
   }
 
   get() {

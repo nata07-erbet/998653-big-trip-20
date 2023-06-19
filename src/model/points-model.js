@@ -20,8 +20,11 @@ export default class PointsModel extends Observable {
   }
 
   async init() {
-    this.#points = this.#service.points;
-    return this.#points;
+    try{
+      this.#points = await this.#service.points;
+    } catch(err) {
+      this.#points = [];
+    }
   }
 
   get() {

@@ -6,13 +6,18 @@ export default class OffersModel extends Observable {
 
   constructor(service) {
     super();
-    this.service = service;
+
+    this.#service = service;
   }
 
   async init() {
-    this.#offers = this.#service.offers;
-    return this.#offers;
+    try {
+      this.#offers = await this.#service.offers;
+    } catch(err) {
+      this.#offers = [];
+    }
   }
+
 
   get() {
     return this.#offers;

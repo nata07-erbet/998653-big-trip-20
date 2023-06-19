@@ -17,12 +17,16 @@ const END_POINT = 'https://20.ecmascript.pages.academy/big-trip';
 
 const pointApiService = new ApiService(END_POINT, AVTORIZATION);
 
-const destinationsModel = new DestinationsModel(pointApiService);
-const offersModel = new OffersModel(pointApiService);
+const destinationsModel = new DestinationsModel({
+  service:  pointApiService
+});
+const offersModel = new OffersModel({
+  service:  pointApiService
+});
 const pointsModel = new PointsModel({
   service:  pointApiService,
-  destinationsModel,
-  offersModel
+  destinationsModel, //?надо писать
+  offersModel //?надо писать?
 });
 
 const filterModel = new FilterModel();
@@ -51,8 +55,13 @@ const boardPresentor = new BoardPresentor({
 //   pointsModel
 // });
 
+destinationsModel.init();
+offersModel.init();
+pointsModel.init();
+
 // tripInfoPresentor.init();
+
 filterPresentor.init();
 boardPresentor.init();
-tripInfoPresentor.init();
+
 
