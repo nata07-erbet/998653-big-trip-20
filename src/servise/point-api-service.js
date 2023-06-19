@@ -9,7 +9,6 @@ const Metod = {
 };
 
 export default class PointService extends ApiService {
-  //получение от сервера всех задач
   get destinations() {
     return this._load({url: 'destinations'})
       .then(ApiService.parseResponse);
@@ -53,6 +52,7 @@ export default class PointService extends ApiService {
       url: `points/${point.id}`,
       method: Metod.DELETE
     });
+
     return response;
   }
 
