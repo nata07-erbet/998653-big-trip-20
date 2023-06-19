@@ -10,17 +10,17 @@ const Metod = {
 
 export default class PointService extends ApiService {
   //получение от сервера всех задач
-  getDestinations() {
+  get destinations() {
     return this._load({url: 'destinations'})
-      .then(ApiService.parseResponse); //что передаем в response? почему без ()?
+      .then(ApiService.parseResponse);
   }
 
-  getOffers() {
+  get offers() {
     return this._load({url: 'offers'})
       .then(ApiService.parseResponse);
   }
 
-  getPoints() {
+  get points() {
     return this._load({url: 'points'})
       .then(ApiService.parseResponse);
   }
@@ -37,11 +37,11 @@ export default class PointService extends ApiService {
     return parsedResponse;
   }
 
-  async addPoints(point) {
+  async addPoints() {
     const response = await this._load({
       url: 'points',
       method: Metod.POST,
-      body: JSON.stringify(this.#adaptToServer(point)),
+      // body: JSON.stringify(this.#adaptToServer(point)),
       headers: new Headers({'Content-Type': 'application/json'}),
     });
     const parsedResponse = await ApiService.parseResponse(response);
@@ -56,11 +56,11 @@ export default class PointService extends ApiService {
     return response;
   }
 
-  #adaptToServer(point) {
-    const updatePoints = {
-      ...point,
-      date_from: point.dateFrom
-    };
+  // #adaptToServer(point) {
+  //   const updatePoints = {
+  //     ...point,
+  //     date_from: point.dateFrom
+  //   };
 
-  }
+  // }
 }

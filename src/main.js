@@ -1,4 +1,4 @@
-import TripInfoPresentor from './presentor/info-presentor.js';
+// import TripInfoPresentor from './presentor/info-presentor.js';
 import FilterPresentor from './presentor/filter-presentor.js';
 import BoardPresentor from './presentor/board-presentor.js';
 import ApiService from './framework/api-service.js';
@@ -16,6 +16,7 @@ const AVTORIZATION = 'Bacic 45tdf89bg57hfuyfgb';
 const END_POINT = 'https://20.ecmascript.pages.academy/big-trip';
 
 const pointApiService = new ApiService(END_POINT, AVTORIZATION);
+
 const destinationsModel = new DestinationsModel(pointApiService);
 const offersModel = new OffersModel(pointApiService);
 const pointsModel = new PointsModel({
@@ -43,14 +44,14 @@ const boardPresentor = new BoardPresentor({
 });
 
 
-const tripInfoPresentor = new TripInfoPresentor({
-  container:tripMainContainer,
-  destinationsModel,
-  offersModel,
-  pointsModel
-});
+// const tripInfoPresentor = new TripInfoPresentor({
+//   container:tripMainContainer,
+//   destinationsModel,
+//   offersModel,
+//   pointsModel
+// });
 
-tripInfoPresentor.init();
+// tripInfoPresentor.init();
 filterPresentor.init();
 boardPresentor.init();
 tripInfoPresentor.init();

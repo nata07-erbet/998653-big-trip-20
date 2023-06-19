@@ -71,4 +71,4 @@ function getDate ({next}) {
 }
 
 //updateItem
-export {getRandomArrayElement, humanizePointDueDateTime, humanizePointDueDate, humanizePointDueTime, getDiffFromDates, getRandomInteger, getRandomValue, getDate, updateItem };
+export {getRandomArrayElement, humanizePointDueDateTime, humanizePointDueDate, humanizePointDueTime, getDiffFromDates, getRandomInteger, getRandomValue, getDate };

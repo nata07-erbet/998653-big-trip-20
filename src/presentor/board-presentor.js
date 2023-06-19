@@ -60,6 +60,7 @@ export default class BoardPresentor {
   }
 
   init() {
+    debugger;
     this.#points = sort[SortTypes.DAY]([...this.#pointsModel.get()]);
     this.#pointDestination = [...this.#destinationsModel.get()];
     this.#pointOffers = [...this.#offersModel.get()];

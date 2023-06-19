@@ -1,7 +1,7 @@
 import Observable from '../framework/observable.js';
-import { UpdateType } from '../constants/const.js';
-import { adaptToClient, adaptToServer } from '../utils/point.js';
-import { updateItem } from '../utils/utils.js';
+// import { UpdateType } from '../constants/const.js';
+// import { adaptToClient, adaptToServer } from '../utils/point.js';
+// import { updateItem } from '../utils/utils.js';
 
 export default class PointsModel extends Observable {
   #points = [];
@@ -16,22 +16,12 @@ export default class PointsModel extends Observable {
     this.#service = service;
     this.#destinationsModel = destinationsModel;
     this.#offersModel = offersModel;
+
   }
 
   async init() {
-    try {
-      await Promise.all([
-        this.#destinationsModel.init(),
-        this.#offersModel.init()
-      ]);
-
-      const points = await this.#service.getPoints();
-      this.#points = points.map(adaptToClient);
-      this._notify(UpdateType.INIT, {isError: false});
-    } catch {
-      this.#points = [];
-      this._notify(UpdateType.INIT, {isError: true});
-    }
+    this.#points = this.#service.points;
+    return this.#points;
   }
 
   get() {
