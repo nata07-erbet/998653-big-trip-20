@@ -46,8 +46,8 @@ export default class BoardPresentor {
     this.#filterModel = filterModel;
 
 
-    //при изменении модели вызывается обработччик
-    this.#pointsModel.addObserver(this.#handleModelEvent); //проверить этот обработчик
+
+    this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleFilterModelEvent);
   }
 
