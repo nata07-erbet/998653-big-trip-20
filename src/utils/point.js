@@ -30,6 +30,5 @@ function getPointsDurationDiff(pointA, pointB) {
   return durationB - durationA;
 }
 
-//adaptToClient, adaptToServer
 
 export {isPointFuture, isPointPresent, isPointPast, getPointsDateDiff, getPointsPriceDiff, getPointsDurationDiff };

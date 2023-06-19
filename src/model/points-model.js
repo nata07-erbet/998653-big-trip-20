@@ -1,5 +1,5 @@
 import Observable from '../framework/observable.js';
-// import { UpdateType } from '../constants/const.js';
+import { UpdateType } from '../constants/const.js';
 // import { adaptToClient, adaptToServer } from '../utils/point.js';
 // import { updateItem } from '../utils/utils.js';
 
@@ -21,10 +21,12 @@ export default class PointsModel extends Observable {
 
   async init() {
     try{
-      this.#points = await this.#service.points;
+      const points = await this.#service.points;
+      this.#points = points.map(this.#adaptToClient);
     } catch(err) {
       this.#points = [];
     }
+    this._notify(UpdateType.INIT);
   }
 
   get() {
@@ -73,5 +75,21 @@ export default class PointsModel extends Observable {
       ...this.#points.slice(index + 1)
     ];
     this._notify(updateType, update);
+  }
+
+  #adaptToClient(point) {
+    const adaptedPoint = {...point,
+      dateFrom: point['date_from'] !== null ? new Date(point['date_from']) : point['date_from'],
+      dateTo: point['date_to'] !== null ? new Date(point['date_to']) : point['date_to'],
+      isFavorite: point['is_favorite'],
+      basePrice: point['base_price'],
+    };
+
+    delete adaptedPoint['date_from'];
+    delete adaptedPoint['date_to'];
+    delete adaptedPoint['is_favorite'];
+    delete adaptedPoint['base_price'];
+
+    return adaptedPoint;
   }
 }

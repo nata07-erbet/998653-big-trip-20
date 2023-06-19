@@ -25,11 +25,11 @@ export default class PointService extends ApiService {
       .then(ApiService.parseResponse);
   }
 
-  async updatePoint(update) {
+  async updatePoint(point) {
     const response = await this._load({
-      url: `points/${update.id}`,
+      url: `points/${point.id}`,
       method: Metod.PUT,
-      body: JSON.stringify(update),
+      body: JSON.stringify(this.#adaptToServer(point)),
       headers:new Headers({'Content-Type': 'application/json'}),
     });
 
@@ -37,11 +37,11 @@ export default class PointService extends ApiService {
     return parsedResponse;
   }
 
-  async addPoints() {
+  async addPoints(point) {
     const response = await this._load({
       url: 'points',
       method: Metod.POST,
-      // body: JSON.stringify(this.#adaptToServer(point)),
+      body: JSON.stringify(this.#adaptToServer(point)),
       headers: new Headers({'Content-Type': 'application/json'}),
     });
     const parsedResponse = await ApiService.parseResponse(response);
