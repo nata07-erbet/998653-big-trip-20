@@ -68,7 +68,6 @@ export default class BoardPresentor {
     render(this.#newPointButton, this.#tripMainContainer);
     render(new TripEventInfoView(), this.#tripMainContainer, RenderPosition.AFTERBEGIN);
     this.#renderAllBoard();
-    this.#renderPoints(this.#points);
     this.#renderNoPoint();
     this.#renderNewPoint();
   }
@@ -123,7 +122,7 @@ export default class BoardPresentor {
       case UpdateType.INIT:
         // this.#isLoadingError = data.isError; //?
         this.#isLoading = false;
-        this.#clearBoard();
+        remove(this.#isLoading);
         this.#renderBoard();
         break;
 
@@ -162,12 +161,14 @@ export default class BoardPresentor {
   #renderAllBoard(){
     if(this.#isLoading) {
       this.#renderLoading();
+
     } else {
       if(!this.#points.length && !this.#isCreating) {
         this.#renderNoPoint();
       } else {
         this.#renderSort();
         this.#renderBoard();
+        this.#renderPoints(this.#points);
       }
     }
   }
