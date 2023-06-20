@@ -33,7 +33,6 @@ function createOffersByPointType (point, pointOffers) {
            type="checkbox"
            name="event-offer-luggage"
            ${(point.offers.includes(offer.id) ? 'checked' : '')}
-           ${isDisabledAttr}
            >
 
           <label class="event__offer-label" for="event-offer-luggage-${index}">
@@ -148,6 +147,7 @@ function createEventEditTemplate({point, pointDestinations, pointOffers}) {
       <div class="event__available-offers">
 
       ${createOffersByPointType(point, pointOffers)}
+      ${isDisabled}
 
       </div>
     </section>

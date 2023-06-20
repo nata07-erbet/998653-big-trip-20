@@ -1,5 +1,6 @@
 import TripEventEditView from '../view/trip-event-edit.js';
 import { remove, render, RenderPosition } from '../framework/render.js';
+import { Mode } from '../constants/const.js';
 import { UserAction, UpdateType } from '../constants/const.js';
 import { EditType } from '../constants/const.js';
 
@@ -8,7 +9,9 @@ export default class NewPointPresentor {
   #container = null;
   #newPointComponent = null;
   #destinationsModel = null;
+  #tripEventViewEditComponent = null;
   #offersModel = null;
+  #mode = null;
 
   #handleDataChange = null;
   #handleDestroy = null;
@@ -70,5 +73,14 @@ export default class NewPointPresentor {
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
   };
+
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
+      this.#tripEventViewEditComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  }
 
 }

@@ -64,7 +64,7 @@ export default class BoardPresentor {
     this.#pointDestination = [...this.#destinationsModel.get()];
     this.#pointOffers = [...this.#offersModel.get()];
 
-    this.#newPointButton = new TripEventNewButton({onNewPointCreateButton: this.#newPointButtonClickHandler});
+    this.#newPointButton = new ({onNewPointCreateButton: this.#newPointButtonClickHandler});
     render(this.#newPointButton, this.#tripMainContainer);
     render(new TripEventInfoView(), this.#tripMainContainer, RenderPosition.AFTERBEGIN);
     this.#renderAllBoard();
@@ -90,15 +90,15 @@ export default class BoardPresentor {
   #handleViewAction = (actonType, updateType, update) => {
     switch(actonType) {
       case UserAction.UPDATE_POINT:
-        this.#pointsModel.update(updateType, update);
+        this.#pointPresentors.get(update.id).setSaving();
         break;
 
       case UserAction.ADD_POINT:
-        this.#pointsModel.addPoint(updateType, update);
+        this.#newPointPresentor.get(update.id).setSaving();
         break;
 
       case UserAction.DELETE_POINT:
-        this.#points.delete(updateType, update);
+        this.#pointPresentors.get(update.id).setDeleting();
         break;
     }
   };

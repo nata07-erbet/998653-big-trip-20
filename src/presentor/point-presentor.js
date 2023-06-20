@@ -136,4 +136,22 @@ export default class PointPresentor {
       point
     );
   };
+
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
+      this.#tripEventViewEditComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  }
+
+  setDeleting() {
+    if (this.#mode === Mode.EDITING) {
+      this.#tripEventViewEditComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  }
 }
