@@ -89,7 +89,7 @@ function createEventEditTemplate({point, pointDestinations, pointOffers}) {
         id="event-destination-1"
         type="text"
          name="event-destination"
-         value="${name}"
+         value="${name ?? 'Chopse Destination'}"
          list="destination-list-1">
         <datalist id="destination-list-1">
         ${createDestinationsCites(pointDestinations)}
@@ -312,7 +312,7 @@ export default class TripEventEditView extends AbstractStatefulView {
   #destinationInputChangeHandler = (evt) => {
     evt.preventDefault();
     const selectedDestination = this._state.pointDestinations
-      .find((pointDestination) => pointDestination.id === evt.target.value); //не понимаю связи по Id
+      .find((pointDestination) => pointDestination.name === evt.target.value); //не понимаю связи по Id
 
     const selectedDestinationId = selectedDestination.id;
 

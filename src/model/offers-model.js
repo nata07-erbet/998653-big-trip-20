@@ -4,7 +4,7 @@ export default class OffersModel extends Observable {
   #offers = null;
   #service = null;
 
-  constructor(service) {
+  constructor({service}) {
     super();
 
     this.#service = service;

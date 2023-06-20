@@ -60,16 +60,19 @@ export default class BoardPresentor {
   }
 
   init() {
+    this.#newPointButton = new TripEventNewButton({onNewPointCreateButton: this.#newPointButtonClickHandler});
+    render(this.#newPointButton, this.#tripMainContainer);
+    render(new TripEventInfoView(), this.#tripMainContainer, RenderPosition.AFTERBEGIN);
+    this.#renderAllBoard();
+    this.#renderNewPoint();
+  }
+
+  #onDataLoad() {
     this.#points = sort[SortTypes.DAY]([...this.#pointsModel.get()]);
     this.#pointDestination = [...this.#destinationsModel.get()];
     this.#pointOffers = [...this.#offersModel.get()];
 
-    this.#newPointButton = new ({onNewPointCreateButton: this.#newPointButtonClickHandler});
-    render(this.#newPointButton, this.#tripMainContainer);
-    render(new TripEventInfoView(), this.#tripMainContainer, RenderPosition.AFTERBEGIN);
     this.#renderAllBoard();
-    this.#renderNoPoint();
-    this.#renderNewPoint();
   }
 
   #clearBoard({ resetSortType = false } = {}) {
@@ -120,10 +123,9 @@ export default class BoardPresentor {
         break;
 
       case UpdateType.INIT:
-        // this.#isLoadingError = data.isError; //?
         this.#isLoading = false;
-        remove(this.#isLoading);
-        this.#renderBoard();
+        remove(this.#loadingComponent);
+        this.#onDataLoad();
         break;
 
     }
@@ -175,7 +177,7 @@ export default class BoardPresentor {
 
   #renderLoading() {
     this.#loadingComponent = new TripEventLoadingComponent();
-    render(this.#loadingComponent, this.#tripMainContainer);
+    render(this.#loadingComponent, this.#tripEventsContainer);
   }
 
   #renderBoard() {
