@@ -103,7 +103,7 @@ export default class PointPresentor {
       {
         ...this.#point,
         isFavorite: !this.#point.isFavorite
-      });
+      },);
   };
 
   #pointEditClickHandlerDown = () => {
@@ -153,5 +153,21 @@ export default class PointPresentor {
         isDeleting: true,
       });
     }
+  }
+
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#tripEventViewComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#tripEventViewEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+    this.#tripEventViewEditComponent.shake(resetFormState);
   }
 }

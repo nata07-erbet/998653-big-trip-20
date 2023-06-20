@@ -11,6 +11,12 @@ import NewPointPresentor from './new-point-presentor.js';
 import TripEventNewButton from '../view/trip-event-new-button.js';
 import TripEvevntMessageView from '../view/trip-event-message-view.js';
 import TripEventLoadingComponent from '../view/trip-event-loading-view.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
+
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000
+};
 
 
 export default class BoardPresentor {
@@ -39,6 +45,10 @@ export default class BoardPresentor {
   #messageComponent = null;
   #isLoading = true;
   #loadingComponent = null;
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT
+  });
 
   constructor ({tripMainContainer, tripEventsContainer, destinationsModel, offersModel, pointsModel, filterModel}) {
     this.#tripMainContainer = tripMainContainer;
@@ -90,18 +100,34 @@ export default class BoardPresentor {
   }
 
 
-  #handleViewAction = (actonType, updateType, update) => {
+  #handleViewAction = async (actonType, updateType, update) => {
+    this.#uiBlocker.block();
     switch(actonType) {
       case UserAction.UPDATE_POINT:
         this.#pointPresentors.get(update.id).setSaving();
+        try{
+          await this.#pointsModel.updatePoint(updateType, update);
+        }catch(err) {
+          this.#pointPresentors.get(update.id).setAborting();
+        }
         break;
 
       case UserAction.ADD_POINT:
         this.#newPointPresentor.get(update.id).setSaving();
+        try {
+          await this.#pointsModel.addPoint(updateType, update);
+        } catch(err) {
+          this.#newPointPresentor.setAborting();
+        }
         break;
 
       case UserAction.DELETE_POINT:
         this.#pointPresentors.get(update.id).setDeleting();
+        try {
+          await this.#pointsModel.deletePoint(updateType, update);
+        } catch(err) {
+          this.#pointPresentors.get(update.id).setAborting();
+        }
         break;
     }
   };

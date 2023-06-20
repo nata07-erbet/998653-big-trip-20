@@ -83,4 +83,20 @@ export default class NewPointPresentor {
     }
   }
 
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#tripEventViewEditComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#tripEventViewEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+    this.#tripEventViewEditComponent.shake(resetFormState);
+  }
+
 }

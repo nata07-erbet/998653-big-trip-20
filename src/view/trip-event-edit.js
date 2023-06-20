@@ -34,7 +34,7 @@ function createOffersByPointType (point, pointOffers) {
            name="event-offer-luggage"
            ${(point.offers.includes(offer.id) ? 'checked' : '')}
            >
-
+ 
           <label class="event__offer-label" for="event-offer-luggage-${index}">
            <span class="event__offer-title">${offer.title}</span>
             &plus;&euro;&nbsp;
@@ -67,12 +67,12 @@ function createEventEditTemplate({point, pointDestinations, pointOffers}) {
   const isDisabledAttr = isDisabled ? 'disabled' : '';
 
   return (/*html*/`<form class="event event--edit" action="#" method="post">
-    <header class="event__header"
+    <header class="event__header">
       <div class="event__type-wrapper">
-      <label class="event__type  event__type-btn" for="event-type-toggle-1">
-        <span class="visually-hidden">Choose event type</span>
-        <img class="event__${type}-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event ${type}icon">
-      </label>
+        <label class="event__type  event__type-btn" for="event-type-toggle-1">
+          <span class="visually-hidden">Choose event type</span>
+          <img class="event__${type}-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event ${type}icon">
+       </label>
       <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
         <div class="event__type-list">
@@ -93,7 +93,7 @@ function createEventEditTemplate({point, pointDestinations, pointOffers}) {
          list="destination-list-1">
         <datalist id="destination-list-1">
         ${createDestinationsCites(pointDestinations)}
-        ${isDisabledAttr}
+       ${isDisabledAttr}
         </datalist>
       </div>
 
@@ -135,7 +135,10 @@ function createEventEditTemplate({point, pointDestinations, pointOffers}) {
       type="reset">
       ${!point.id ? 'Cancel' : deleteButton}
       </button>
-      <button class="event__rollup-btn" type="button">
+
+      <button
+      class="event__rollup-btn"
+      type="button">
         <span class="visually-hidden">Open event</span>
       </button>
     </header>
