@@ -100,7 +100,8 @@ export default class BoardPresentor {
   }
 
 
-  #handleViewAction = async (actonType, updateType, update) => {
+  #handleViewAction = async (actonType, updateType, update) => { // так же обновленные данные
+    debugger;
     this.#uiBlocker.block();
     switch (actonType) {
       case UserAction.UPDATE_POINT:

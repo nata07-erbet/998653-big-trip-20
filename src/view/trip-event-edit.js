@@ -34,8 +34,7 @@ function createOffersByPointType(point, pointOffers) {
            name="event-offer-luggage"
            ${(point.offers.includes(offer.id) ? 'checked' : '')}
            >
- 
-          <label class="event__offer-label" for="event-offer-luggage-${index}">
+           <label class="event__offer-label" for="event-offer-luggage-${index}">
            <span class="event__offer-title">${offer.title}</span>
             &plus;&euro;&nbsp;
             <span class="event__offer-price">${offer.price}</span>
@@ -49,13 +48,11 @@ function createDestinationBlock(pointDestination) {
   if (pointDestination) {
     const { description, pictures } = pointDestination;
     return (`<section class="event__section  event__section--destination">
-  <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-  <p class="event__destination-description">${description}</p>
-  <div class="event__photos-container">
-  <div class="event__photos-tape">
-
-  ${createPicturiesOfDestination(pictures)}
-
+    <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+    <p class="event__destination-description">${description}</p>
+    <div class="event__photos-container">
+    <div class="event__photos-tape">
+    ${createPicturiesOfDestination(pictures)}
   </div>
 </div>
 </section>`);
@@ -114,9 +111,9 @@ function createEventEditTemplate({ point, pointDestinations, pointOffers, isDele
         <input class="event__input  event__input--destination"
         id="event-destination-1"
         type="text"
-         name="event-destination"
-         value="${pointDestination?.name ?? 'Chopse Destination'}"
-         list="destination-list-1">
+        name="event-destination"
+        value="${pointDestination?.name ?? ' '}"
+        list="destination-list-1">
         <datalist id="destination-list-1">
         ${createDestinationsCites(pointDestinations)}
         </datalist>
@@ -168,7 +165,7 @@ function createEventEditTemplate({ point, pointDestinations, pointOffers, isDele
       <div class="event__available-offers">
 
       ${createOffersByPointType(point, pointOffers)}
-      
+
 
       </div>
     </section>
@@ -279,7 +276,7 @@ export default class TripEventEditView extends AbstractStatefulView {
 
   #formSumbitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this._state.point);
+    this.#handleFormSubmit(this._state.point); //передаются обновленные данные
   };
 
   #dateFromChangeHandler = ([userDate]) => {
