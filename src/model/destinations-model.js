@@ -5,7 +5,7 @@ export default class DestinationsModel extends Observable {
   #destinations = null;
   #service = null;
 
-  constructor(service) {
+  constructor({service}) {
     super();
     this.#service = service;
   }

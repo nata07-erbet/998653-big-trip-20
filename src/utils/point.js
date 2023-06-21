@@ -15,8 +15,6 @@ function isPointPast(point) {
 
 function getPointsDateDiff(pointA, pointB) {
   return new Date(pointB.dateFrom) - new Date(pointA.dateFrom);
-
-
 }
 
 function getPointsPriceDiff(pointA, pointB) {

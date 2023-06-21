@@ -5,7 +5,7 @@ const Metod = {
   GET: 'GET',
   PUT: 'PUT',
   POST: 'POST',
-  DELETE: 'DELETE '
+  DELETE: 'DELETE'
 };
 
 export default class PointService extends ApiService {

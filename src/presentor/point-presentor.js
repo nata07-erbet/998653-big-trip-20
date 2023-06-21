@@ -45,7 +45,7 @@ export default class PointPresentor {
       pointOffers: this.#offersModel.get(),
       onClickUp: this.#pointEditClickHandlerUp,
       onFormSubmit: this.#pointSumitHandler,
-      onDeleteClick: this.#pointDeleteClickHandler,
+      onDeleteClick: this.#pointDeleteClickHandler
     });
 
     if(prevPointComponent === null || prevPointEditComponent === null) {
@@ -83,6 +83,10 @@ export default class PointPresentor {
   };
 
   #replaceFormToPoint = () => {
+    this.#tripEventViewEditComponent.updateElement({
+      point: this.#point
+    });
+
     replace(this.#tripEventViewComponent, this.#tripEventViewEditComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = Mode.DEFAULT;
@@ -103,7 +107,7 @@ export default class PointPresentor {
       {
         ...this.#point,
         isFavorite: !this.#point.isFavorite
-      });
+      },);
   };
 
   #pointEditClickHandlerDown = () => {
@@ -116,8 +120,8 @@ export default class PointPresentor {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #pointSumitHandler = (point) => {
-    this.#onDataChange(
+  #pointSumitHandler = async (point) => {
+    await this.#onDataChange(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
       {
@@ -136,4 +140,38 @@ export default class PointPresentor {
       point
     );
   };
+
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
+      this.#tripEventViewEditComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  }
+
+  setDeleting() {
+    if (this.#mode === Mode.EDITING) {
+      this.#tripEventViewEditComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  }
+
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#tripEventViewComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#tripEventViewEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+    this.#tripEventViewEditComponent.shake(resetFormState);
+  }
 }
