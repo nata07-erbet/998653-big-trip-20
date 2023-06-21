@@ -5,7 +5,7 @@ import { POINT_EMPTY } from '../constants/constants.js';
 function createCurrentOffer(pointOffers, offers) {
   return(
     pointOffers
-      .filter((offer) => offers.includes(offer.id)) //зачем делаем фильтрацию?
+      .filter((offer) => offers.includes(offer.id))
       .map((offer) => /*html*/`<li class="event__offer">
           <span class="event__offer-title">${offer.title}</span>
           &plus;&euro;&nbsp;

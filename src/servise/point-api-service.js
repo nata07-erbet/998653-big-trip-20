@@ -5,11 +5,10 @@ const Metod = {
   GET: 'GET',
   PUT: 'PUT',
   POST: 'POST',
-  DELETE: 'DELETE '
+  DELETE: 'DELETE'
 };
 
 export default class PointService extends ApiService {
-  //получение от сервера всех задач
   get destinations() {
     return this._load({url: 'destinations'})
       .then(ApiService.parseResponse);
@@ -27,7 +26,7 @@ export default class PointService extends ApiService {
 
   async updatePoint(point) {
     const response = await this._load({
-      url: `points/${point.id}`,
+      url: `point/${point.id}`,
       method: Metod.PUT,
       body: JSON.stringify(this.#adaptToServer(point)),
       headers:new Headers({'Content-Type': 'application/json'}),
@@ -53,6 +52,7 @@ export default class PointService extends ApiService {
       url: `points/${point.id}`,
       method: Metod.DELETE
     });
+
     return response;
   }
 

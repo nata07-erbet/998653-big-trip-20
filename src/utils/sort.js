@@ -1,5 +1,5 @@
 import {SortTypes} from '../constants/const.js';
-import { getPointsDateDiff, getPointsPriceDiff, getPointsDurationDiff } from './point.js';
+import { getPointsPriceDiff, getPointsDurationDiff, getPointsDateDiff } from './point.js';
 
 if(!Array.prototype.toSorted) {
   Array.prototype.toSorted = function(fn) {

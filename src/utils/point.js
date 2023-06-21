@@ -14,9 +14,7 @@ function isPointPast(point) {
 }
 
 function getPointsDateDiff(pointA, pointB) {
-  return new Date(pointB.dateFrom) - new Date(pointA.dateFrom);
-
-
+  return new Date(pointA.dateFrom) - new Date(pointB.dateFrom);
 }
 
 function getPointsPriceDiff(pointA, pointB) {
@@ -24,10 +22,10 @@ function getPointsPriceDiff(pointA, pointB) {
 }
 
 function getPointsDurationDiff(pointA, pointB) {
-  const durationA = new Date(pointA.dateTo) - new Date(pointB.dateFrom);
+  const durationA = new Date(pointA.dateFrom) - new Date(pointA.dateTo);
   const durationB = new Date(pointB.dateFrom) - new Date(pointB.dateTo);
 
-  return durationB - durationA;
+  return durationA - durationB;
 }
 
 

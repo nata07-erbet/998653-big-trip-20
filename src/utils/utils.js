@@ -70,5 +70,4 @@ function getDate ({next}) {
   return date;
 }
 
-//updateItem
 export {getRandomArrayElement, humanizePointDueDateTime, humanizePointDueDate, humanizePointDueTime, getDiffFromDates, getRandomInteger, getRandomValue, getDate };
