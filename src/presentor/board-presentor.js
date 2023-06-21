@@ -1,7 +1,6 @@
 import TripEventListView from '../view/trip-events-list.js';
-import TripEventInfoView from '../view/trip-info.js';
 import TripEventSortView from '../view/trip-sort.js';
-import { remove, render, RenderPosition } from '../framework/render.js';
+import { remove, render } from '../framework/render.js';
 import TripEventNoPointView from '../view/trip-no-point.js';
 import PointPresentor from './point-presentor.js';
 import { sort } from '../utils/sort.js';
@@ -71,7 +70,6 @@ export default class BoardPresentor {
   init() {
     this.#newPointButton = new TripEventNewButton({ onNewPointCreateButton: this.#newPointButtonClickHandler });
     render(this.#newPointButton, this.#tripMainContainer);
-    render(new TripEventInfoView(), this.#tripMainContainer, RenderPosition.AFTERBEGIN);
     this.#renderAllBoard();
     this.#renderNewPoint();
   }
