@@ -9,7 +9,6 @@ if(!Array.prototype.toSorted) {
 
 
 const sort = {
-  // [SortTypes.DAY]: (points) => points,
   [SortTypes.DAY]: (points) => points.toSorted(getPointsDateDiff),
   [SortTypes.PRICE]: (points) => points.toSorted(getPointsPriceDiff),
   [SortTypes.TIME]: (points) => points.toSorted(getPointsDurationDiff),

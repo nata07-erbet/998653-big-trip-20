@@ -78,8 +78,6 @@ function createEventEditTemplate({ point, pointDestinations, pointOffers, isDele
   const { basePrice, dateFrom, dateTo, destination, type } = point;
 
   const pointDestination = pointDestinations.find((x) => x.id === destination);
-
-  // const { description, name, pictures } = pointDestination ;
   const saveButton = isSaving ? 'Saving...' : 'Save';
   const deleteButton = isDeleting ? 'Deleting...' : 'Delete';
 
@@ -225,7 +223,7 @@ export default class TripEventEditView extends AbstractStatefulView {
     }
   }
 
-  reset = (point) => this.updateElement({ point }); //?
+  reset = (point) => this.updateElement({ point });
 
   _restoreHandlers = () => {
     if (this.#type === EditType.EDITING) {
@@ -269,25 +267,25 @@ export default class TripEventEditView extends AbstractStatefulView {
     this.#setDatePicker();
   };
 
-  #rollupButtonClickHadnler = (evt) => { //стрелка вверх в форме редактирования
+  #rollupButtonClickHadnler = (evt) => {
     evt.preventDefault();
     this.#handleClickUp();
   };
 
   #formSumbitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this._state.point); //передаются обновленные данные
+    this.#handleFormSubmit(this._state.point);
   };
 
   #dateFromChangeHandler = ([userDate]) => {
     if (userDate) {
-      this._setState({ //почему на upDateElement
+      this._setState({
         point: {
-          ...this._state.point, //?
+          ...this._state.point,
           dateFrom: userDate
         }
       });
-      this.#datepickerTo.set('minDate', this._state.point.dateFrom); //почему #datepickerTo
+      this.#datepickerTo.set('minDate', this._state.point.dateFrom);
     }
   };
 
@@ -322,7 +320,7 @@ export default class TripEventEditView extends AbstractStatefulView {
   #destinationInputChangeHandler = (evt) => {
     evt.preventDefault();
     const selectedDestination = this._state.pointDestinations
-      .find((pointDestination) => pointDestination.name === evt.target.value); //не понимаю связи по Id
+      .find((pointDestination) => pointDestination.name === evt.target.value);
 
     if (!selectedDestination) {
       return;
@@ -406,9 +404,9 @@ export default class TripEventEditView extends AbstractStatefulView {
   };
 
 
-  #resetButtonClickHander = (evt) => { // что пишем в этом обработчике?
+  #resetButtonClickHander = (evt) => {
     evt.preventDefault();
-    this.#handleResetClick(TripEventEditView.parseStatetoPoint(this._state.point)); //это неверно
+    this.#handleResetClick(TripEventEditView.parseStatetoPoint(this._state.point));
   };
 
 
