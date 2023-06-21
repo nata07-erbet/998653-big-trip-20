@@ -101,7 +101,6 @@ export default class BoardPresentor {
 
 
   #handleViewAction = async (actonType, updateType, update) => { // так же обновленные данные
-    debugger;
     this.#uiBlocker.block();
     switch (actonType) {
       case UserAction.UPDATE_POINT:
@@ -110,11 +109,13 @@ export default class BoardPresentor {
           await this.#pointsModel.updatePoint(updateType, update);
         } catch (err) {
           this.#pointPresentors.get(update.id).setAborting();
+          this.#uiBlocker.unblock();
+          return Promise.reject();
         }
         break;
 
       case UserAction.ADD_POINT:
-        this.#newPointPresentor.get(update.id).setSaving();
+        this.#newPointPresentor.setSaving();
         try {
           await this.#pointsModel.addPoint(updateType, update);
         } catch (err) {

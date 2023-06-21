@@ -55,8 +55,6 @@ const boardPresentor = new BoardPresentor({
 //   pointsModel
 // });
 
-destinationsModel.init();
-offersModel.init();
 pointsModel.init();
 
 // tripInfoPresentor.init();

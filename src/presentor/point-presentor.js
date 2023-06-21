@@ -44,7 +44,7 @@ export default class PointPresentor {
       pointDestinations: this.#destinationsModel.get(),
       pointOffers: this.#offersModel.get(),
       onClickUp: this.#pointEditClickHandlerUp,
-      onFormSubmit: this.#pointSumitHandler,
+      onFormSubmit: this.#pointSubmitHandler,
       onDeleteClick: this.#pointDeleteClickHandler
     });
 
@@ -120,17 +120,16 @@ export default class PointPresentor {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #pointSumitHandler = async (point) => {
-    await this.#onDataChange(
+  #pointSubmitHandler = (point) => {
+    this.#onDataChange(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
       {
         ...this.#point,
         ...point
-      });
-
-    this.#replaceFormToPoint();
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
+      })
+      .then(this.#replaceFormToPoint)
+      .catch();
   };
 
   #pointDeleteClickHandler = (point) => {

@@ -1,5 +1,5 @@
 import {SortTypes} from '../constants/const.js';
-import { getPointsPriceDiff, getPointsDurationDiff } from './point.js';
+import { getPointsPriceDiff, getPointsDurationDiff, getPointsDateDiff } from './point.js';
 
 if(!Array.prototype.toSorted) {
   Array.prototype.toSorted = function(fn) {
@@ -9,8 +9,8 @@ if(!Array.prototype.toSorted) {
 
 
 const sort = {
-  [SortTypes.DAY]: (points) => points,
-  // [SortTypes.DAY]: (points) => points.toSorted(getPointsDateDiff),
+  // [SortTypes.DAY]: (points) => points,
+  [SortTypes.DAY]: (points) => points.toSorted(getPointsDateDiff),
   [SortTypes.PRICE]: (points) => points.toSorted(getPointsPriceDiff),
   [SortTypes.TIME]: (points) => points.toSorted(getPointsDurationDiff),
   [SortTypes.EVENT]: () => {

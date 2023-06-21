@@ -280,13 +280,15 @@ export default class TripEventEditView extends AbstractStatefulView {
   };
 
   #dateFromChangeHandler = ([userDate]) => {
-    this._setState({ //почему на upDateElement
-      point: {
-        ...this._state.point, //?
-        dateFrom: userDate
-      }
-    });
-    this.#datepickerTo.set('minDate', this._state.point.dateFrom); //почему #datepickerTo
+    if (userDate) {
+      this._setState({ //почему на upDateElement
+        point: {
+          ...this._state.point, //?
+          dateFrom: userDate
+        }
+      });
+      this.#datepickerTo.set('minDate', this._state.point.dateFrom); //почему #datepickerTo
+    }
   };
 
   #dateToChangeHandler = ([userDate]) => {
@@ -372,6 +374,7 @@ export default class TripEventEditView extends AbstractStatefulView {
         defaultDate: this._state.point.dateFrom,
         onClose: this.#dateFromChangeHandler,
         enableTime: true,
+        minDate: new Date(),
         maxDate: this._state.point.dateTo,
         locale: {
           firstDayOfWeak: 1,
@@ -387,7 +390,7 @@ export default class TripEventEditView extends AbstractStatefulView {
         defaultDate: this._state.point.dateTo,
         onClose: this.#dateToChangeHandler,
         enableTime: true,
-        minDate: this._state.point.dateFrom,
+        minDate: this._state.point.dateFrom || new Date(),
         locale: {
           firstDayOfWeak: 1,
         },

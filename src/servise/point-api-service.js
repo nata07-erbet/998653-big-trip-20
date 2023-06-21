@@ -26,7 +26,7 @@ export default class PointService extends ApiService {
 
   async updatePoint(point) {
     const response = await this._load({
-      url: `points/${point.id}`,
+      url: `point/${point.id}`,
       method: Metod.PUT,
       body: JSON.stringify(this.#adaptToServer(point)),
       headers:new Headers({'Content-Type': 'application/json'}),
