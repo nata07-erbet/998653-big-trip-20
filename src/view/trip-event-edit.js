@@ -1,7 +1,7 @@
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { humanizePointDueDateTime } from '../utils/utils.js';
 import { PointType, PointTypeDescription, POINT_EMPTY } from '../constants/constants.js';
-import { EditType } from '../constants/const.js';
+import { EditType } from '../constants/constants.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -398,8 +398,8 @@ export default class TripEventEditView extends AbstractStatefulView {
   };
 
   #deleteButtonClickHandler = (evt) => {
-    evt.preventDefault();
 
+    evt.preventDefault();
     this.#handleDeleteClick(TripEventEditView.parseStatetoPoint(this._state.point));
   };
 

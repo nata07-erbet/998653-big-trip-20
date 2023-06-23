@@ -1,4 +1,4 @@
-import { EditType } from '../constants/const.js';
+import { EditType } from '../constants/constants.js';
 
 const ButtonLabel = {
   [EditType.EDITING]:  'Delete',

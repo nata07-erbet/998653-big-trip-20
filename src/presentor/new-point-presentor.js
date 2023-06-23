@@ -1,8 +1,8 @@
 import TripEventEditView from '../view/trip-event-edit.js';
 import { remove, render, RenderPosition } from '../framework/render.js';
-import { Mode } from '../constants/const.js';
-import { UserAction, UpdateType } from '../constants/const.js';
-import { EditType } from '../constants/const.js';
+import { Mode } from '../constants/constants.js';
+import { UserAction, UpdateType } from '../constants/constants.js';
+import { EditType } from '../constants/constants.js';
 
 
 export default class NewPointPresentor {

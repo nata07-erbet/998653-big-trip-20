@@ -6,7 +6,7 @@ import TripEventNoPointView from '../view/trip-no-point.js';
 import PointPresentor from './point-presentor.js';
 import { sort } from '../utils/sort.js';
 import { filter } from '../utils/filter.js';
-import { FilterTypes, SortTypes, UpdateType, UserAction } from '../constants/const.js';
+import { FilterTypes, SortTypes, UpdateType, UserAction } from '../constants/constants.js';
 import NewPointPresentor from './new-point-presentor.js';
 import TripEventNewButton from '../view/trip-event-new-button.js';
 import TripEvevntMessageView from '../view/trip-event-message-view.js';
@@ -235,7 +235,7 @@ export default class BoardPresentor {
   }
 
   #renderNoPoint() {
-    if (this.#points.length === 0 && !this.#isCreating) {
+    if (this.#points.length === 0) {
       this.#renderMessage();
     }
   }

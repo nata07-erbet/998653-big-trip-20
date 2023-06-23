@@ -1,4 +1,4 @@
-import {FilterTypes} from '../constants/const.js';
+import {FilterTypes} from '../constants/constants.js';
 import {isPointFuture, isPointPresent, isPointPast} from './point.js';
 
 const filter = {

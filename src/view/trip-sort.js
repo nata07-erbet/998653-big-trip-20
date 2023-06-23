@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {SortTypes} from '../constants/const.js';
+import {SortTypes} from '../constants/constants.js';
 
 const enabledSortType = {
   [SortTypes.DAY]: true,
