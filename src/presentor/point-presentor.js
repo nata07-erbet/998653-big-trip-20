@@ -133,7 +133,6 @@ export default class PointPresentor {
   };
 
   #pointDeleteClickHandler = (point) => {
-
     this.#onDataChange(
       UserAction.DELETE_POINT,
       UpdateType.MINOR,

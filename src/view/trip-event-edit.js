@@ -75,6 +75,7 @@ function createPicturiesOfDestination(pictures) {
 }
 
 function createEventEditTemplate({ point, pointDestinations, pointOffers, isDeleting, isSaving }) {
+  debugger;
   const { basePrice, dateFrom, dateTo, destination, type } = point;
 
   const pointDestination = pointDestinations.find((x) => x.id === destination);
@@ -86,7 +87,6 @@ function createEventEditTemplate({ point, pointDestinations, pointOffers, isDele
   type="button">
     <span class="visually-hidden">Close event</span>
   </button>`;
-
   return (/*html*/`<form class="event event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
@@ -99,7 +99,7 @@ function createEventEditTemplate({ point, pointDestinations, pointOffers, isDele
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
-            ${createEventType(type)};
+            ${createEventType(type)}
           </fieldset>
         </div>
       </div>
@@ -157,7 +157,8 @@ function createEventEditTemplate({ point, pointDestinations, pointOffers, isDele
     </header>
 
     <section class="event__details">
-    <section class="event__section  event__section--offers">
+    <section class="event__section  event__section--offers ${pointOffers.offers.length
+      === 0 ? 'visually-hidden' : '' }">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
       <div class="event__available-offers">
@@ -223,7 +224,7 @@ export default class TripEventEditView extends AbstractStatefulView {
     }
   }
 
-  reset = (point) => this.updateElement({ point });
+  reset = (point) => this.updateElement({ point }); //?
 
   _restoreHandlers = () => {
     if (this.#type === EditType.EDITING) {
@@ -267,25 +268,25 @@ export default class TripEventEditView extends AbstractStatefulView {
     this.#setDatePicker();
   };
 
-  #rollupButtonClickHadnler = (evt) => {
+  #rollupButtonClickHadnler = (evt) => { //стрелка вверх в форме редактирования
     evt.preventDefault();
     this.#handleClickUp();
   };
 
   #formSumbitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this._state.point);
+    this.#handleFormSubmit(this._state.point); //передаются обновленные данные
   };
 
   #dateFromChangeHandler = ([userDate]) => {
     if (userDate) {
-      this._setState({
+      this._setState({ //почему на upDateElement
         point: {
-          ...this._state.point,
+          ...this._state.point, //?
           dateFrom: userDate
         }
       });
-      this.#datepickerTo.set('minDate', this._state.point.dateFrom);
+      this.#datepickerTo.set('minDate', this._state.point.dateFrom); //почему #datepickerTo
     }
   };
 
@@ -320,7 +321,7 @@ export default class TripEventEditView extends AbstractStatefulView {
   #destinationInputChangeHandler = (evt) => {
     evt.preventDefault();
     const selectedDestination = this._state.pointDestinations
-      .find((pointDestination) => pointDestination.name === evt.target.value);
+      .find((pointDestination) => pointDestination.name === evt.target.value); //не понимаю связи по Id
 
     if (!selectedDestination) {
       return;
@@ -398,15 +399,15 @@ export default class TripEventEditView extends AbstractStatefulView {
   };
 
   #deleteButtonClickHandler = (evt) => {
-
     evt.preventDefault();
+
     this.#handleDeleteClick(TripEventEditView.parseStatetoPoint(this._state.point));
   };
 
 
-  #resetButtonClickHander = (evt) => {
+  #resetButtonClickHander = (evt) => { // что пишем в этом обработчике?
     evt.preventDefault();
-    this.#handleResetClick(TripEventEditView.parseStatetoPoint(this._state.point));
+    this.#handleResetClick(TripEventEditView.parseStatetoPoint(this._state.point)); //это неверно
   };
 
 

@@ -18,6 +18,7 @@ export default class TripInfoPresentor {
 
   init() {
     this.pointsModel.addObserver(this.#modelEventHandler);
+    this.#render();
   }
 
   #modelEventHandler = () => {
