@@ -7,12 +7,6 @@ export default class TripInfoPresentor {
   #pointsModel = null;
   #destinationsModel = null;
   #offersModel = null;
-
-
-  #destinations = [];
-  #duration = 0;
-  #sum = 0;
-
   #tripInfoComponent = null;
 
   constructor(container, destinationsModel, offersModel, pointsModel) {

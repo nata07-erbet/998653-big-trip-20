@@ -21,7 +21,6 @@ const TimeLimit = {
 
 export default class BoardPresentor {
   #tripMainContainer = null;
-  #newPointButtonContainer = null;
   #tripEventsContainer = null;
 
   #destinationsModel = null;
