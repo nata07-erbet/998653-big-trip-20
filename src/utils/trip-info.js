@@ -25,7 +25,6 @@ function getOffersCost(offersIds = [], offers = []) {
   );
 }
 
-
 function getTripCost(points = [], offers = []) {
   return points.reduce(
     (result, point) => result + point.basePrice + getOffersCost(point.offers, offers.find((offer) => point.type === offer))

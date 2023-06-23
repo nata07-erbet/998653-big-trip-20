@@ -9,7 +9,6 @@ export default class NewPointPresentor {
   #container = null;
   #newPointComponent = null;
   #destinationsModel = null;
-  #tripEventViewEditComponent = null;
   #offersModel = null;
   #mode = null;
 
@@ -58,8 +57,9 @@ export default class NewPointPresentor {
       UserAction.ADD_POINT,
       UpdateType.MAJOR,
       point,
-    );
-    this.destroy(false);
+    )
+      .then(() => this.destroy(false))
+      .catch();
   };
 
   #resetClickHandler = () => {
@@ -76,7 +76,7 @@ export default class NewPointPresentor {
 
   setSaving() {
     if (this.#mode === Mode.EDITING) {
-      this.#tripEventViewEditComponent.updateElement({
+      this.#newPointComponent.updateElement({
         isDisabled: true,
         isSaving: true,
       });
@@ -85,18 +85,18 @@ export default class NewPointPresentor {
 
   setAborting() {
     if (this.#mode === Mode.DEFAULT) {
-      this.#tripEventViewEditComponent.shake();
+      this.#newPointComponent.shake();
       return;
     }
 
     const resetFormState = () => {
-      this.#tripEventViewEditComponent.updateElement({
+      this.#newPointComponent.updateElement({
         isDisabled: false,
         isSaving: false,
         isDeleting: false,
       });
     };
-    this.#tripEventViewEditComponent.shake(resetFormState);
+    this.#newPointComponent.shake(resetFormState);
   }
 
 }

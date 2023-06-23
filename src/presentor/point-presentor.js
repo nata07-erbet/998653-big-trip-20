@@ -8,12 +8,11 @@ export default class PointPresentor {
   #tripEventListComponent = null;
   #tripEventViewComponent = null;
   #tripEventViewEditComponent = null;
-
   #point = null;
-  #mode = Mode.DEFAULT;
-
   #destinationsModel = null;
   #offersModel = null;
+
+  #mode = Mode.DEFAULT;
   #onDataChange = null;
   #handleModeChange = null;
 

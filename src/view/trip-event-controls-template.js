@@ -18,10 +18,10 @@ function createRollUpButtonTemplate() {
 
 function createPointEditControlsTemplate({type}) {
   return `
-   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-   ${createDeleteButtonTemplate({type})}
-   ${(type !== EditType.CREATING) ? createRollUpButtonTemplate() : ''}
-  `;
+     <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+    ${createDeleteButtonTemplate({type})}
+    ${(type !== EditType.CREATING) ? createRollUpButtonTemplate() : ''}
+    `;
 }
 
 export {createPointEditControlsTemplate};

@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 
 function isPointFuture(point) {
   return dayjs().isBefore(point.dateFrom);
-
 }
 
 function isPointPresent(point) {
@@ -27,6 +26,5 @@ function getPointsDurationDiff(pointA, pointB) {
 
   return durationA - durationB;
 }
-
 
 export {isPointFuture, isPointPresent, isPointPast, getPointsDateDiff, getPointsPriceDiff, getPointsDurationDiff };

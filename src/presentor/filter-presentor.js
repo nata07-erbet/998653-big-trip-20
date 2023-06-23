@@ -11,11 +11,9 @@ export default class FilterPresentor {
   #currentFilter = null;
 
   constructor({container, pointsModel, filterModel}) {
-
     this.#container = container;
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
-
     this.#pointsModel.addObserver(this.#modelEventHandler);
     this.#filterModel.addObserver(this.#modelEventHandler);
   }

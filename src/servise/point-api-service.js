@@ -1,6 +1,5 @@
 import ApiService from '../framework/api-service.js';
 
-
 const Metod = {
   GET: 'GET',
   PUT: 'PUT',

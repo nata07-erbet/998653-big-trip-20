@@ -24,8 +24,6 @@ export default class PointsModel extends Observable {
         this.#destinationsModel.init(),
       ]);
       const points = await this.#service.points;
-      this.#offersModel.init();
-      this.#destinationsModel.init();
       this.#points = points.map(this.#adaptToClient);
     } catch(err) {
       this.#points = [];
@@ -73,10 +71,7 @@ export default class PointsModel extends Observable {
     if (index === -1) {
       throw new Error('Can\'t delete unexisting routePoint');
     }
-    this.#points = [
-      ...this.#points.slice(0, index),
-      ...this.#points.slice(index + 1),
-    ];
+
     try {
       await this.#service.deletePoint(update);
       this.#points = [
@@ -88,7 +83,6 @@ export default class PointsModel extends Observable {
       throw new Error('Can\'t delete route point');
     }
   }
-
 
   get() {
     return this.#points;

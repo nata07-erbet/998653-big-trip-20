@@ -14,7 +14,6 @@ function createMessageTemplate({filterType}) {
   return `<p class="trip-events__msg">${filterText}</p>`;
 }
 
-
 export default class TripEvevntMessageView extends AbstractView {
   #filterType = null;
 

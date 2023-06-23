@@ -1,4 +1,3 @@
-// import TripInfoPresentor from './presentor/info-presentor.js';
 import FilterPresentor from './presentor/filter-presentor.js';
 import BoardPresentor from './presentor/board-presentor.js';
 import PointService from './servise/point-api-service.js';
@@ -47,18 +46,7 @@ const boardPresentor = new BoardPresentor({
   filterModel,
 });
 
-
-// const tripInfoPresentor = new TripInfoPresentor({
-//   container:tripMainContainer,
-//   destinationsModel,
-//   offersModel,
-//   pointsModel
-// });
-
 pointsModel.init();
-
-// tripInfoPresentor.init();
-
 filterPresentor.init();
 boardPresentor.init();
 

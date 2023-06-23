@@ -10,31 +10,31 @@ const enabledSortType = {
 };
 
 function createEventSortItem(currentSortType, sortItem) {
-  return(
-    /*html*/`<div class="trip-sort__item  trip-sort__item--${sortItem.type}
+  return(/*html*/`
+    <div class="trip-sort__item  trip-sort__item--${sortItem.type}
      ${currentSortType === SortTypes.DAY ? 'trip-sort__input--active' : ''}">
-    <input
-      id="sort-${sortItem.type}"
-      class="trip-sort__input  visually-hidden"
-      type="radio"
-      name="trip-sort"
-      value="sort-${sortItem.type}"
-      ${sortItem.isChecked ? 'checked' : ''}
-      ${sortItem.isDisabled ? 'disabled' : ''}
-      data-sort-type ="${sortItem.type}"
-      >
-    <label
-      class="trip-sort__btn"
-      for="sort-${sortItem.type}">${sortItem.type}</label>
-  </div>`
+      <input
+        id="sort-${sortItem.type}"
+        class="trip-sort__input  visually-hidden"
+        type="radio"
+        name="trip-sort"
+        value="sort-${sortItem.type}"
+        ${sortItem.isChecked ? 'checked' : ''}
+        ${sortItem.isDisabled ? 'disabled' : ''}
+        data-sort-type ="${sortItem.type}">
+      <label
+        class="trip-sort__btn"
+        for="sort-${sortItem.type}">${sortItem.type}
+      </label>
+    </div>`
   );
 }
 
 function createEventSortTemplate(currentSortType,sortMap) {
-  return (
-    /*html*/ `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
+  return (/*html*/ `
+  <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
     ${sortMap.map((sortItem) => createEventSortItem(currentSortType,sortItem)).join('')}
-    </form>`);
+  </form>`);
 }
 
 function createSortMap(sortType) {

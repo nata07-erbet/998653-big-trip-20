@@ -9,7 +9,6 @@ export default class MockService {
   offers = [];
   points = [];
 
-
   constructor() {
     this.destinations = this.generateDestinantions();
     this.offers = this.generateOffers();
@@ -61,5 +60,4 @@ export default class MockService {
       return generatePoint(type, destination.id, offerIds);
     });
   }
-
 }

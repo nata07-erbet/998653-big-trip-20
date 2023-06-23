@@ -77,7 +77,6 @@ const UserAction = {
   DELETE_POINT: 'DELETE_POINT'
 };
 
-
 const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
@@ -89,5 +88,4 @@ const EditType = {
   CREATING: 'CREATING '
 };
 
-
-export{PointType, PointTypeDescription, DATA_TIME, DATA_NUMBER_MONTH, DATA_HOUR_MINUTE, MSEC_IN_DAY, MSEC_IN_HOUR, DAY_HOUR_MIN, HOUR_MIN, MIN, POINT_EMPTY, FilterTypes, SortTypes,SortTypesDescription, Mode, UpdateType, UserAction, EditType};
+export{ PointType, PointTypeDescription, DATA_TIME, DATA_NUMBER_MONTH, DATA_HOUR_MINUTE, MSEC_IN_DAY, MSEC_IN_HOUR, DAY_HOUR_MIN, HOUR_MIN, MIN, POINT_EMPTY, FilterTypes, SortTypes,SortTypesDescription, Mode, UpdateType, UserAction, EditType };
