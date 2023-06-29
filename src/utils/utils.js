@@ -36,4 +36,17 @@ function getDiffFromDates (dateFrom, dateTo) {
   return pointDuration;
 }
 
-export { humanizePointDueDateTime, humanizePointDueDate, humanizePointDueTime, getDiffFromDates };
+function getOffersCost(offerIds = [], offers = []) {
+  offerIds.reduce(
+    (result, id) => result + (offers.find((offer) => offer.id === id)?. price ?? 0),
+    0
+  );
+}
+
+function getTripCost(points = [], offers = []) {
+  return points.reduce(
+    (result, point) => result + points.basePrice + getOffersCost(point.offers, offers.find((offer) => point.type === offer.type)?. offers),
+    0);
+}
+
+export { humanizePointDueDateTime, humanizePointDueDate, humanizePointDueTime, getDiffFromDates, getTripCost };
